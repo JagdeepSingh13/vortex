@@ -30,6 +30,13 @@ target_compile_options(
         -fno-exceptions
 )
 
+# sockets: Winsock on Windows, nothing extra on Linux/macOS
+add_library(cpp_exchange_net INTERFACE)
+target_link_libraries(cpp_exchange_net INTERFACE cpp_exchange Threads::Threads)
+if(WIN32)
+    target_link_libraries(cpp_exchange_net INTERFACE ws2_32)
+endif()
+
 
 add_executable(
     exchange
@@ -39,7 +46,7 @@ add_executable(
 target_link_libraries(
     exchange
     PRIVATE
-        cpp_exchange
+        cpp_exchange_net
 )
 
 set_target_properties(
@@ -57,7 +64,7 @@ add_executable(
 target_link_libraries(
     trader_terminal
     PRIVATE
-        cpp_exchange
+        cpp_exchange_net
 )
 
 set_target_properties(
@@ -76,7 +83,7 @@ add_executable(
 target_link_libraries(
     liquidity_bot
     PRIVATE
-        cpp_exchange
+        cpp_exchange_net
 )
 
 set_target_properties(
