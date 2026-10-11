@@ -14,6 +14,8 @@
 - else have to make a sys call, which takes longer
 - this also leads to fragmentation of memory, as there are gaps in between filled spaces
 
+The project performs heap allocations during initialization, then avoids per-order heap allocation during normal matching.
+
 #### memory system
 
 - in memory of system we need:
