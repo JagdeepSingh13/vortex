@@ -37,7 +37,7 @@ namespace exchange::matching {
     template <
         std::size_t OrderCapacity = 1'000'000, std::size_t LevelCapacity = 10'000,
         std::size_t EventCapacity = 262'144, std::size_t StopCapacity = 65'536>
-    class MatchingEngin {
+    class MatchingEngine {
 
         using Book =
             OrderBook<OrderCapacity, LevelCapacity, EventCapacity, StopCapacity>;
@@ -58,7 +58,7 @@ namespace exchange::matching {
             switch (order.action) {
             case RequestAction::ADD:
                 return book.add_order(order.order_id, order.side, order.price,
-                    order.qty, order.type, order.timestamp,
+                    order.qty, order.order_type, order.timestamp,
                     order.participant_id, order.trigger_price,
                     order.display_qty);
             case RequestAction::CANCEL:

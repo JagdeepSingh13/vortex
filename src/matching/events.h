@@ -29,6 +29,9 @@ namespace exchange::matching {
         INVALID_MODIFICATION,
         INVALID_ICEBERG_DISPLAY,
         ORDER_POOL_EXHAUSTED,
+        // gateway level rejects (before the order reaches a book)
+        UNKNOWN_SYMBOL,
+        INVALID_CLIENT_ORDER_ID,
     };
 
     enum class EventType : std::uint8_t {

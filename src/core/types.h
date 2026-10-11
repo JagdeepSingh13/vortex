@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <array>
+#include <cmath>
 #include <cstdint>
 #include <string_view>
 #include <type_traits>
@@ -26,6 +27,16 @@ namespace exchange::core {
 
     // we used int in Price so *10000
     inline constexpr Price PRICE_SCALE = 10'000;
+
+    // double <-> fixed point, only used at the edges (bots, display)
+    // never inside the matching engine
+    [[nodiscard]] inline Price to_price(double value) noexcept {
+        return static_cast<Price>(std::llround(value * static_cast<double>(PRICE_SCALE)));
+    }
+
+    [[nodiscard]] inline double to_double(Price price) noexcept {
+        return static_cast<double>(price) / static_cast<double>(PRICE_SCALE);
+    }
 
     // by default enum has 4 bytes assigned but only 1 with uint8_t
     enum class Side : std::uint8_t {
@@ -81,6 +92,13 @@ namespace exchange::core {
         return std::string_view(symbol.data(), length);
     }
 
+    // aggregated qty at one price (what market data shows)
+    // no default member initializers so it can live inside unions
+    struct PriceLevelView {
+        Price price;
+        Quantity qty;
+    };
+
     struct SymbolLess {
         constexpr bool operator()(const Symbol& lhs, const Symbol& rhs) const noexcept {
             return std::lexicographical_compare(lhs.begin(), lhs.end(),
@@ -99,5 +117,6 @@ namespace exchange::core {
     static_assert(std::is_trivially_copyable_v<OrderType>);
     static_assert(std::is_trivially_copyable_v<OrderStatus>);
     static_assert(std::is_trivially_copyable_v<Symbol>);
+    static_assert(std::is_trivially_copyable_v<PriceLevelView>);
 
 }

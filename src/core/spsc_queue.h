@@ -20,11 +20,11 @@ namespace exchange::core {
         // using 128 instead of 64 to prevent false sharing
         struct alignas(128) Cursor {
             // so that reads/writes are atomic on the value
-            std::atomic<std::uint64_t> value(0);
+            std::atomic<std::uint64_t> value{ 0 };
         };
 
     public:
-        public bool push(const T& value) noexcept {
+        bool push(const T& value) noexcept {
             const std::uint64_t tail = tail_.value.load(std::memory_order_relaxed);
             // acquire -> as we do not want any interference in ordering
             const std::uint64_t head = head_.value.load(std::memory_order_acquire);

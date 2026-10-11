@@ -24,7 +24,7 @@ namespace exchange::core {
     public:
 
         MemoryPool() : slots_(std::make_unique<Slot[]>(N)) {
-            initialize_free_list()
+            initialize_free_list();
         }
 
         MemoryPool(const MemoryPool&) = delete;
@@ -38,7 +38,7 @@ namespace exchange::core {
                 return nullptr;
 
             FreeNode* node = free_list_head_;
-            free_list_head_->next = free_list_head_;
+            free_list_head_ = node->next;
 
             ++allocated_count_;
 

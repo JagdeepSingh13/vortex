@@ -27,12 +27,7 @@ namespace exchange::matching {
 
     static_assert(std::is_trivially_copyable_v<OrderRecord>);
 
-    struct PriceLevelView {
-        core::Price price{ 0 };
-        core::Quantity qty{ 0 };
-    };
-
-    static_assert(std::is_trivially_copyable_v<PriceLevelView>);
+    using core::PriceLevelView;
 
     class MonotonicBuffer {
     public:
@@ -57,6 +52,33 @@ namespace exchange::matching {
 
         std::unique_ptr<std::byte[]> storage_;
         std::pmr::monotonic_buffer_resource resource_;
+    };
+
+    // monotonic buffer never gives memory back, so a map that keeps
+    // inserting + erasing (orders come and go all day) would run it dry.
+    // pool resource sits on top: erased nodes go to a free list per size
+    // and get reused, the monotonic buffer is only hit when the pool needs a new chunk
+    class PooledBuffer {
+    public:
+
+        explicit PooledBuffer(std::size_t bytes)
+            : arena_(bytes), pool_(arena_.resource())
+        {
+        }
+
+        PooledBuffer(const PooledBuffer&) = delete;
+        PooledBuffer& operator=(const PooledBuffer&) = delete;
+        PooledBuffer(PooledBuffer&&) = delete;
+        PooledBuffer& operator=(PooledBuffer&&) = delete;
+
+        [[nodiscard]] std::pmr::memory_resource* resource() noexcept {
+            return &pool_;
+        }
+
+    private:
+
+        MonotonicBuffer arena_;
+        std::pmr::unsynchronized_pool_resource pool_;
     };
 
     template <
@@ -254,9 +276,63 @@ namespace exchange::matching {
             return events();
         }
 
+        // ---- read only view of the book (used for market data) ----
+
+        [[nodiscard]] const core::Symbol& symbol() const noexcept { return symbol_; }
+
+        [[nodiscard]] std::optional<PriceLevelView> best_bid() const noexcept {
+            return view_of(best_bid_);
+        }
+
+        [[nodiscard]] std::optional<PriceLevelView> best_ask() const noexcept {
+            return view_of(best_ask_);
+        }
+
+        // fills `out` with the top levels of one side, best price first
+        // returns how many levels were written
+        std::size_t depth(core::Side side, std::span<PriceLevelView> out) const noexcept {
+            return side == core::Side::BUY ? depth_impl(bids_, out)
+                                           : depth_impl(asks_, out);
+        }
+
+        [[nodiscard]] core::Price last_trade_price() const noexcept {
+            return last_trade_price_;
+        }
+
+        [[nodiscard]] std::size_t active_order_count() const noexcept {
+            return orders_.size();
+        }
+
     private:
 
+        [[nodiscard]] static std::optional<PriceLevelView>
+            view_of(const Level* level) noexcept
+        {
+            if (level == nullptr)
+                return std::nullopt;
+            return PriceLevelView{ .price = level->price, .qty = level->total_qty };
+        }
+
+        template<typename LevelMap>
+        static std::size_t depth_impl(const LevelMap& levels,
+            std::span<PriceLevelView> out) noexcept
+        {
+            std::size_t count = 0;
+            for (const auto& [price, level] : levels) {
+                if (count == out.size())
+                    break;
+                if (level == nullptr)
+                    continue;
+                out[count++] = PriceLevelView{ .price = price, .qty = level->total_qty };
+            }
+            return count;
+        }
+
         void reset_events() noexcept { event_count_ = 0; }
+
+        [[nodiscard]] core::SequenceNumber next_sequence() noexcept {
+            return next_sequence_++;
+        }
 
         // span ->  lightweight, non-owning view of cont. seq.
         [[nodiscard]] std::span<const Event> events() const {
@@ -327,6 +403,8 @@ namespace exchange::matching {
             return it->second.order;
         }
 
+        // terminal orders are erased from the index, so a filled/canceled id
+        // now comes back as ORDER_NOT_FOUND
         [[nodiscard]] ReasonCode
             lookup_reject_reason(core::OrderId order_id) const noexcept {
             const auto it = orders_.find(order_id);
@@ -457,7 +535,7 @@ namespace exchange::matching {
         void emit_rested(core::Timestamp event_timestamp, const Order& order) {
             push_event(Event::make(OrderRested{
                 .sequence_number = next_sequence(),
-                .timestamp = timestamp,
+                .timestamp = event_timestamp,
                 .order_id = order.id,
                 .symbol = symbol_,
                 .side = order.side,
@@ -512,7 +590,8 @@ namespace exchange::matching {
         void emit_aggressor_fill_state(core::Timestamp timestamp,
             const Order& aggressor, core::Quantity total_filled, core::Price last_fill_price)
         {
-            if (aggressor.qty > 0) {
+            // nothing left -> fully filled
+            if (aggressor.qty == 0) {
                 push_event(Event::make(OrderFilled{
                     .sequence_number = next_sequence(),
                     .timestamp = timestamp,
@@ -629,10 +708,12 @@ namespace exchange::matching {
             return nullptr;
         }
 
-        void retire_order(Order& order, core::OrderStatus terminal_status,
+        // returns true if the order's price level became empty and was freed
+        bool retire_order(Order& order, core::OrderStatus terminal_status,
             bool refresh_best = true)
         {
             bool removed_best_level = false;
+            bool removed_level = false;
 
             if (order.parent_level != nullptr) {
                 Level* level = order.parent_level;
@@ -644,20 +725,26 @@ namespace exchange::matching {
                         : best_ask_ == level;
 
                     deactivate_level(order.side, level->price, level);
+                    removed_level = true;
                 }
             }
             else if (order.is_stop_order()) {
                 erase_stop_reference(order);
             }
 
-            orders_[order.id] =
-                OrderRecord{ .order = nullptr, .last_status = terminal_status };
+            // terminal orders are dropped from the index, otherwise it grows forever
+            // (one entry per order ever seen). the pool resource reuses the node.
+            (void)terminal_status;
+            orders_.erase(order.id);
 
+            const core::Side side = order.side;
             order_pool_.deallocate(&order);
 
             if (refresh_best && removed_best_level) {
-                refresh_best_level(order.side);
+                refresh_best_level(side);
             }
+
+            return removed_level;
         }
 
         void erase_stop_reference(const Order& order) {
@@ -676,23 +763,20 @@ namespace exchange::matching {
         void deactivate_level(core::Side side, core::Price price,
             Level* level) noexcept
         {
+            // erase instead of leaving a nullptr entry: as prices drift the map
+            // would otherwise fill with dead levels and best-level scans get slower
             if (side == core::Side::BUY) {
-                auto level_it = bids_.find(price);
-                if (level_it != bids_.end()) {
-                    level_it->second = nullptr;
-                }
+                bids_.erase(price);
             }
             else {
-                auto level_it = asks_.find(price);
-                if (level_it != asks_.end()) {
-                    level_it->second = nullptr;
-                }
+                asks_.erase(price);
             }
 
             level_pool_.deallocate(level);
         }
 
-        void execute_trade_slice(Order& aggressor, Order& passive,
+        // returns true if the passive order's level was freed
+        bool execute_trade_slice(Order& aggressor, Order& passive,
             core::Quantity trade_qty,
             core::Timestamp event_timestamp,
             core::Price& last_fill_price)
@@ -711,15 +795,17 @@ namespace exchange::matching {
             emit_passive_fill_state(event_timestamp, passive, trade_qty, trade_price);
 
             if (passive.qty == 0) {
-                retire_order(passive, core::OrderStatus::FILLED, false);
+                return retire_order(passive, core::OrderStatus::FILLED, false);
             }
-            else if (passive.display_qty == 0 && passive.hidden_qty > 0) {
+
+            if (passive.display_qty == 0 && passive.hidden_qty > 0) {
                 replenish_iceberg(passive, event_timestamp);
             }
             else {
                 passive.status = core::OrderStatus::PARTIALLY_FILLED;
                 orders_[passive.id].last_status = passive.status;
             }
+            return false;
         }
 
         void match_fifo_at_level(Order& aggressor, Level& level,
@@ -745,8 +831,11 @@ namespace exchange::matching {
                 const core::Quantity trade_qty =
                     std::min(aggressor.qty, passive->display_qty);
 
-                execute_trade_slice(aggressor, *passive, trade_qty, event_timestamp,
-                    last_fill_price);
+                // level memory is back in the pool, must not touch `level` again
+                if (execute_trade_slice(aggressor, *passive, trade_qty, event_timestamp,
+                    last_fill_price)) {
+                    return;
+                }
             }
         }
 
@@ -806,11 +895,16 @@ namespace exchange::matching {
         {
             // iterating levels of opposite side to match the order
             for (auto level_it = levels.begin();
-                level_it != levels.end() && aggressor.qty > 0; ++level_it) {
+                level_it != levels.end() && aggressor.qty > 0;) {
                 // each level has a FIFO queue init
                 Level* level = level_it->second;
-                if (level == nullptr)
+                // matching can erase the current entry (level fully consumed),
+                // so step forward before touching it
+                const auto next_it = std::next(level_it);
+                if (level == nullptr) {
+                    level_it = next_it;
                     continue;
+                }
 
                 // check for is_marketable for other levels as well 
                 // (before we just checked for best opposite level)
@@ -821,6 +915,7 @@ namespace exchange::matching {
                 match_fifo_at_level(aggressor, *level, event_timestamp,
                     last_fill_price);
                 // }
+                level_it = next_it;
             }
 
             refresh_best_level(resting_side);
@@ -957,17 +1052,17 @@ namespace exchange::matching {
                 return;
             }
 
-            emit_cancelled(event_timestamp, order.id, order.qty);
+            emit_canceled(event_timestamp, order.id, order.qty);
             retire_order(order, core::OrderStatus::CANCELED);
         }
 
         core::Symbol symbol_{};
 
-        MonotonicBuffer order_index_buffer_;
-        MonotonicBuffer bid_index_buffer_;
-        MonotonicBuffer ask_index_buffer_;
-        MonotonicBuffer stop_buy_index_buffer_;
-        MonotonicBuffer stop_sell_index_buffer_;
+        PooledBuffer order_index_buffer_;
+        PooledBuffer bid_index_buffer_;
+        PooledBuffer ask_index_buffer_;
+        PooledBuffer stop_buy_index_buffer_;
+        PooledBuffer stop_sell_index_buffer_;
 
         BidMap bids_;
         AskMap asks_;
@@ -985,6 +1080,7 @@ namespace exchange::matching {
         std::unique_ptr<Event[]> event_storage_;
         std::size_t event_count_{ 0 };
 
+        core::SequenceNumber next_sequence_{ 1 };
         core::MatchId next_match_id_{ 1 };
         core::Price last_trade_price_{ 0 };
     };
