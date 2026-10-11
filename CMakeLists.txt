@@ -4,6 +4,8 @@ project(exchange LANGUAGES CXX)
 
 include(FetchContent)
 
+find_package(Threads REQUIRED)
+
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -81,6 +83,25 @@ set_target_properties(
     liquidity_bot
     PROPERTIES
         OUTPUT_NAME "liquidity_bot"
+        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tools"
+)
+
+# in-process engine + bots, no networking
+add_executable(
+    simulation
+    tools/simulation.cpp
+)
+
+target_link_libraries(
+    simulation
+    PRIVATE
+        cpp_exchange
+        Threads::Threads
+)
+
+set_target_properties(
+    simulation
+    PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tools"
 )
 
