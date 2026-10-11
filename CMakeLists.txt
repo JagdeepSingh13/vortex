@@ -83,3 +83,25 @@ set_target_properties(
         OUTPUT_NAME "liquidity_bot"
         RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tools"
 )
+
+# ---- tests ----
+enable_testing()
+
+add_executable(
+    engine_smoke_test
+    tests/engine_smoke_test.cpp
+)
+
+target_link_libraries(
+    engine_smoke_test
+    PRIVATE
+        cpp_exchange
+)
+
+set_target_properties(
+    engine_smoke_test
+    PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tests"
+)
+
+add_test(NAME engine_smoke_test COMMAND engine_smoke_test)
