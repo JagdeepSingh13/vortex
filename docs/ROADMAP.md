@@ -24,10 +24,10 @@ One milestone at a time, one branch per milestone (`mN-short-name`). A milestone
 - **Acceptance:** on a clean clone, `make engine && make test` succeeds and `engine_smoke_test` passes.
 
 ## M1 — Event contracts and symbol config
-- `schemas/order.v1.json` and `schemas/trade.v1.json` (JSON Schema), matching `docs/ARCHITECTURE.md`.
-- `config/symbols.yaml`: symbol, tick size, lot size, price scale.
-- Decide how the engine's internal `PRICE_SCALE` relates to per-symbol ticks (ADR).
-- **Acceptance:** example events in `schemas/examples/` validate against the schemas in a test.
+- `schemas/order.v1.json` and `schemas/trade.v1.json` (JSON Schema draft 2020-12), documented in `docs/ARCHITECTURE.md`.
+- `config/symbols.yaml`: symbol, tick size, lot size, display decimals, engine price scale.
+- Decisions: ticks and lots in events (ADR 0004), trade identity (ADR 0005), aggressor side (ADR 0006), contract tests in a Python container (ADR 0007).
+- **Acceptance:** `make test` passes on a clean clone: every valid example in `schemas/examples/` passes, every invalid example fails for exactly its stated reason, and `symbols.yaml` converts exactly to engine units.
 
 ## M2 — Engine test suite and benchmark harness
 - Replace the hand-rolled CHECK macro with a test framework (ADR: GoogleTest vs Catch2 vs keep custom).
