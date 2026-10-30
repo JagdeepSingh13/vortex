@@ -3,7 +3,9 @@
 #include <algorithm>
 #include <cstddef>
 #include <cstdint>
+#include <optional>
 #include <span>
+#include <unordered_map>
 #include <vector>
 
 #include "core/types.h"
@@ -13,6 +15,12 @@
 // same seed -> same requests on every compiler and platform: it uses its own splitmix64
 // generator and integer arithmetic only (std:: distributions differ between libraries).
 // lives outside the engine: it allocates and is never on the matching thread.
+//
+// two modes:
+//   open loop (default, golden test): cancels/modifies may target orders that are already
+//     gone, so the stream does not depend on engine output at all
+//   feedback (benchmark): pass each request's events to observe(); finished orders are
+//     dropped, so cancels and modifies hit live orders like a real trading client
 
 namespace exchange::support {
 
@@ -134,7 +142,7 @@ namespace exchange::support {
                 order.display_qty = static_cast<core::Quantity>(random_.between(1, qty));
             }
 
-            live_.push_back(Live{ order.order_id, symbol_index, side });
+            push_live(Live{ order.order_id, symbol_index, side });
             return order;
         }
 
@@ -144,8 +152,7 @@ namespace exchange::support {
             const auto index = static_cast<std::size_t>(
                 random_.between(0, static_cast<std::int64_t>(live_.size()) - 1));
             const Live picked = live_[index];
-            live_[index] = live_.back();
-            live_.pop_back();
+            remove_at(index);
             return picked;
         }
 
@@ -161,7 +168,7 @@ namespace exchange::support {
         matching::InboundOrder modify(const Live& target) {
             const core::Price mid = mids_[target.symbol_index];
             const std::int64_t sign = target.side == core::Side::BUY ? -1 : 1;
-            live_.push_back(target);  // still alive after a modify (if it was before)
+            push_live(target);  // still alive after a modify (if it was before)
             return matching::InboundOrder{
                 .action = matching::RequestAction::MODIFY,
                 .symbol = symbols_[target.symbol_index],
@@ -173,11 +180,68 @@ namespace exchange::support {
             };
         }
 
+        void push_live(const Live& entry) {
+            position_[entry.id] = live_.size();
+            live_.push_back(entry);
+        }
+
+        // swap-remove: O(1), order of live_ does not matter
+        void remove_at(std::size_t index) {
+            position_.erase(live_[index].id);
+            if (index != live_.size() - 1) {
+                live_[index] = live_.back();
+                position_[live_[index].id] = index;
+            }
+            live_.pop_back();
+        }
+
+        std::optional<Live> remove_id(core::OrderId id) {
+            const auto it = position_.find(id);
+            if (it == position_.end())
+                return std::nullopt;
+            const Live entry = live_[it->second];
+            remove_at(it->second);
+            return entry;
+        }
+
+    public:
+        // feedback mode: forget orders the engine reports as finished
+        void observe(std::span<const matching::Event> events) {
+            std::optional<Live> replaced;  // a modify is CANCELED then ACCEPTED under the same id
+            for (const matching::Event& event : events) {
+                switch (event.type) {
+                case matching::EventType::ORDER_FILLED:
+                    (void)remove_id(event.payload.order_filled.order_id);
+                    break;
+                case matching::EventType::ORDER_CANCELED:
+                    replaced = remove_id(event.payload.order_canceled.order_id);
+                    break;
+                case matching::EventType::ORDER_ACCEPTED:
+                    if (replaced && replaced->id == event.payload.order_accepted.order_id) {
+                        push_live(*replaced);
+                    }
+                    replaced.reset();
+                    break;
+                case matching::EventType::ORDER_REJECTED:
+                    // a rejected modify of a stop leaves the stop alive; any other reject
+                    // means the id is not (or no longer) in the book
+                    if (event.payload.order_rejected.reason_code != matching::ReasonCode::INVALID_MODIFICATION) {
+                        (void)remove_id(event.payload.order_rejected.order_id);
+                    }
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
+
+    private:
         std::vector<core::Symbol> symbols_;
         OrderStreamConfig config_;
         SplitMix64 random_;
         std::vector<core::Price> mids_;
         std::vector<Live> live_;
+        std::unordered_map<core::OrderId, std::size_t> position_;
         core::OrderId next_order_id_{ 1 };
         core::Timestamp timestamp_{ 0 };
     };

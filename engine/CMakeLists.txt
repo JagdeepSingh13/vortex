@@ -128,6 +128,31 @@ set_target_properties(
         RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tools"
 )
 
+# ---- benchmark ----
+add_executable(
+    latency_bench
+    bench/latency_bench.cpp
+)
+
+target_link_libraries(
+    latency_bench
+    PRIVATE
+        cpp_exchange
+)
+
+target_include_directories(latency_bench PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}")
+
+# recorded in every result file, so numbers always say how they were built
+string(TOUPPER "${CMAKE_BUILD_TYPE}" VORTEX_BUILD_TYPE_UPPER)
+target_compile_definitions(latency_bench PRIVATE
+    VORTEX_CXX_FLAGS="${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_${VORTEX_BUILD_TYPE_UPPER}} -std=c++20 -fno-exceptions")
+
+set_target_properties(
+    latency_bench
+    PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bench"
+)
+
 # ---- tests ----
 enable_testing()
 find_package(GTest 1.14 REQUIRED)
