@@ -106,7 +106,7 @@ engine thread → Docker container → WSL2 Linux VM → Windows scheduler → C
 What we did to reduce noise:
 - **CPU pinning**: `taskset -c 2` keeps the thread on one core, so it does not migrate and lose its cache.
 - **Warm-up** before measuring.
-- **Several runs** compared before committing one. Three runs gave p50 331–371 ns, p99 1.9–2.1 µs, throughput 1.98–2.32 M/s: about **±8% between runs**. Differences smaller than that are not meaningful.
+- **Several runs** compared. Five 2-million-request runs gave p50 331–371 ns and p99 1.9–2.1 µs (about ±6%), but throughput 1.80–2.32 M/s (about ±13%). Latency percentiles are the more stable number on this machine; throughput is more sensitive to whatever else Windows is doing. Differences smaller than these ranges are not meaningful.
 
 What production systems also do (not available on a laptop VM): isolate cores from the scheduler (`isolcpus`), disable frequency scaling and turbo, pin interrupts elsewhere, run on bare metal.
 
@@ -120,7 +120,7 @@ Be precise about this in interviews:
 
 ## How to say it in an interview
 
-> "On a Ryzen 5 5500U laptop, inside Docker on WSL2, single-threaded, the matching engine's median service time is about 360 ns per request and p99 about 2 µs, with roughly 2 million requests per second throughput. That is the matching code alone, measured with rdtscp in a closed loop over 2 million requests of a seeded realistic order stream. Runs vary about ±8%, and the max values are OS noise from the VM."
+> "On a Ryzen 5 5500U laptop, inside Docker on WSL2, single-threaded, the matching engine's median service time is about 360 ns per request and p99 about 2 µs, with 1.8 to 2.3 million requests per second throughput depending on the run. That is the matching code alone, measured with rdtscp in a closed loop over 2 million requests of a seeded realistic order stream. Latency percentiles vary about ±6% between runs, and the max values are OS noise from the VM."
 
 Every number in that sentence is measured and comes with its conditions.
 

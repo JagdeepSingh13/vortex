@@ -28,5 +28,5 @@ Option 1, in `engine/bench/latency_bench.cpp`, run with `make bench`.
 ## Consequences
 
 - Closed loop: measures service time, not response time under load (coordinated omission). End-to-end, open-loop measurement belongs with the Kafka path (M5).
-- Numbers are from a laptop in a WSL2 VM: about ±8% run-to-run; max values are OS noise. Comparisons must use the same machine and conditions.
+- Numbers are from a laptop in a WSL2 VM: latency percentiles about ±6% run-to-run, throughput about ±13% (1.80–2.32 M/s over five runs); max values are OS noise. Comparisons must use the same machine and conditions.
 - Google Benchmark can still be added later for micro-operations if a specific optimisation needs it.
