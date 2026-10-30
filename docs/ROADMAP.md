@@ -7,6 +7,7 @@ One milestone at a time, one branch per milestone (`mN-short-name`). A milestone
 | M0 | Repository bootstrap | `m0-bootstrap` |
 | M1 | Event contracts and symbol config | `m1-contracts` |
 | M2 | Engine test suite and benchmark harness | `m2-engine-tests` |
+| M2.5 | Engine performance optimisation | `m2.5-engine-perf` |
 | M3 | Local Kafka (KRaft) | `m3-local-kafka` |
 | M4 | Order simulator | `m4-simulator` |
 | M5 | Engine Kafka I/O (orders in, trades out) | `m5-engine-kafka` |
@@ -34,6 +35,13 @@ One milestone at a time, one branch per milestone (`mN-short-name`). A milestone
 - Engine stamps wall-clock `event_time_ns` (UTC epoch) once per request; the logical clock stays for deterministic matching (ADR 0009).
 - `make bench` writes a dated file to `benchmarks/results/` with machine and conditions (ADR 0010).
 - **Acceptance:** `make test-all` passes on a clean clone; one benchmark result file committed with real measurements.
+
+## M2.5 — Engine performance optimisation
+Inserted after M2 (numbered 2.5 so later milestone numbers, which ADRs refer to, stay the same).
+- Profile the engine on the benchmark workload and record where time goes.
+- Optimise one hot spot at a time; each change is its own commit with a before/after `make bench` result and, if it is a significant design choice, an ADR.
+- Hard constraint: the golden replay test passes **unchanged** after every change (matching behaviour identical).
+- **Acceptance:** a profile write-up in `benchmarks/`, at least one optimisation with a measured, repeatable improvement beyond run-to-run noise (latency percentiles ±6%, throughput ±13% on this machine), `make test-all` green on a clean clone.
 
 ## M3 — Local Kafka (KRaft)
 - `infra/docker/docker-compose.yml` with a single-broker Kafka in KRaft mode, pinned image.

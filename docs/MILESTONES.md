@@ -1,6 +1,6 @@
 # Milestones in plain language
 
-The project is split into 12 milestones (M0–M11). Each one is small enough to finish, test and explain on its own, gets its own git branch, and ends with an entry in [INTERVIEW_NOTES.md](INTERVIEW_NOTES.md). The exact acceptance criteria live in [ROADMAP.md](ROADMAP.md); this file explains what each step is for.
+The project is split into 13 milestones (M0–M11, plus M2.5). Each one is small enough to finish, test and explain on its own, gets its own git branch, and ends with an entry in [INTERVIEW_NOTES.md](INTERVIEW_NOTES.md). The exact acceptance criteria live in [ROADMAP.md](ROADMAP.md); this file explains what each step is for.
 
 ## The big picture
 
@@ -23,6 +23,9 @@ Make the C++ engine trustworthy before connecting it to anything:
 - a benchmark that measures real latency and throughput numbers to quote in interviews
 - a golden replay test that proves matching behaviour never changes by accident, plus a multi-threaded test for the lock-free queue
 - trades carry real wall-clock time (UTC) next to the engine's deterministic logical clock
+
+### M2.5 — Engine performance optimisation
+Find out where the engine spends its time (profiling), then make the slowest parts faster, one change at a time. Every change must keep the golden replay test passing unchanged, so the engine does exactly the same thing, just faster, and every claim comes with before/after benchmark numbers.
 
 ## Getting data moving
 
