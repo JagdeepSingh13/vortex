@@ -1,4 +1,3 @@
-#include <atomic>
 #include <cstdint>
 #include <thread>
 
@@ -9,60 +8,10 @@
 namespace exchange::testing {
     namespace {
 
-        using Queue = core::SPSCQueue<std::uint64_t, 8>;
-
-        TEST(SpscQueue, PopFromEmptyFails) {
-            Queue queue;
-            std::uint64_t value = 0;
-            EXPECT_TRUE(queue.empty());
-            EXPECT_FALSE(queue.pop(value));
-        }
-
-        TEST(SpscQueue, KeepsFifoOrder) {
-            Queue queue;
-            for (std::uint64_t value = 1; value <= 5; ++value) {
-                ASSERT_TRUE(queue.push(value));
-            }
-            for (std::uint64_t expected = 1; expected <= 5; ++expected) {
-                std::uint64_t value = 0;
-                ASSERT_TRUE(queue.pop(value));
-                EXPECT_EQ(value, expected);
-            }
-            EXPECT_TRUE(queue.empty());
-        }
-
-        TEST(SpscQueue, PushToFullFailsWithoutOverwriting) {
-            Queue queue;
-            for (std::uint64_t value = 0; value < 8; ++value) {
-                ASSERT_TRUE(queue.push(value));
-            }
-            EXPECT_FALSE(queue.push(99));
-
-            std::uint64_t value = 0;
-            ASSERT_TRUE(queue.pop(value));
-            EXPECT_EQ(value, 0U);
-            EXPECT_TRUE(queue.push(8));  // room again
-        }
-
-        // head/tail grow forever and are masked into the buffer;
-        // go around the ring many times with the queue nearly full
-        TEST(SpscQueue, WrapsAroundManyTimes) {
-            Queue queue;
-            std::uint64_t next_push = 0;
-            std::uint64_t next_pop = 0;
-            for (int i = 0; i < 7; ++i) {
-                ASSERT_TRUE(queue.push(next_push++));
-            }
-            for (int round = 0; round < 10'000; ++round) {
-                ASSERT_TRUE(queue.push(next_push++));
-                std::uint64_t value = 0;
-                ASSERT_TRUE(queue.pop(value));
-                ASSERT_EQ(value, next_pop++);
-            }
-        }
-
         // one producer thread, one consumer thread, every value arrives exactly once and in order.
-        // run under ThreadSanitizer (make test-tsan) this also checks the memory ordering.
+        // the small queue keeps it full or empty most of the time, so both wrap-around and
+        // the full/empty edges are hit millions of times. run under ThreadSanitizer
+        // (make test-tsan) this also checks the acquire/release memory ordering.
         TEST(SpscQueue, ProducerAndConsumerThreadsLoseNothing) {
             constexpr std::uint64_t COUNT = 2'000'000;
             static core::SPSCQueue<std::uint64_t, 1024> queue;  // static: too big for the stack

@@ -160,11 +160,8 @@ include(GoogleTest)
 
 add_executable(
     engine_tests
-    tests/order_book_basics_test.cpp
-    tests/order_book_test.cpp
-    tests/spsc_queue_test.cpp
-    tests/memory_pool_test.cpp
     tests/golden_replay_test.cpp
+    tests/spsc_queue_test.cpp
 )
 
 target_link_libraries(

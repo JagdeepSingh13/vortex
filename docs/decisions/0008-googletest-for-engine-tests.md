@@ -22,5 +22,5 @@ GoogleTest 1.14, from Ubuntu's `libgtest-dev` package pinned to `1.14.0-1` in th
 ## Consequences
 
 - Each `TEST()` shows up in ctest; `--gtest_filter` runs a subset.
-- The original 8 smoke scenarios were ported unchanged (`order_book_basics_test.cpp`).
+- The original 8 smoke scenarios were first ported unchanged; later in M2 the suite was cut down to two tests (ADR 0011).
 - Upgrading GoogleTest means bumping the pinned apt version and the image tag.

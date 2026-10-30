@@ -40,7 +40,7 @@ define sanitizer_test
 	docker run --rm $(SANITIZER_ENV) -v "$(CURDIR):/src" -w /src $(ENGINE_IMAGE) ctest --test-dir $(1) --output-on-failure
 endef
 
-.PHONY: help engine-image engine bench python-image test test-engine test-asan test-tsan test-schemas clean run-sim run-exchange run-bots run-trader
+.PHONY: help engine-image engine bench python-image test test-all test-engine test-asan test-tsan test-schemas clean run-sim run-exchange run-bots run-trader
 
 help: ## list targets
 	@grep -E '^[a-z-]+:.*## ' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  %-14s %s\n", $$1, $$2}'
@@ -59,7 +59,9 @@ bench: engine ## run the engine benchmark and write a dated result to benchmarks
 python-image: ## build the pinned Python image used for contract tests
 	docker build -t $(PYTHON_IMAGE) -f infra/docker/python-tools.Dockerfile infra/docker
 
-test: test-engine test-asan test-tsan test-schemas ## run all unit tests (engine, sanitizers, contracts)
+test: test-engine test-schemas ## run all tests (engine + contracts)
+
+test-all: test test-asan test-tsan ## everything, plus the slow sanitizer builds
 
 test-engine: engine ## run the engine's C++ tests
 	$(DOCKER_RUN) ctest --test-dir $(ENGINE_BUILD_DIR) --output-on-failure

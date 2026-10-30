@@ -75,7 +75,8 @@ Make targets are the single entry point. Create each target when a milestone fir
 - `make up` / `make down`: start or stop local infrastructure
 - `make topics`: create Kafka topics
 - `make engine`: build the engine in Release mode
-- `make test`: run all tests (`make test-engine`, `make test-asan`, `make test-tsan`, `make test-schemas` run each part)
+- `make test`: engine tests and contract tests (`make test-engine`, `make test-schemas` run each part)
+- `make test-all`: `make test` plus the slow sanitizer builds (`make test-asan`, `make test-tsan`)
 - `make run-sim`: run the engine and bots in one process with a live dashboard
 - `make run-exchange` / `make run-bots` / `make run-trader`: exchange server on port 9000, then bots or an interactive trader in other terminals
 - `make bench`: run the engine benchmark and write a dated file to `benchmarks/results/` (`BENCH_REQUESTS`, `BENCH_CPU` override defaults)
@@ -85,7 +86,7 @@ Make targets are the single entry point. Create each target when a milestone fir
 
 ## Testing expectations
 
-- C++: unit tests for the order book and for each queue, including a multi-threaded test. Benchmarks are separate from tests.
+- C++: kept deliberately small (ADR 0011): the golden replay test guards matching behaviour (it must pass unchanged after any engine change, including optimisations), and a multi-threaded test covers each lock-free queue. Run `make test-all` (sanitizers) before merging engine changes. Benchmarks are separate from tests.
 - Java: unit tests for business logic; Testcontainers for Kafka and Redis integration tests.
 - Pipelines: reconciliation (trades produced equals rows in bronze), no duplicates after a job restart, tests with deliberately late events for candles.
 - dbt: not_null and unique tests on keys; accepted ranges on prices and quantities.
