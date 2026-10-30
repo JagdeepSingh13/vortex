@@ -33,7 +33,7 @@ target_compile_options(
 # ---- build options ----
 # VORTEX_SANITIZE: "address,undefined" or "thread" (separate build dirs, see Makefile)
 set(VORTEX_SANITIZE "" CACHE STRING "Sanitizers to enable, e.g. address,undefined or thread")
-option(VORTEX_WERROR "Treat warnings as errors" OFF)
+option(VORTEX_WERROR "Treat warnings as errors" ON)
 
 if(VORTEX_WERROR)
     target_compile_options(cpp_exchange INTERFACE -Werror)

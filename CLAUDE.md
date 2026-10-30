@@ -75,10 +75,10 @@ Make targets are the single entry point. Create each target when a milestone fir
 - `make up` / `make down`: start or stop local infrastructure
 - `make topics`: create Kafka topics
 - `make engine`: build the engine in Release mode
-- `make test`: run all unit tests (`make test-engine` and `make test-schemas` run each part)
+- `make test`: run all tests (`make test-engine`, `make test-asan`, `make test-tsan`, `make test-schemas` run each part)
 - `make run-sim`: run the engine and bots in one process with a live dashboard
 - `make run-exchange` / `make run-bots` / `make run-trader`: exchange server on port 9000, then bots or an interactive trader in other terminals
-- `make bench`: run the engine benchmark and write a dated file to `benchmarks/results/`
+- `make bench`: run the engine benchmark and write a dated file to `benchmarks/results/` (`BENCH_REQUESTS`, `BENCH_CPU` override defaults)
 - `make sim`: run the order simulator
 - `make stream-bronze`: start the bronze ingestion job
 - `make dbt`: run and test dbt models
