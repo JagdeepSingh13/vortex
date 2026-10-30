@@ -5,6 +5,7 @@ SHELL := bash
 
 ENGINE_IMAGE := vortex/engine-build:m0
 ENGINE_BUILD_DIR := build/engine-release
+PYTHON_IMAGE := vortex/python-tools:m1
 
 # Git Bash on Windows rewrites paths like /src into C:/Program Files/Git/src
 # before they reach docker.exe; this turns that off.
@@ -18,7 +19,7 @@ ENGINE_PORT := 9000
 DOCKER_RUN_IT := docker run --rm -it --init -v "$(CURDIR):/src" -w /src
 DOCKER_EXEC_IT := docker exec -it $(ENGINE_CONTAINER)
 
-.PHONY: help engine-image engine test clean run-sim run-exchange run-bots run-trader
+.PHONY: help engine-image engine python-image test test-engine test-schemas clean run-sim run-exchange run-bots run-trader
 
 help: ## list targets
 	@grep -E '^[a-z-]+:.*## ' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  %-14s %s\n", $$1, $$2}'
@@ -29,8 +30,16 @@ engine-image: ## build the pinned Linux image used to compile the engine
 engine: engine-image ## build the engine in Release mode
 	$(DOCKER_RUN) bash -c "cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -S engine -B $(ENGINE_BUILD_DIR) && cmake --build $(ENGINE_BUILD_DIR)"
 
-test: engine ## run all unit tests
+python-image: ## build the pinned Python image used for contract tests
+	docker build -t $(PYTHON_IMAGE) -f infra/docker/python-tools.Dockerfile infra/docker
+
+test: test-engine test-schemas ## run all unit tests
+
+test-engine: engine ## run the engine's C++ tests
 	$(DOCKER_RUN) ctest --test-dir $(ENGINE_BUILD_DIR) --output-on-failure
+
+test-schemas: python-image ## validate schemas, examples and config/symbols.yaml
+	docker run --rm -v "$(CURDIR):/src" -w /src $(PYTHON_IMAGE) python -m pytest schemas/tests -q -p no:cacheprovider
 
 run-sim: engine ## engine + bots in one process with a live dashboard (Ctrl+C to stop)
 	$(DOCKER_RUN_IT) $(ENGINE_IMAGE) $(ENGINE_BUILD_DIR)/tools/simulation
