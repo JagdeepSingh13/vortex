@@ -8,18 +8,16 @@ The engine was written on Windows with MinGW g++. That works for now, but:
 - Everything else in the project (Kafka, Spark, Redis, Airflow) runs in **Linux** containers. The engine should run on the same kind of OS.
 - "It builds on my laptop" is not enough. Anyone cloning the repo, including a CI server, should get **the same compiler and the same result**.
 
-The fix: compile and run the engine inside a small, pinned Linux environment, a Docker container. See [ADR 0002](../decisions/0002-build-engine-in-linux-container.md) for the formal decision.
-
 ## Image vs container
 
 Two words that are easy to mix up:
 
-| | Image | Container |
-|---|---|---|
-| What | A read-only template: a snapshot of files | A running (or stopped) instance of an image |
-| Analogy | A class | An object |
-| Ours | `vortex/engine-build:m0` | Created by each `docker run`, deleted when it exits (`--rm`) |
-| Lifetime | Stays on disk until you delete it | Seconds to hours |
+|          | Image                                     | Container                                                    |
+| -------- | ----------------------------------------- | ------------------------------------------------------------ |
+| What     | A read-only template: a snapshot of files | A running (or stopped) instance of an image                  |
+| Analogy  | A class                                   | An object                                                    |
+| Ours     | `vortex/engine-build:m0`                  | Created by each `docker run`, deleted when it exits (`--rm`) |
+| Lifetime | Stays on disk until you delete it         | Seconds to hours                                             |
 
 One image, many containers. `make engine` and `make run-sim` each start their own container from the same image.
 
@@ -33,13 +31,13 @@ RUN apt-get install build-essential cmake ninja-build   # 2. tools
 WORKDIR /src                           # 3. default folder
 ```
 
-| Layer | Contents | Why |
-|---|---|---|
-| Ubuntu 24.04 | `bash`, `libc`, `apt`, core utilities. **No kernel.** | A familiar, long-term-supported Linux userland |
-| `build-essential` | GCC/G++ 13.3, the linker (`ld`), `make`, C/C++ standard library headers | To compile C++20 |
-| `cmake` 3.28 | Reads `engine/CMakeLists.txt`, generates build instructions | The engine's build system |
-| `ninja-build` 1.11 | Executes those instructions quickly, rebuilding only what changed | Fast incremental builds |
-| `WORKDIR /src` | Commands start in `/src` | Our project is mounted there |
+| Layer              | Contents                                                                | Why                                            |
+| ------------------ | ----------------------------------------------------------------------- | ---------------------------------------------- |
+| Ubuntu 24.04       | `bash`, `libc`, `apt`, core utilities. **No kernel.**                   | A familiar, long-term-supported Linux userland |
+| `build-essential`  | GCC/G++ 13.3, the linker (`ld`), `make`, C/C++ standard library headers | To compile C++20                               |
+| `cmake` 3.28       | Reads `engine/CMakeLists.txt`, generates build instructions             | The engine's build system                      |
+| `ninja-build` 1.11 | Executes those instructions quickly, rebuilding only what changed       | Fast incremental builds                        |
+| `WORKDIR /src`     | Commands start in `/src`                                                | Our project is mounted there                   |
 
 Total size: about 465 MB. **Not in the image:** your source code and the compiled programs. Those stay on your Windows disk (see "bind mounts" below).
 
@@ -99,18 +97,18 @@ docker run --rm -it --init -v "C:/Users/hp/Desktop/vortex:/src" -w /src \
     vortex/engine-build:m0  build/engine-release/src/exchange 9000
 ```
 
-| Flag | Meaning | What happens without it |
-|---|---|---|
-| `--rm` | Delete the container when it exits | Stopped containers pile up (`docker ps -a`) |
-| `-i` | Keep standard input open | You cannot type into the trader terminal |
-| `-t` | Allocate a terminal (TTY) | No line editing; output may buffer oddly |
-| `--init` | Run a tiny init process (`tini`) as PID 1, which starts our program | Ctrl+C may be ignored (see below) |
-| `-v host:container` | **Bind mount**: the Windows folder appears at `/src` inside | The container sees no source code |
-| `-w /src` | Working directory for the command | Relative paths like `build/...` fail |
-| `--name` | A fixed name, so `docker exec` can find it | Docker picks a random name like `quirky_turing` |
-| `-p 9000:9000` | Forward Windows port 9000 to container port 9000 | Clients outside the container cannot connect |
-| `vortex/engine-build:m0` | The image to start from | — |
-| `build/.../exchange 9000` | The command to run inside | The image's default (`bash`) runs instead |
+| Flag                      | Meaning                                                             | What happens without it                         |
+| ------------------------- | ------------------------------------------------------------------- | ----------------------------------------------- |
+| `--rm`                    | Delete the container when it exits                                  | Stopped containers pile up (`docker ps -a`)     |
+| `-i`                      | Keep standard input open                                            | You cannot type into the trader terminal        |
+| `-t`                      | Allocate a terminal (TTY)                                           | No line editing; output may buffer oddly        |
+| `--init`                  | Run a tiny init process (`tini`) as PID 1, which starts our program | Ctrl+C may be ignored (see below)               |
+| `-v host:container`       | **Bind mount**: the Windows folder appears at `/src` inside         | The container sees no source code               |
+| `-w /src`                 | Working directory for the command                                   | Relative paths like `build/...` fail            |
+| `--name`                  | A fixed name, so `docker exec` can find it                          | Docker picks a random name like `quirky_turing` |
+| `-p 9000:9000`            | Forward Windows port 9000 to container port 9000                    | Clients outside the container cannot connect    |
+| `vortex/engine-build:m0`  | The image to start from                                             | —                                               |
+| `build/.../exchange 9000` | The command to run inside                                           | The image's default (`bash`) runs instead       |
 
 ### Bind mounts: why nothing is lost when a container is deleted
 
