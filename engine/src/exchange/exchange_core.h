@@ -43,8 +43,13 @@ namespace exchange::gateway {
         void handle(core::ParticipantId participant,
             const protocol::ClientRequest& request, Sink& sink)
         {
-            // logical time: deterministic, so a replay gives identical results
+            // two clocks, two jobs:
+            //  - logical time goes into the book: deterministic, so a replay gives
+            //    identical results (the golden replay test relies on this)
+            //  - wall time is read once per request and stamped on every message the
+            //    request produces; it never reaches matching (ADR 0009)
             const core::Timestamp timestamp = clock_.next();
+            request_time_ns_ = core::wall_clock_ns();
 
             if (engine_->find_book(request.symbol) == nullptr) {
                 reject(participant, request, matching::ReasonCode::UNKNOWN_SYMBOL, sink);
@@ -96,6 +101,7 @@ namespace exchange::gateway {
             report.reason = reason;
             report.symbol = request.symbol;
             report.client_order_id = request.client_order_id;
+            report.event_time_ns = request_time_ns_;
             sink.send(participant, protocol::ServerMessage::make(report));
         }
 
@@ -109,6 +115,7 @@ namespace exchange::gateway {
 
             protocol::ExecutionReport report{};
             report.symbol = symbol;
+            report.event_time_ns = request_time_ns_;
             core::OrderId order_id = 0;
 
             switch (event.type) {
@@ -195,6 +202,7 @@ namespace exchange::gateway {
             fill.price = trade.price;
             fill.qty = trade.qty;
             fill.sequence_number = trade.sequence_number;
+            fill.event_time_ns = request_time_ns_;
 
             fill.side = core::Side::BUY;
             fill.client_order_id = protocol::client_order_id_of(trade.buy_order_id);
@@ -210,6 +218,7 @@ namespace exchange::gateway {
                 .match_id = trade.match_id,
                 .price = trade.price,
                 .qty = trade.qty,
+                .event_time_ns = request_time_ns_,
                 }));
         }
 
@@ -230,6 +239,7 @@ namespace exchange::gateway {
             }
 
             update.sequence_number = ++market_data_sequence_;
+            update.event_time_ns = request_time_ns_;
             last = update;
             sink.broadcast(protocol::ServerMessage::make(update));
         }
@@ -255,6 +265,8 @@ namespace exchange::gateway {
 
         std::unique_ptr<Engine> engine_;
         core::LogicalClock clock_{};
+        // wall time of the request currently being handled (set at the top of handle)
+        core::Timestamp request_time_ns_{ 0 };
         core::SequenceNumber market_data_sequence_{ 0 };
         std::map<core::Symbol, protocol::BookUpdate, core::SymbolLess> last_books_;
     };

@@ -1,6 +1,6 @@
 # 0009. Event time: read the UTC clock once per request
 
-- Status: accepted (implementation in progress)
+- Status: accepted, implemented in M2
 - Date: 2026-10-31
 - Milestone: M2
 
@@ -22,4 +22,5 @@ Option 1. Matching stays deterministic; event time is accurate to the request.
 
 - Both clocks coexist: the logical clock for ordering and replay, wall time for `event_time_ns`.
 - The wall time must not influence matching; the golden replay test proves that (its text format deliberately omits wall time).
-- Cost per request is measured with `make bench` before and after the change.
+- Measured cost of one `wall_clock_ns()` read: about 50 ns (90 ns minus 40 ns timer overhead) on the Ryzen 5 5500U inside WSL2. That is ~14% of a median request, so a later optimisation could derive wall time from the TSC instead.
+- Implemented in `ExchangeCore::handle`; `ExecutionReport`, `TradeUpdate` and `BookUpdate` carry `event_time_ns`. The golden replay test passed unchanged.

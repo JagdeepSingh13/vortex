@@ -28,7 +28,7 @@ Airflow: dbt runs, data quality checks, Iceberg maintenance
 - Events are a tagged union (`Event`) written into a preallocated buffer; no heap allocation on the matching path.
 
 Known gaps to close (tracked in the roadmap):
-- Timestamps come from `steady_clock` (monotonic, not epoch). `event_time_ns` must be UTC epoch nanoseconds → M2.
+- Done in M2: the book keeps a deterministic logical clock; `ExchangeCore` reads UTC wall time once per request and stamps it as `event_time_ns` on every outgoing message (ADR 0009).
 - Prices use a global `PRICE_SCALE = 10'000`; events use per-symbol ticks, so the engine converts at its Kafka edge (ADR 0004) → M5.
 - `match_id` restarts at 1 each run; trades need `engine_run_id` (ADR 0005) → M5.
 - The `Trade` event has no aggressor side; `trade.v1` requires it (ADR 0006) → M5.

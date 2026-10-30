@@ -28,4 +28,15 @@ namespace exchange::core {
     [[nodiscard]] inline Timestamp now_ns() noexcept {
         return steady_timestamp_now();
     }
+
+    // UTC nanoseconds since the Unix epoch (CLOCK_REALTIME on Linux, read through the
+    // vDSO, so no system call). this is the event_time_ns of the contracts.
+    // it can jump when NTP corrects the clock: use it to stamp events,
+    // never to measure durations (that is what the steady clock is for)
+    [[nodiscard]] inline Timestamp wall_clock_ns() noexcept {
+        const auto now = std::chrono::system_clock::now().time_since_epoch();
+
+        return static_cast<Timestamp>(
+            std::chrono::duration_cast<std::chrono::nanoseconds>(now).count());
+    }
 }
