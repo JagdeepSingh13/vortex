@@ -137,6 +137,7 @@ add_executable(
     tests/order_book_test.cpp
     tests/spsc_queue_test.cpp
     tests/memory_pool_test.cpp
+    tests/golden_replay_test.cpp
 )
 
 target_link_libraries(
@@ -152,6 +153,10 @@ set_target_properties(
     PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tests"
 )
+
+target_include_directories(engine_tests PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}")
+target_compile_definitions(engine_tests PRIVATE
+    VORTEX_GOLDEN_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/golden")
 
 # one ctest entry per TEST(); discovered when ctest runs, not at build time
 gtest_discover_tests(engine_tests DISCOVERY_MODE PRE_TEST)
