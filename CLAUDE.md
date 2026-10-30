@@ -1,6 +1,6 @@
 # Real-time market data platform
 
-Portfolio project by Jagdeep Singh (third-year B.E. IT student). A C++ matching engine streams trades through Kafka into an Apache Iceberg lakehouse; a Spring Boot API serves live prices; dbt models and a dashboard turn the data into analytics. It joins three of his earlier projects (C++ matching engine, Spring Boot/Kafka microservices, AWS/Iceberg/dbt/Airflow pipeline) into one original system he will present in internship and placement interviews.
+Portfolio project by Jagdeep Singh (third-year B.E. IT student). A C++ matching engine streams trades through Kafka into an Apache Iceberg lakehouse; a Spring Boot API serves live prices; dbt models and a dashboard turn the data into analytics. It builds on two of his earlier projects (C++ matching engine, AWS/Iceberg/dbt/Airflow pipeline) and adds a new Spring Boot API, forming one original system he will present in internship and placement interviews.
 
 ## How to work with Jagdeep (read this first)
 
@@ -48,9 +48,9 @@ docs/            Architecture, roadmap, ADRs, interview notes
 
 ## Tech stack and constraints
 
-- C++20 with CMake for the engine; librdkafka for Kafka.
-- Java 21, Spring Boot (current stable release), Spring for Apache Kafka, Redis.
-- Python 3.11+ for the simulator and PySpark jobs; dbt for gold models.
+- C++20 with CMake for the engine, built in a pinned Linux container (`infra/docker/engine-build.Dockerfile`); librdkafka for Kafka.
+- Java 25 (LTS), Spring Boot (current stable release), Spring for Apache Kafka, Redis.
+- Python 3.12 for the simulator and PySpark jobs; dbt for gold models.
 - Kafka in KRaft mode (no ZooKeeper). Iceberg tables on S3-compatible storage. Airflow for orchestration.
 - Local first: everything runs with docker-compose on a laptop. AWS only from M10, via Terraform.
 - Pin exact versions everywhere (images, Maven, pip, CMake dependencies). Check compatibility before pinning: the Iceberg Spark runtime artifact must match the Spark minor version and Scala version.
@@ -71,6 +71,7 @@ docs/            Architecture, roadmap, ADRs, interview notes
 
 Make targets are the single entry point. Create each target when a milestone first needs it and keep this list accurate.
 
+- `make help`: list available targets
 - `make up` / `make down`: start or stop local infrastructure
 - `make topics`: create Kafka topics
 - `make engine`: build the engine in Release mode
