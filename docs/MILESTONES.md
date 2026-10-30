@@ -24,8 +24,8 @@ Make the C++ engine trustworthy before connecting it to anything:
 - a golden replay test that proves matching behaviour never changes by accident, plus a multi-threaded test for the lock-free queue
 - trades carry real wall-clock time (UTC) next to the engine's deterministic logical clock
 
-### M2.5 — Engine performance optimisation
-Find out where the engine spends its time (profiling), then make the slowest parts faster, one change at a time. Every change must keep the golden replay test passing unchanged, so the engine does exactly the same thing, just faster, and every claim comes with before/after benchmark numbers.
+### M2.5 — Engine performance optimisation (deferred, optional)
+Find out where the engine spends its time (profiling), then make the slowest parts faster, one change at a time. Every change must keep the golden replay test passing unchanged, so the engine does exactly the same thing, just faster, and every claim comes with before/after benchmark numbers. Deferred: the engine already works and is measured, and it is complex enough; this is for later, if there is time.
 
 ## Getting data moving
 

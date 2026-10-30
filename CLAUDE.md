@@ -16,7 +16,7 @@ This project exists for learning and for interviews. Jagdeep must understand and
 
 ## Current status
 
-- Milestone: M2.5 (engine performance optimisation), then M3 (local Kafka). M0 done 2026-10-30, M1 and M2 done 2026-10-31. Update this line whenever a milestone completes.
+- Milestone: M3 (local Kafka). M0 done 2026-10-30, M1 and M2 done 2026-10-31. M2.5 (engine optimisation) deferred: avoid engine code changes beyond what a milestone strictly needs. Update this line whenever a milestone completes.
 
 ## Architecture in one screen
 

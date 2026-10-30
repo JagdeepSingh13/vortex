@@ -7,7 +7,7 @@ One milestone at a time, one branch per milestone (`mN-short-name`). A milestone
 | M0 | Repository bootstrap | `m0-bootstrap` |
 | M1 | Event contracts and symbol config | `m1-contracts` |
 | M2 | Engine test suite and benchmark harness | `m2-engine-tests` |
-| M2.5 | Engine performance optimisation | `m2.5-engine-perf` |
+| M2.5 | Engine performance optimisation (**deferred**, optional) | `m2.5-engine-perf` |
 | M3 | Local Kafka (KRaft) | `m3-local-kafka` |
 | M4 | Order simulator | `m4-simulator` |
 | M5 | Engine Kafka I/O (orders in, trades out) | `m5-engine-kafka` |
@@ -37,7 +37,12 @@ One milestone at a time, one branch per milestone (`mN-short-name`). A milestone
 - **Acceptance:** `make test-all` passes on a clean clone; one benchmark result file committed with real measurements.
 
 ## M2.5 — Engine performance optimisation
-Inserted after M2 (numbered 2.5 so later milestone numbers, which ADRs refer to, stay the same).
+**Status: deferred (2026-10-31).** The engine is already large and complex, so engine code stays as it is for now; pick this up after the pipeline works end to end, if there is time. Numbered 2.5 so later milestone numbers, which ADRs refer to, stay the same.
+
+Findings so far (no code changed):
+- `perf` works inside a privileged Docker container on WSL2, including hardware counters (cycles, instructions, cache misses, branch misses).
+- In a short 200k-request benchmark run, 38% of `perf record` samples were the kernel zero-filling pages (`clear_page_rep`) while the engine's large pools were touched for the first time: a startup cost, not the matching path. Profiling must sample only after warm-up.
+
 - Profile the engine on the benchmark workload and record where time goes.
 - Optimise one hot spot at a time; each change is its own commit with a before/after `make bench` result and, if it is a significant design choice, an ADR.
 - Hard constraint: the golden replay test passes **unchanged** after every change (matching behaviour identical).
