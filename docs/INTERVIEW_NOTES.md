@@ -36,3 +36,15 @@ Format:
   - *How do you guarantee no duplicate trades downstream?* Delivery is at-least-once, so processing is idempotent on the unique key (engine_run_id, match_id).
   - *Why are some ids capped at 2^53?* JavaScript and many JSON parsers use doubles; above 2^53 integers silently lose digits. Nanosecond timestamps exceed it, so consumers must read them as BigInt or strings.
 - Study further: IEEE 754, fixed-point arithmetic, JSON Schema conditionals, idempotency and delivery semantics, schema evolution.
+
+## M2 — Engine benchmark, event time and tests (2026-10-31)
+- What I built: a latency benchmark for the C++ matching engine that times every request with `rdtscp` and reports p50–p99.9 per request type plus throughput; UTC event time on every outgoing message; a golden replay test that pins matching behaviour across 300,000 requests.
+- Why it is designed this way: percentiles per request type, not averages, because the tail is what traders feel ([ADR 0010](decisions/0010-latency-benchmark-method.md)); the order book keeps a deterministic logical clock and wall time is read once per request outside it, so replays stay identical ([ADR 0009](decisions/0009-event-time-read-once-per-request.md)); a small test suite where the golden test is the safety net for optimisation ([ADR 0011](decisions/0011-minimal-engine-test-suite.md)).
+- Trade-off I can defend: the benchmark is closed-loop, so it measures service time, not queueing under load (coordinated omission); end-to-end open-loop measurement comes with the Kafka path.
+- Numbers (Ryzen 5 5500U laptop, Docker on WSL2, GCC 13.3 -O3, pinned to one core, 2 M requests after 200 k warm-up, ±8% run to run): p50 361 ns, p99 2.0 µs, p99.9 8.4 µs per request; 2.11 M requests/s single-threaded; trades are the slow path (p99 5.2 µs); one wall-clock read ≈ 50 ns. Source: `benchmarks/results/2026-10-30-2bcee71.md`.
+- Likely questions:
+  - *Why not report the average?* Latency has a long tail; the mean (504 ns) describes almost no real request. p99 says what 1 in 100 requests experiences.
+  - *How do you know the timer isn't distorting the numbers?* I measure two back-to-back rdtscp reads (~40 ns) and subtract it; throughput is measured in a separate run with no timers.
+  - *Your max latency is 4 ms. Is the engine slow?* No: max values are OS and VM preemption (Docker inside WSL2 under Windows); p99.9 is 8 µs. Production would isolate cores and run on bare metal.
+  - *How would you make it faster without breaking it?* Profile, change one data structure at a time, and require the golden replay test to pass unchanged plus a before/after benchmark.
+- Study further: rdtsc/rdtscp and invariant TSC, coordinated omission, CPU caches, vDSO clock_gettime, golden/snapshot testing, ThreadSanitizer.
