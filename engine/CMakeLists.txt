@@ -30,6 +30,22 @@ target_compile_options(
         -fno-exceptions
 )
 
+# ---- build options ----
+# VORTEX_SANITIZE: "address,undefined" or "thread" (separate build dirs, see Makefile)
+set(VORTEX_SANITIZE "" CACHE STRING "Sanitizers to enable, e.g. address,undefined or thread")
+option(VORTEX_WERROR "Treat warnings as errors" ON)
+
+if(VORTEX_WERROR)
+    target_compile_options(cpp_exchange INTERFACE -Werror)
+endif()
+
+if(VORTEX_SANITIZE)
+    # -fno-sanitize-recover: any finding fails the test instead of just printing
+    target_compile_options(cpp_exchange INTERFACE
+        -fsanitize=${VORTEX_SANITIZE} -fno-sanitize-recover=all -fno-omit-frame-pointer)
+    target_link_options(cpp_exchange INTERFACE -fsanitize=${VORTEX_SANITIZE})
+endif()
+
 # sockets: Winsock on Windows, nothing extra on Linux/macOS
 add_library(cpp_exchange_net INTERFACE)
 target_link_libraries(cpp_exchange_net INTERFACE cpp_exchange Threads::Threads)
@@ -112,24 +128,59 @@ set_target_properties(
         RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tools"
 )
 
-# ---- tests ----
-enable_testing()
-
+# ---- benchmark ----
 add_executable(
-    engine_smoke_test
-    tests/engine_smoke_test.cpp
+    latency_bench
+    bench/latency_bench.cpp
 )
 
 target_link_libraries(
-    engine_smoke_test
+    latency_bench
     PRIVATE
         cpp_exchange
 )
 
+target_include_directories(latency_bench PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}")
+
+# recorded in every result file, so numbers always say how they were built
+string(TOUPPER "${CMAKE_BUILD_TYPE}" VORTEX_BUILD_TYPE_UPPER)
+target_compile_definitions(latency_bench PRIVATE
+    VORTEX_CXX_FLAGS="${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_${VORTEX_BUILD_TYPE_UPPER}} -std=c++20 -fno-exceptions")
+
 set_target_properties(
-    engine_smoke_test
+    latency_bench
+    PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bench"
+)
+
+# ---- tests ----
+enable_testing()
+find_package(GTest 1.14 REQUIRED)
+include(GoogleTest)
+
+add_executable(
+    engine_tests
+    tests/golden_replay_test.cpp
+    tests/spsc_queue_test.cpp
+)
+
+target_link_libraries(
+    engine_tests
+    PRIVATE
+        cpp_exchange
+        GTest::gtest_main
+        Threads::Threads
+)
+
+set_target_properties(
+    engine_tests
     PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tests"
 )
 
-add_test(NAME engine_smoke_test COMMAND engine_smoke_test)
+target_include_directories(engine_tests PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}")
+target_compile_definitions(engine_tests PRIVATE
+    VORTEX_GOLDEN_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/golden")
+
+# one ctest entry per TEST(); discovered when ctest runs, not at build time
+gtest_discover_tests(engine_tests DISCOVERY_MODE PRE_TEST)

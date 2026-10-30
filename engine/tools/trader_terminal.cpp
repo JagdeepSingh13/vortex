@@ -282,9 +282,15 @@ namespace {
         }
 
         void modify(const std::vector<std::string>& words) {
-            const auto id = words.size() > 1 ? parse_number(words[1]) : std::nullopt;
-            const auto qty = words.size() > 2 ? parse_number(words[2]) : std::nullopt;
-            const auto price = words.size() > 3 ? parse_price(words[3]) : std::nullopt;
+            // check the word count first: `cond ? parse(...) : nullopt` triggered a GCC 13
+            // -Wmaybe-uninitialized false positive at -O3
+            if (words.size() < 4) {
+                std::puts("usage: modify ID QTY PRICE");
+                return;
+            }
+            const auto id = parse_number(words[1]);
+            const auto qty = parse_number(words[2]);
+            const auto price = parse_price(words[3]);
             const OrderInfo* order = id ? find_open(*id) : nullptr;
             if (order == nullptr || !qty || !price) {
                 std::puts("usage: modify ID QTY PRICE");

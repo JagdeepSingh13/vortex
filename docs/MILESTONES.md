@@ -20,9 +20,9 @@ Decide exactly what an "order" message and a "trade" message look like: fields, 
 
 ### M2 — Engine tests and benchmark
 Make the C++ engine trustworthy before connecting it to anything:
-- proper unit tests for the order book and the lock-free queue (including a multi-threaded test)
-- trades carry real wall-clock time (today the engine uses a monotonic timer not tied to the calendar)
 - a benchmark that measures real latency and throughput numbers to quote in interviews
+- a golden replay test that proves matching behaviour never changes by accident, plus a multi-threaded test for the lock-free queue
+- trades carry real wall-clock time (UTC) next to the engine's deterministic logical clock
 
 ## Getting data moving
 

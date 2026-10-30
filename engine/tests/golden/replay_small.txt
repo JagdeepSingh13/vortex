@@ -1,0 +1,3031 @@
+R ADD MSFT id=1 SELL IOC px=10016 qty=9 trig=0 disp=0 p=6 ts=1
+  ACCEPTED seq=1 ts=1 id=1 MSFT SELL IOC px=10016 qty=9
+  CANCELED seq=2 ts=1 id=1 qty=9
+R ADD AAPL id=2 SELL STOP_LIMIT px=10005 qty=90 trig=9992 disp=0 p=6 ts=2
+  ACCEPTED seq=1 ts=2 id=2 AAPL SELL STOP_LIMIT px=10005 qty=90
+R ADD AAPL id=3 BUY LIMIT px=9988 qty=98 trig=0 disp=0 p=8 ts=3
+  ACCEPTED seq=2 ts=3 id=3 AAPL BUY LIMIT px=9988 qty=98
+  RESTED seq=3 ts=3 id=3 AAPL BUY px=9988 qty=98
+R CANCEL AAPL id=2 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=4
+  CANCELED seq=4 ts=4 id=2 qty=90
+R MODIFY AAPL id=3 BUY LIMIT px=9994 qty=94 trig=0 disp=0 p=0 ts=5
+  CANCELED seq=5 ts=5 id=3 qty=98
+  ACCEPTED seq=6 ts=5 id=3 AAPL BUY LIMIT px=9994 qty=94
+  RESTED seq=7 ts=5 id=3 AAPL BUY px=9994 qty=94
+R ADD AAPL id=4 BUY LIMIT px=9986 qty=51 trig=0 disp=0 p=3 ts=6
+  ACCEPTED seq=8 ts=6 id=4 AAPL BUY LIMIT px=9986 qty=51
+  RESTED seq=9 ts=6 id=4 AAPL BUY px=9986 qty=51
+R MODIFY MSFT id=1 SELL LIMIT px=10000 qty=33 trig=0 disp=0 p=0 ts=7
+  REJECTED seq=3 ts=7 id=1 reason=5
+R CANCEL AAPL id=3 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=8
+  CANCELED seq=10 ts=8 id=3 qty=94
+R ADD AAPL id=5 BUY LIMIT px=10004 qty=23 trig=0 disp=0 p=4 ts=9
+  ACCEPTED seq=11 ts=9 id=5 AAPL BUY LIMIT px=10004 qty=23
+  RESTED seq=12 ts=9 id=5 AAPL BUY px=10004 qty=23
+R ADD AAPL id=6 BUY LIMIT px=9991 qty=85 trig=0 disp=0 p=3 ts=10
+  ACCEPTED seq=13 ts=10 id=6 AAPL BUY LIMIT px=9991 qty=85
+  RESTED seq=14 ts=10 id=6 AAPL BUY px=9991 qty=85
+R ADD MSFT id=7 BUY POST_ONLY px=9994 qty=41 trig=0 disp=0 p=4 ts=11
+  ACCEPTED seq=4 ts=11 id=7 MSFT BUY POST_ONLY px=9994 qty=41
+  RESTED seq=5 ts=11 id=7 MSFT BUY px=9994 qty=41
+R ADD MSFT id=8 BUY IOC px=9982 qty=32 trig=0 disp=0 p=4 ts=12
+  ACCEPTED seq=6 ts=12 id=8 MSFT BUY IOC px=9982 qty=32
+  CANCELED seq=7 ts=12 id=8 qty=32
+R MODIFY MSFT id=1 SELL LIMIT px=10013 qty=56 trig=0 disp=0 p=0 ts=13
+  REJECTED seq=8 ts=13 id=1 reason=5
+R ADD AAPL id=9 SELL IOC px=10015 qty=87 trig=0 disp=0 p=1 ts=14
+  ACCEPTED seq=15 ts=14 id=9 AAPL SELL IOC px=10015 qty=87
+  CANCELED seq=16 ts=14 id=9 qty=87
+R CANCEL AAPL id=4 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=15
+  CANCELED seq=17 ts=15 id=4 qty=51
+R ADD AAPL id=10 SELL LIMIT px=10015 qty=88 trig=0 disp=0 p=7 ts=16
+  ACCEPTED seq=18 ts=16 id=10 AAPL SELL LIMIT px=10015 qty=88
+  RESTED seq=19 ts=16 id=10 AAPL SELL px=10015 qty=88
+R ADD AAPL id=11 BUY IOC px=9981 qty=98 trig=0 disp=0 p=7 ts=17
+  ACCEPTED seq=20 ts=17 id=11 AAPL BUY IOC px=9981 qty=98
+  CANCELED seq=21 ts=17 id=11 qty=98
+R CANCEL MSFT id=1 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=18
+  REJECTED seq=9 ts=18 id=1 reason=5
+R MODIFY AAPL id=6 BUY LIMIT px=9986 qty=49 trig=0 disp=0 p=0 ts=19
+  CANCELED seq=22 ts=19 id=6 qty=85
+  ACCEPTED seq=23 ts=19 id=6 AAPL BUY LIMIT px=9986 qty=49
+  RESTED seq=24 ts=19 id=6 AAPL BUY px=9986 qty=49
+R CANCEL AAPL id=9 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=20
+  REJECTED seq=25 ts=20 id=9 reason=5
+R ADD MSFT id=12 SELL IOC px=10009 qty=96 trig=0 disp=0 p=8 ts=21
+  ACCEPTED seq=10 ts=21 id=12 MSFT SELL IOC px=10009 qty=96
+  CANCELED seq=11 ts=21 id=12 qty=96
+R ADD MSFT id=13 SELL IOC px=10008 qty=2 trig=0 disp=0 p=7 ts=22
+  ACCEPTED seq=12 ts=22 id=13 MSFT SELL IOC px=10008 qty=2
+  CANCELED seq=13 ts=22 id=13 qty=2
+R MODIFY AAPL id=10 SELL LIMIT px=10011 qty=8 trig=0 disp=0 p=0 ts=23
+  CANCELED seq=26 ts=23 id=10 qty=88
+  ACCEPTED seq=27 ts=23 id=10 AAPL SELL LIMIT px=10011 qty=8
+  RESTED seq=28 ts=23 id=10 AAPL SELL px=10011 qty=8
+R ADD MSFT id=14 SELL LIMIT px=10008 qty=55 trig=0 disp=0 p=5 ts=24
+  ACCEPTED seq=14 ts=24 id=14 MSFT SELL LIMIT px=10008 qty=55
+  RESTED seq=15 ts=24 id=14 MSFT SELL px=10008 qty=55
+R CANCEL MSFT id=14 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=25
+  CANCELED seq=16 ts=25 id=14 qty=55
+R CANCEL AAPL id=11 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=26
+  REJECTED seq=29 ts=26 id=11 reason=5
+R ADD MSFT id=15 BUY LIMIT px=10000 qty=26 trig=0 disp=0 p=7 ts=27
+  ACCEPTED seq=17 ts=27 id=15 MSFT BUY LIMIT px=10000 qty=26
+  RESTED seq=18 ts=27 id=15 MSFT BUY px=10000 qty=26
+R CANCEL MSFT id=8 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=28
+  REJECTED seq=19 ts=28 id=8 reason=5
+R CANCEL AAPL id=10 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=29
+  CANCELED seq=30 ts=29 id=10 qty=8
+R CANCEL MSFT id=12 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=30
+  REJECTED seq=20 ts=30 id=12 reason=5
+R MODIFY MSFT id=7 BUY LIMIT px=9991 qty=46 trig=0 disp=0 p=0 ts=31
+  CANCELED seq=21 ts=31 id=7 qty=41
+  ACCEPTED seq=22 ts=31 id=7 MSFT BUY POST_ONLY px=9991 qty=46
+  RESTED seq=23 ts=31 id=7 MSFT BUY px=9991 qty=46
+R ADD MSFT id=16 SELL STOP_LIMIT px=10012 qty=1 trig=9995 disp=0 p=8 ts=32
+  ACCEPTED seq=24 ts=32 id=16 MSFT SELL STOP_LIMIT px=10012 qty=1
+R ADD AAPL id=17 SELL STOP px=0 qty=15 trig=9996 disp=0 p=5 ts=33
+  ACCEPTED seq=31 ts=33 id=17 AAPL SELL STOP px=9996 qty=15
+R ADD MSFT id=18 SELL MARKET px=0 qty=41 trig=0 disp=0 p=4 ts=34
+  ACCEPTED seq=25 ts=34 id=18 MSFT SELL MARKET px=0 qty=41
+  TRADE seq=26 ts=34 match=1 MSFT buy=15 sell=18 px=10000 qty=26
+  FILLED seq=27 ts=34 id=15 filled=26 px=10000
+  TRADE seq=28 ts=34 match=2 MSFT buy=7 sell=18 px=9991 qty=15
+  PARTIAL seq=29 ts=34 id=7 filled=15 left=31 px=9991
+  RESTED seq=30 ts=34 id=16 MSFT SELL px=10012 qty=1
+  FILLED seq=31 ts=34 id=18 filled=41 px=9991
+R ADD MSFT id=19 SELL LIMIT px=9999 qty=43 trig=0 disp=0 p=5 ts=35
+  ACCEPTED seq=32 ts=35 id=19 MSFT SELL LIMIT px=9999 qty=43
+  RESTED seq=33 ts=35 id=19 MSFT SELL px=9999 qty=43
+R MODIFY MSFT id=7 BUY LIMIT px=9995 qty=71 trig=0 disp=0 p=0 ts=36
+  CANCELED seq=34 ts=36 id=7 qty=31
+  ACCEPTED seq=35 ts=36 id=7 MSFT BUY POST_ONLY px=9995 qty=71
+  RESTED seq=36 ts=36 id=7 MSFT BUY px=9995 qty=71
+R MODIFY MSFT id=15 BUY LIMIT px=9983 qty=55 trig=0 disp=0 p=0 ts=37
+  REJECTED seq=37 ts=37 id=15 reason=5
+R MODIFY AAPL id=6 BUY LIMIT px=10000 qty=63 trig=0 disp=0 p=0 ts=38
+  CANCELED seq=32 ts=38 id=6 qty=49
+  ACCEPTED seq=33 ts=38 id=6 AAPL BUY LIMIT px=10000 qty=63
+  RESTED seq=34 ts=38 id=6 AAPL BUY px=10000 qty=63
+R MODIFY AAPL id=5 BUY LIMIT px=10002 qty=33 trig=0 disp=0 p=0 ts=39
+  CANCELED seq=35 ts=39 id=5 qty=23
+  ACCEPTED seq=36 ts=39 id=5 AAPL BUY LIMIT px=10002 qty=33
+  RESTED seq=37 ts=39 id=5 AAPL BUY px=10002 qty=33
+R ADD AAPL id=20 BUY LIMIT px=10000 qty=85 trig=0 disp=0 p=6 ts=40
+  ACCEPTED seq=38 ts=40 id=20 AAPL BUY LIMIT px=10000 qty=85
+  RESTED seq=39 ts=40 id=20 AAPL BUY px=10000 qty=85
+R CANCEL MSFT id=7 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=41
+  CANCELED seq=38 ts=41 id=7 qty=71
+R ADD AAPL id=21 SELL MARKET px=0 qty=53 trig=0 disp=0 p=7 ts=42
+  ACCEPTED seq=40 ts=42 id=21 AAPL SELL MARKET px=0 qty=53
+  TRADE seq=41 ts=42 match=1 AAPL buy=5 sell=21 px=10002 qty=33
+  FILLED seq=42 ts=42 id=5 filled=33 px=10002
+  TRADE seq=43 ts=42 match=2 AAPL buy=6 sell=21 px=10000 qty=20
+  PARTIAL seq=44 ts=42 id=6 filled=20 left=43 px=10000
+  FILLED seq=45 ts=42 id=21 filled=53 px=10000
+R ADD AAPL id=22 SELL LIMIT px=10012 qty=94 trig=0 disp=0 p=6 ts=43
+  ACCEPTED seq=46 ts=43 id=22 AAPL SELL LIMIT px=10012 qty=94
+  RESTED seq=47 ts=43 id=22 AAPL SELL px=10012 qty=94
+R CANCEL MSFT id=16 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=44
+  CANCELED seq=39 ts=44 id=16 qty=1
+R ADD MSFT id=23 SELL LIMIT px=10016 qty=65 trig=0 disp=0 p=8 ts=45
+  ACCEPTED seq=40 ts=45 id=23 MSFT SELL LIMIT px=10016 qty=65
+  RESTED seq=41 ts=45 id=23 MSFT SELL px=10016 qty=65
+R ADD AAPL id=24 SELL STOP_LIMIT px=10015 qty=76 trig=9999 disp=0 p=5 ts=46
+  ACCEPTED seq=48 ts=46 id=24 AAPL SELL STOP_LIMIT px=10015 qty=76
+R ADD AAPL id=25 SELL FOK px=10001 qty=25 trig=0 disp=0 p=6 ts=47
+  REJECTED seq=49 ts=47 id=25 reason=7
+R ADD AAPL id=26 SELL MARKET px=0 qty=7 trig=0 disp=0 p=1 ts=48
+  ACCEPTED seq=50 ts=48 id=26 AAPL SELL MARKET px=0 qty=7
+  TRADE seq=51 ts=48 match=3 AAPL buy=6 sell=26 px=10000 qty=7
+  PARTIAL seq=52 ts=48 id=6 filled=7 left=36 px=10000
+  FILLED seq=53 ts=48 id=26 filled=7 px=10000
+R ADD AAPL id=27 SELL FOK px=10003 qty=27 trig=0 disp=0 p=5 ts=49
+  REJECTED seq=54 ts=49 id=27 reason=7
+R ADD MSFT id=28 BUY POST_ONLY px=9979 qty=57 trig=0 disp=0 p=3 ts=50
+  ACCEPTED seq=42 ts=50 id=28 MSFT BUY POST_ONLY px=9979 qty=57
+  RESTED seq=43 ts=50 id=28 MSFT BUY px=9979 qty=57
+R ADD AAPL id=29 BUY LIMIT px=9998 qty=64 trig=0 disp=0 p=5 ts=51
+  ACCEPTED seq=55 ts=51 id=29 AAPL BUY LIMIT px=9998 qty=64
+  RESTED seq=56 ts=51 id=29 AAPL BUY px=9998 qty=64
+R ADD MSFT id=30 BUY LIMIT px=10000 qty=87 trig=0 disp=0 p=1 ts=52
+  ACCEPTED seq=44 ts=52 id=30 MSFT BUY LIMIT px=10000 qty=87
+  TRADE seq=45 ts=52 match=3 MSFT buy=30 sell=19 px=9999 qty=43
+  FILLED seq=46 ts=52 id=19 filled=43 px=9999
+  PARTIAL seq=47 ts=52 id=30 filled=43 left=44 px=9999
+  RESTED seq=48 ts=52 id=30 MSFT BUY px=10000 qty=44
+R MODIFY AAPL id=20 BUY LIMIT px=9998 qty=61 trig=0 disp=0 p=0 ts=53
+  CANCELED seq=57 ts=53 id=20 qty=85
+  ACCEPTED seq=58 ts=53 id=20 AAPL BUY LIMIT px=9998 qty=61
+  RESTED seq=59 ts=53 id=20 AAPL BUY px=9998 qty=61
+R ADD AAPL id=31 BUY MARKET px=0 qty=81 trig=0 disp=0 p=4 ts=54
+  ACCEPTED seq=60 ts=54 id=31 AAPL BUY MARKET px=0 qty=81
+  TRADE seq=61 ts=54 match=4 AAPL buy=31 sell=22 px=10012 qty=81
+  PARTIAL seq=62 ts=54 id=22 filled=81 left=13 px=10012
+  FILLED seq=63 ts=54 id=31 filled=81 px=10012
+R CANCEL AAPL id=5 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=55
+  REJECTED seq=64 ts=55 id=5 reason=5
+R ADD MSFT id=32 SELL LIMIT px=10018 qty=68 trig=0 disp=0 p=1 ts=56
+  ACCEPTED seq=49 ts=56 id=32 MSFT SELL LIMIT px=10018 qty=68
+  RESTED seq=50 ts=56 id=32 MSFT SELL px=10018 qty=68
+R ADD MSFT id=33 SELL ICEBERG px=10010 qty=53 trig=0 disp=50 p=1 ts=57
+  ACCEPTED seq=51 ts=57 id=33 MSFT SELL ICEBERG px=10010 qty=53
+  RESTED seq=52 ts=57 id=33 MSFT SELL px=10010 qty=50
+R ADD MSFT id=34 SELL LIMIT px=10012 qty=58 trig=0 disp=0 p=5 ts=58
+  ACCEPTED seq=53 ts=58 id=34 MSFT SELL LIMIT px=10012 qty=58
+  RESTED seq=54 ts=58 id=34 MSFT SELL px=10012 qty=58
+R ADD AAPL id=35 SELL STOP px=0 qty=82 trig=9999 disp=0 p=5 ts=59
+  ACCEPTED seq=65 ts=59 id=35 AAPL SELL STOP px=9999 qty=82
+R ADD AAPL id=36 BUY IOC px=9989 qty=41 trig=0 disp=0 p=7 ts=60
+  ACCEPTED seq=66 ts=60 id=36 AAPL BUY IOC px=9989 qty=41
+  CANCELED seq=67 ts=60 id=36 qty=41
+R MODIFY MSFT id=15 BUY LIMIT px=9998 qty=57 trig=0 disp=0 p=0 ts=61
+  REJECTED seq=55 ts=61 id=15 reason=5
+R MODIFY AAPL id=36 BUY LIMIT px=9992 qty=92 trig=0 disp=0 p=0 ts=62
+  REJECTED seq=68 ts=62 id=36 reason=5
+R ADD AAPL id=37 BUY FOK px=9998 qty=41 trig=0 disp=0 p=2 ts=63
+  REJECTED seq=69 ts=63 id=37 reason=7
+R ADD AAPL id=38 BUY POST_ONLY px=9990 qty=55 trig=0 disp=0 p=3 ts=64
+  ACCEPTED seq=70 ts=64 id=38 AAPL BUY POST_ONLY px=9990 qty=55
+  RESTED seq=71 ts=64 id=38 AAPL BUY px=9990 qty=55
+R CANCEL AAPL id=22 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=65
+  CANCELED seq=72 ts=65 id=22 qty=13
+R ADD AAPL id=39 SELL LIMIT px=10011 qty=89 trig=0 disp=0 p=3 ts=66
+  ACCEPTED seq=73 ts=66 id=39 AAPL SELL LIMIT px=10011 qty=89
+  RESTED seq=74 ts=66 id=39 AAPL SELL px=10011 qty=89
+R CANCEL MSFT id=23 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=67
+  CANCELED seq=56 ts=67 id=23 qty=65
+R ADD AAPL id=40 BUY LIMIT px=9988 qty=26 trig=0 disp=0 p=3 ts=68
+  ACCEPTED seq=75 ts=68 id=40 AAPL BUY LIMIT px=9988 qty=26
+  RESTED seq=76 ts=68 id=40 AAPL BUY px=9988 qty=26
+R CANCEL AAPL id=20 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=69
+  CANCELED seq=77 ts=69 id=20 qty=61
+R MODIFY MSFT id=34 SELL LIMIT px=9999 qty=41 trig=0 disp=0 p=0 ts=70
+  CANCELED seq=57 ts=70 id=34 qty=58
+  ACCEPTED seq=58 ts=70 id=34 MSFT SELL LIMIT px=9999 qty=41
+  TRADE seq=59 ts=70 match=4 MSFT buy=30 sell=34 px=10000 qty=41
+  PARTIAL seq=60 ts=70 id=30 filled=41 left=3 px=10000
+  FILLED seq=61 ts=70 id=34 filled=41 px=10000
+R CANCEL AAPL id=29 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=71
+  CANCELED seq=78 ts=71 id=29 qty=64
+R ADD MSFT id=41 BUY LIMIT px=9991 qty=66 trig=0 disp=0 p=7 ts=72
+  ACCEPTED seq=62 ts=72 id=41 MSFT BUY LIMIT px=9991 qty=66
+  RESTED seq=63 ts=72 id=41 MSFT BUY px=9991 qty=66
+R CANCEL AAPL id=39 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=73
+  CANCELED seq=79 ts=73 id=39 qty=89
+R MODIFY MSFT id=13 SELL LIMIT px=10014 qty=81 trig=0 disp=0 p=0 ts=74
+  REJECTED seq=64 ts=74 id=13 reason=5
+R ADD AAPL id=42 BUY IOC px=9992 qty=32 trig=0 disp=0 p=3 ts=75
+  ACCEPTED seq=80 ts=75 id=42 AAPL BUY IOC px=9992 qty=32
+  CANCELED seq=81 ts=75 id=42 qty=32
+R CANCEL AAPL id=40 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=76
+  CANCELED seq=82 ts=76 id=40 qty=26
+R ADD AAPL id=43 BUY LIMIT px=10003 qty=58 trig=0 disp=0 p=5 ts=77
+  ACCEPTED seq=83 ts=77 id=43 AAPL BUY LIMIT px=10003 qty=58
+  RESTED seq=84 ts=77 id=43 AAPL BUY px=10003 qty=58
+R CANCEL MSFT id=15 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=78
+  REJECTED seq=65 ts=78 id=15 reason=5
+R ADD AAPL id=44 SELL LIMIT px=10020 qty=87 trig=0 disp=0 p=8 ts=79
+  ACCEPTED seq=85 ts=79 id=44 AAPL SELL LIMIT px=10020 qty=87
+  RESTED seq=86 ts=79 id=44 AAPL SELL px=10020 qty=87
+R ADD MSFT id=45 SELL IOC px=10005 qty=16 trig=0 disp=0 p=4 ts=80
+  ACCEPTED seq=66 ts=80 id=45 MSFT SELL IOC px=10005 qty=16
+  CANCELED seq=67 ts=80 id=45 qty=16
+R CANCEL AAPL id=21 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=81
+  REJECTED seq=87 ts=81 id=21 reason=5
+R CANCEL AAPL id=38 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=82
+  CANCELED seq=88 ts=82 id=38 qty=55
+R CANCEL AAPL id=44 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=83
+  CANCELED seq=89 ts=83 id=44 qty=87
+R MODIFY AAPL id=27 SELL LIMIT px=9999 qty=32 trig=0 disp=0 p=0 ts=84
+  REJECTED seq=90 ts=84 id=27 reason=5
+R CANCEL AAPL id=43 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=85
+  CANCELED seq=91 ts=85 id=43 qty=58
+R CANCEL AAPL id=6 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=86
+  CANCELED seq=92 ts=86 id=6 qty=36
+R ADD AAPL id=46 SELL LIMIT px=10015 qty=87 trig=0 disp=0 p=4 ts=87
+  ACCEPTED seq=93 ts=87 id=46 AAPL SELL LIMIT px=10015 qty=87
+  RESTED seq=94 ts=87 id=46 AAPL SELL px=10015 qty=87
+R ADD MSFT id=47 SELL ICEBERG px=10003 qty=34 trig=0 disp=5 p=1 ts=88
+  ACCEPTED seq=68 ts=88 id=47 MSFT SELL ICEBERG px=10003 qty=34
+  RESTED seq=69 ts=88 id=47 MSFT SELL px=10003 qty=5
+R ADD MSFT id=48 BUY LIMIT px=9983 qty=26 trig=0 disp=0 p=2 ts=89
+  ACCEPTED seq=70 ts=89 id=48 MSFT BUY LIMIT px=9983 qty=26
+  RESTED seq=71 ts=89 id=48 MSFT BUY px=9983 qty=26
+R MODIFY AAPL id=37 BUY LIMIT px=9981 qty=71 trig=0 disp=0 p=0 ts=90
+  REJECTED seq=95 ts=90 id=37 reason=5
+R ADD AAPL id=49 SELL LIMIT px=10019 qty=41 trig=0 disp=0 p=4 ts=91
+  ACCEPTED seq=96 ts=91 id=49 AAPL SELL LIMIT px=10019 qty=41
+  RESTED seq=97 ts=91 id=49 AAPL SELL px=10019 qty=41
+R ADD AAPL id=50 BUY IOC px=9982 qty=71 trig=0 disp=0 p=5 ts=92
+  ACCEPTED seq=98 ts=92 id=50 AAPL BUY IOC px=9982 qty=71
+  CANCELED seq=99 ts=92 id=50 qty=71
+R ADD AAPL id=51 BUY LIMIT px=9984 qty=64 trig=0 disp=0 p=3 ts=93
+  ACCEPTED seq=100 ts=93 id=51 AAPL BUY LIMIT px=9984 qty=64
+  RESTED seq=101 ts=93 id=51 AAPL BUY px=9984 qty=64
+R ADD MSFT id=52 SELL ICEBERG px=10020 qty=97 trig=0 disp=81 p=6 ts=94
+  ACCEPTED seq=72 ts=94 id=52 MSFT SELL ICEBERG px=10020 qty=97
+  RESTED seq=73 ts=94 id=52 MSFT SELL px=10020 qty=81
+R CANCEL AAPL id=24 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=95
+  CANCELED seq=102 ts=95 id=24 qty=76
+R ADD AAPL id=53 SELL LIMIT px=10017 qty=95 trig=0 disp=0 p=2 ts=96
+  ACCEPTED seq=103 ts=96 id=53 AAPL SELL LIMIT px=10017 qty=95
+  RESTED seq=104 ts=96 id=53 AAPL SELL px=10017 qty=95
+R CANCEL MSFT id=33 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=97
+  CANCELED seq=74 ts=97 id=33 qty=53
+R ADD AAPL id=54 BUY MARKET px=0 qty=23 trig=0 disp=0 p=6 ts=98
+  ACCEPTED seq=105 ts=98 id=54 AAPL BUY MARKET px=0 qty=23
+  TRADE seq=106 ts=98 match=5 AAPL buy=54 sell=46 px=10015 qty=23
+  PARTIAL seq=107 ts=98 id=46 filled=23 left=64 px=10015
+  FILLED seq=108 ts=98 id=54 filled=23 px=10015
+R ADD MSFT id=55 SELL IOC px=9998 qty=69 trig=0 disp=0 p=7 ts=99
+  ACCEPTED seq=75 ts=99 id=55 MSFT SELL IOC px=9998 qty=69
+  TRADE seq=76 ts=99 match=5 MSFT buy=30 sell=55 px=10000 qty=3
+  FILLED seq=77 ts=99 id=30 filled=3 px=10000
+  PARTIAL seq=78 ts=99 id=55 filled=3 left=66 px=10000
+  CANCELED seq=79 ts=99 id=55 qty=66
+R ADD MSFT id=56 BUY ICEBERG px=9985 qty=21 trig=0 disp=21 p=2 ts=100
+  ACCEPTED seq=80 ts=100 id=56 MSFT BUY ICEBERG px=9985 qty=21
+  RESTED seq=81 ts=100 id=56 MSFT BUY px=9985 qty=21
+R CANCEL MSFT id=56 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=101
+  CANCELED seq=82 ts=101 id=56 qty=21
+R CANCEL AAPL id=27 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=102
+  REJECTED seq=109 ts=102 id=27 reason=5
+R CANCEL AAPL id=36 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=103
+  REJECTED seq=110 ts=103 id=36 reason=5
+R CANCEL AAPL id=35 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=104
+  CANCELED seq=111 ts=104 id=35 qty=82
+R CANCEL MSFT id=34 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=105
+  REJECTED seq=83 ts=105 id=34 reason=5
+R ADD MSFT id=57 BUY LIMIT px=10001 qty=90 trig=0 disp=0 p=6 ts=106
+  ACCEPTED seq=84 ts=106 id=57 MSFT BUY LIMIT px=10001 qty=90
+  RESTED seq=85 ts=106 id=57 MSFT BUY px=10001 qty=90
+R ADD MSFT id=58 SELL LIMIT px=9996 qty=89 trig=0 disp=0 p=8 ts=107
+  ACCEPTED seq=86 ts=107 id=58 MSFT SELL LIMIT px=9996 qty=89
+  TRADE seq=87 ts=107 match=6 MSFT buy=57 sell=58 px=10001 qty=89
+  PARTIAL seq=88 ts=107 id=57 filled=89 left=1 px=10001
+  FILLED seq=89 ts=107 id=58 filled=89 px=10001
+R ADD MSFT id=59 SELL FOK px=10006 qty=88 trig=0 disp=0 p=2 ts=108
+  REJECTED seq=90 ts=108 id=59 reason=7
+R ADD MSFT id=60 SELL POST_ONLY px=10000 qty=74 trig=0 disp=0 p=6 ts=109
+  REJECTED seq=91 ts=109 id=60 reason=8
+R ADD AAPL id=61 SELL LIMIT px=10008 qty=24 trig=0 disp=0 p=4 ts=110
+  ACCEPTED seq=112 ts=110 id=61 AAPL SELL LIMIT px=10008 qty=24
+  RESTED seq=113 ts=110 id=61 AAPL SELL px=10008 qty=24
+R ADD AAPL id=62 SELL MARKET px=0 qty=22 trig=0 disp=0 p=2 ts=111
+  ACCEPTED seq=114 ts=111 id=62 AAPL SELL MARKET px=0 qty=22
+  TRADE seq=115 ts=111 match=6 AAPL buy=51 sell=62 px=9984 qty=22
+  PARTIAL seq=116 ts=111 id=51 filled=22 left=42 px=9984
+  TRADE seq=117 ts=111 match=7 AAPL buy=51 sell=17 px=9984 qty=15
+  PARTIAL seq=118 ts=111 id=51 filled=15 left=27 px=9984
+  FILLED seq=119 ts=111 id=17 filled=15 px=9984
+  FILLED seq=120 ts=111 id=62 filled=22 px=9984
+R ADD MSFT id=63 SELL STOP_LIMIT px=10003 qty=37 trig=9999 disp=0 p=1 ts=112
+  ACCEPTED seq=92 ts=112 id=63 MSFT SELL STOP_LIMIT px=10003 qty=37
+R CANCEL AAPL id=42 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=113
+  REJECTED seq=121 ts=113 id=42 reason=5
+R ADD MSFT id=64 BUY IOC px=10002 qty=15 trig=0 disp=0 p=2 ts=114
+  ACCEPTED seq=93 ts=114 id=64 MSFT BUY IOC px=10002 qty=15
+  CANCELED seq=94 ts=114 id=64 qty=15
+R ADD MSFT id=65 SELL GTC px=9995 qty=89 trig=0 disp=0 p=3 ts=115
+  ACCEPTED seq=95 ts=115 id=65 MSFT SELL GTC px=9995 qty=89
+  TRADE seq=96 ts=115 match=7 MSFT buy=57 sell=65 px=10001 qty=1
+  FILLED seq=97 ts=115 id=57 filled=1 px=10001
+  PARTIAL seq=98 ts=115 id=65 filled=1 left=88 px=10001
+  RESTED seq=99 ts=115 id=65 MSFT SELL px=9995 qty=88
+R CANCEL MSFT id=30 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=116
+  REJECTED seq=100 ts=116 id=30 reason=5
+R ADD AAPL id=66 SELL MARKET px=0 qty=54 trig=0 disp=0 p=3 ts=117
+  ACCEPTED seq=122 ts=117 id=66 AAPL SELL MARKET px=0 qty=54
+  TRADE seq=123 ts=117 match=8 AAPL buy=51 sell=66 px=9984 qty=27
+  FILLED seq=124 ts=117 id=51 filled=27 px=9984
+  PARTIAL seq=125 ts=117 id=66 filled=27 left=27 px=9984
+  CANCELED seq=126 ts=117 id=66 qty=27
+R ADD MSFT id=67 SELL IOC px=10001 qty=26 trig=0 disp=0 p=4 ts=118
+  ACCEPTED seq=101 ts=118 id=67 MSFT SELL IOC px=10001 qty=26
+  CANCELED seq=102 ts=118 id=67 qty=26
+R ADD AAPL id=68 SELL LIMIT px=10010 qty=82 trig=0 disp=0 p=3 ts=119
+  ACCEPTED seq=127 ts=119 id=68 AAPL SELL LIMIT px=10010 qty=82
+  RESTED seq=128 ts=119 id=68 AAPL SELL px=10010 qty=82
+R MODIFY MSFT id=57 BUY LIMIT px=9994 qty=40 trig=0 disp=0 p=0 ts=120
+  REJECTED seq=103 ts=120 id=57 reason=5
+R CANCEL AAPL id=53 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=121
+  CANCELED seq=129 ts=121 id=53 qty=95
+R CANCEL MSFT id=59 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=122
+  REJECTED seq=104 ts=122 id=59 reason=5
+R CANCEL MSFT id=32 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=123
+  CANCELED seq=105 ts=123 id=32 qty=68
+R ADD MSFT id=69 SELL ICEBERG px=10009 qty=93 trig=0 disp=63 p=5 ts=124
+  ACCEPTED seq=106 ts=124 id=69 MSFT SELL ICEBERG px=10009 qty=93
+  RESTED seq=107 ts=124 id=69 MSFT SELL px=10009 qty=63
+R ADD AAPL id=70 SELL LIMIT px=10013 qty=64 trig=0 disp=0 p=6 ts=125
+  ACCEPTED seq=130 ts=125 id=70 AAPL SELL LIMIT px=10013 qty=64
+  RESTED seq=131 ts=125 id=70 AAPL SELL px=10013 qty=64
+R CANCEL MSFT id=65 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=126
+  CANCELED seq=108 ts=126 id=65 qty=88
+R ADD MSFT id=71 SELL IOC px=10014 qty=90 trig=0 disp=0 p=6 ts=127
+  ACCEPTED seq=109 ts=127 id=71 MSFT SELL IOC px=10014 qty=90
+  CANCELED seq=110 ts=127 id=71 qty=90
+R CANCEL AAPL id=68 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=128
+  CANCELED seq=132 ts=128 id=68 qty=82
+R MODIFY MSFT id=55 SELL LIMIT px=9999 qty=62 trig=0 disp=0 p=0 ts=129
+  REJECTED seq=111 ts=129 id=55 reason=5
+R CANCEL AAPL id=54 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=130
+  REJECTED seq=133 ts=130 id=54 reason=5
+R ADD MSFT id=72 BUY LIMIT px=9987 qty=19 trig=0 disp=0 p=2 ts=131
+  ACCEPTED seq=112 ts=131 id=72 MSFT BUY LIMIT px=9987 qty=19
+  RESTED seq=113 ts=131 id=72 MSFT BUY px=9987 qty=19
+R ADD AAPL id=73 SELL FOK px=9999 qty=40 trig=0 disp=0 p=2 ts=132
+  REJECTED seq=134 ts=132 id=73 reason=7
+R ADD AAPL id=74 BUY IOC px=9998 qty=30 trig=0 disp=0 p=8 ts=133
+  ACCEPTED seq=135 ts=133 id=74 AAPL BUY IOC px=9998 qty=30
+  CANCELED seq=136 ts=133 id=74 qty=30
+R CANCEL MSFT id=13 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=134
+  REJECTED seq=114 ts=134 id=13 reason=5
+R ADD AAPL id=75 BUY LIMIT px=10006 qty=65 trig=0 disp=0 p=1 ts=135
+  ACCEPTED seq=137 ts=135 id=75 AAPL BUY LIMIT px=10006 qty=65
+  RESTED seq=138 ts=135 id=75 AAPL BUY px=10006 qty=65
+R MODIFY AAPL id=51 BUY LIMIT px=10000 qty=15 trig=0 disp=0 p=0 ts=136
+  REJECTED seq=139 ts=136 id=51 reason=5
+R ADD AAPL id=76 SELL LIMIT px=10017 qty=42 trig=0 disp=0 p=5 ts=137
+  ACCEPTED seq=140 ts=137 id=76 AAPL SELL LIMIT px=10017 qty=42
+  RESTED seq=141 ts=137 id=76 AAPL SELL px=10017 qty=42
+R ADD AAPL id=77 SELL IOC px=10004 qty=98 trig=0 disp=0 p=7 ts=138
+  ACCEPTED seq=142 ts=138 id=77 AAPL SELL IOC px=10004 qty=98
+  TRADE seq=143 ts=138 match=9 AAPL buy=75 sell=77 px=10006 qty=65
+  FILLED seq=144 ts=138 id=75 filled=65 px=10006
+  PARTIAL seq=145 ts=138 id=77 filled=65 left=33 px=10006
+  CANCELED seq=146 ts=138 id=77 qty=33
+R ADD AAPL id=78 SELL LIMIT px=10009 qty=49 trig=0 disp=0 p=7 ts=139
+  ACCEPTED seq=147 ts=139 id=78 AAPL SELL LIMIT px=10009 qty=49
+  RESTED seq=148 ts=139 id=78 AAPL SELL px=10009 qty=49
+R ADD AAPL id=79 SELL LIMIT px=10016 qty=54 trig=0 disp=0 p=5 ts=140
+  ACCEPTED seq=149 ts=140 id=79 AAPL SELL LIMIT px=10016 qty=54
+  RESTED seq=150 ts=140 id=79 AAPL SELL px=10016 qty=54
+R CANCEL AAPL id=49 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=141
+  CANCELED seq=151 ts=141 id=49 qty=41
+R ADD MSFT id=80 BUY IOC px=10000 qty=75 trig=0 disp=0 p=2 ts=142
+  ACCEPTED seq=115 ts=142 id=80 MSFT BUY IOC px=10000 qty=75
+  CANCELED seq=116 ts=142 id=80 qty=75
+R CANCEL AAPL id=61 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=143
+  CANCELED seq=152 ts=143 id=61 qty=24
+R ADD AAPL id=81 BUY LIMIT px=9994 qty=39 trig=0 disp=0 p=3 ts=144
+  ACCEPTED seq=153 ts=144 id=81 AAPL BUY LIMIT px=9994 qty=39
+  RESTED seq=154 ts=144 id=81 AAPL BUY px=9994 qty=39
+R ADD MSFT id=82 SELL LIMIT px=10006 qty=92 trig=0 disp=0 p=3 ts=145
+  ACCEPTED seq=117 ts=145 id=82 MSFT SELL LIMIT px=10006 qty=92
+  RESTED seq=118 ts=145 id=82 MSFT SELL px=10006 qty=92
+R ADD MSFT id=83 BUY POST_ONLY px=9989 qty=29 trig=0 disp=0 p=7 ts=146
+  ACCEPTED seq=119 ts=146 id=83 MSFT BUY POST_ONLY px=9989 qty=29
+  RESTED seq=120 ts=146 id=83 MSFT BUY px=9989 qty=29
+R CANCEL AAPL id=31 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=147
+  REJECTED seq=155 ts=147 id=31 reason=5
+R ADD MSFT id=84 SELL FOK px=9998 qty=12 trig=0 disp=0 p=6 ts=148
+  REJECTED seq=121 ts=148 id=84 reason=7
+R ADD AAPL id=85 BUY LIMIT px=9985 qty=11 trig=0 disp=0 p=5 ts=149
+  ACCEPTED seq=156 ts=149 id=85 AAPL BUY LIMIT px=9985 qty=11
+  RESTED seq=157 ts=149 id=85 AAPL BUY px=9985 qty=11
+R CANCEL AAPL id=78 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=150
+  CANCELED seq=158 ts=150 id=78 qty=49
+R CANCEL MSFT id=84 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=151
+  REJECTED seq=122 ts=151 id=84 reason=5
+R ADD AAPL id=86 SELL GTC px=9996 qty=43 trig=0 disp=0 p=7 ts=152
+  ACCEPTED seq=159 ts=152 id=86 AAPL SELL GTC px=9996 qty=43
+  RESTED seq=160 ts=152 id=86 AAPL SELL px=9996 qty=43
+R ADD MSFT id=87 SELL IOC px=10013 qty=2 trig=0 disp=0 p=2 ts=153
+  ACCEPTED seq=123 ts=153 id=87 MSFT SELL IOC px=10013 qty=2
+  CANCELED seq=124 ts=153 id=87 qty=2
+R ADD AAPL id=88 BUY ICEBERG px=9991 qty=65 trig=0 disp=11 p=1 ts=154
+  ACCEPTED seq=161 ts=154 id=88 AAPL BUY ICEBERG px=9991 qty=65
+  RESTED seq=162 ts=154 id=88 AAPL BUY px=9991 qty=11
+R ADD AAPL id=89 SELL LIMIT px=10016 qty=67 trig=0 disp=0 p=5 ts=155
+  ACCEPTED seq=163 ts=155 id=89 AAPL SELL LIMIT px=10016 qty=67
+  RESTED seq=164 ts=155 id=89 AAPL SELL px=10016 qty=67
+R ADD MSFT id=90 SELL IOC px=10009 qty=5 trig=0 disp=0 p=7 ts=156
+  ACCEPTED seq=125 ts=156 id=90 MSFT SELL IOC px=10009 qty=5
+  CANCELED seq=126 ts=156 id=90 qty=5
+R MODIFY MSFT id=63 SELL LIMIT px=10004 qty=8 trig=0 disp=0 p=0 ts=157
+  REJECTED seq=127 ts=157 id=63 reason=9
+R ADD AAPL id=91 BUY MARKET px=0 qty=35 trig=0 disp=0 p=6 ts=158
+  ACCEPTED seq=165 ts=158 id=91 AAPL BUY MARKET px=0 qty=35
+  TRADE seq=166 ts=158 match=10 AAPL buy=91 sell=86 px=9996 qty=35
+  PARTIAL seq=167 ts=158 id=86 filled=35 left=8 px=9996
+  FILLED seq=168 ts=158 id=91 filled=35 px=9996
+R MODIFY MSFT id=67 SELL LIMIT px=10009 qty=56 trig=0 disp=0 p=0 ts=159
+  REJECTED seq=128 ts=159 id=67 reason=5
+R ADD AAPL id=92 SELL GTC px=10013 qty=11 trig=0 disp=0 p=1 ts=160
+  ACCEPTED seq=169 ts=160 id=92 AAPL SELL GTC px=10013 qty=11
+  RESTED seq=170 ts=160 id=92 AAPL SELL px=10013 qty=11
+R ADD MSFT id=93 BUY GTC px=10000 qty=19 trig=0 disp=0 p=7 ts=161
+  ACCEPTED seq=129 ts=161 id=93 MSFT BUY GTC px=10000 qty=19
+  RESTED seq=130 ts=161 id=93 MSFT BUY px=10000 qty=19
+R CANCEL AAPL id=17 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=162
+  REJECTED seq=171 ts=162 id=17 reason=5
+R MODIFY AAPL id=37 BUY LIMIT px=9993 qty=91 trig=0 disp=0 p=0 ts=163
+  REJECTED seq=172 ts=163 id=37 reason=5
+R CANCEL AAPL id=77 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=164
+  REJECTED seq=173 ts=164 id=77 reason=5
+R CANCEL MSFT id=18 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=165
+  REJECTED seq=131 ts=165 id=18 reason=5
+R CANCEL MSFT id=93 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=166
+  CANCELED seq=132 ts=166 id=93 qty=19
+R CANCEL AAPL id=46 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=167
+  CANCELED seq=174 ts=167 id=46 qty=64
+R ADD AAPL id=94 BUY LIMIT px=9999 qty=25 trig=0 disp=0 p=5 ts=168
+  ACCEPTED seq=175 ts=168 id=94 AAPL BUY LIMIT px=9999 qty=25
+  TRADE seq=176 ts=168 match=11 AAPL buy=94 sell=86 px=9996 qty=8
+  FILLED seq=177 ts=168 id=86 filled=8 px=9996
+  PARTIAL seq=178 ts=168 id=94 filled=8 left=17 px=9996
+  RESTED seq=179 ts=168 id=94 AAPL BUY px=9999 qty=17
+R ADD AAPL id=95 BUY LIMIT px=10002 qty=82 trig=0 disp=0 p=5 ts=169
+  ACCEPTED seq=180 ts=169 id=95 AAPL BUY LIMIT px=10002 qty=82
+  RESTED seq=181 ts=169 id=95 AAPL BUY px=10002 qty=82
+R ADD AAPL id=96 SELL ICEBERG px=10006 qty=85 trig=0 disp=19 p=8 ts=170
+  ACCEPTED seq=182 ts=170 id=96 AAPL SELL ICEBERG px=10006 qty=85
+  RESTED seq=183 ts=170 id=96 AAPL SELL px=10006 qty=19
+R ADD AAPL id=97 SELL FOK px=9998 qty=52 trig=0 disp=0 p=5 ts=171
+  ACCEPTED seq=184 ts=171 id=97 AAPL SELL FOK px=9998 qty=52
+  TRADE seq=185 ts=171 match=12 AAPL buy=95 sell=97 px=10002 qty=52
+  PARTIAL seq=186 ts=171 id=95 filled=52 left=30 px=10002
+  FILLED seq=187 ts=171 id=97 filled=52 px=10002
+R ADD MSFT id=98 SELL LIMIT px=10013 qty=53 trig=0 disp=0 p=1 ts=172
+  ACCEPTED seq=133 ts=172 id=98 MSFT SELL LIMIT px=10013 qty=53
+  RESTED seq=134 ts=172 id=98 MSFT SELL px=10013 qty=53
+R ADD MSFT id=99 BUY STOP px=0 qty=50 trig=10008 disp=0 p=5 ts=173
+  ACCEPTED seq=135 ts=173 id=99 MSFT BUY STOP px=10008 qty=50
+R MODIFY AAPL id=51 BUY LIMIT px=9993 qty=47 trig=0 disp=0 p=0 ts=174
+  REJECTED seq=188 ts=174 id=51 reason=5
+R CANCEL MSFT id=82 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=175
+  CANCELED seq=136 ts=175 id=82 qty=92
+R ADD MSFT id=100 SELL LIMIT px=10007 qty=26 trig=0 disp=0 p=7 ts=176
+  ACCEPTED seq=137 ts=176 id=100 MSFT SELL LIMIT px=10007 qty=26
+  RESTED seq=138 ts=176 id=100 MSFT SELL px=10007 qty=26
+R MODIFY MSFT id=48 BUY LIMIT px=9995 qty=49 trig=0 disp=0 p=0 ts=177
+  CANCELED seq=139 ts=177 id=48 qty=26
+  ACCEPTED seq=140 ts=177 id=48 MSFT BUY LIMIT px=9995 qty=49
+  RESTED seq=141 ts=177 id=48 MSFT BUY px=9995 qty=49
+R ADD MSFT id=101 BUY LIMIT px=9997 qty=30 trig=0 disp=0 p=4 ts=178
+  ACCEPTED seq=142 ts=178 id=101 MSFT BUY LIMIT px=9997 qty=30
+  RESTED seq=143 ts=178 id=101 MSFT BUY px=9997 qty=30
+R ADD MSFT id=102 BUY LIMIT px=10000 qty=93 trig=0 disp=0 p=2 ts=179
+  ACCEPTED seq=144 ts=179 id=102 MSFT BUY LIMIT px=10000 qty=93
+  RESTED seq=145 ts=179 id=102 MSFT BUY px=10000 qty=93
+R MODIFY AAPL id=97 SELL LIMIT px=10015 qty=40 trig=0 disp=0 p=0 ts=180
+  REJECTED seq=189 ts=180 id=97 reason=5
+R ADD AAPL id=103 BUY POST_ONLY px=10003 qty=26 trig=0 disp=0 p=8 ts=181
+  ACCEPTED seq=190 ts=181 id=103 AAPL BUY POST_ONLY px=10003 qty=26
+  RESTED seq=191 ts=181 id=103 AAPL BUY px=10003 qty=26
+R CANCEL MSFT id=99 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=182
+  CANCELED seq=146 ts=182 id=99 qty=50
+R CANCEL AAPL id=92 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=183
+  CANCELED seq=192 ts=183 id=92 qty=11
+R MODIFY MSFT id=87 SELL LIMIT px=9998 qty=10 trig=0 disp=0 p=0 ts=184
+  REJECTED seq=147 ts=184 id=87 reason=5
+R ADD MSFT id=104 SELL IOC px=10010 qty=23 trig=0 disp=0 p=3 ts=185
+  ACCEPTED seq=148 ts=185 id=104 MSFT SELL IOC px=10010 qty=23
+  CANCELED seq=149 ts=185 id=104 qty=23
+R CANCEL MSFT id=98 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=186
+  CANCELED seq=150 ts=186 id=98 qty=53
+R ADD AAPL id=105 BUY IOC px=10001 qty=32 trig=0 disp=0 p=8 ts=187
+  ACCEPTED seq=193 ts=187 id=105 AAPL BUY IOC px=10001 qty=32
+  CANCELED seq=194 ts=187 id=105 qty=32
+R ADD MSFT id=106 BUY LIMIT px=10004 qty=18 trig=0 disp=0 p=5 ts=188
+  ACCEPTED seq=151 ts=188 id=106 MSFT BUY LIMIT px=10004 qty=18
+  TRADE seq=152 ts=188 match=8 MSFT buy=106 sell=47 px=10003 qty=5
+  PARTIAL seq=153 ts=188 id=47 filled=5 left=29 px=10003
+  RESTED seq=154 ts=188 id=47 MSFT SELL px=10003 qty=5
+  TRADE seq=155 ts=188 match=9 MSFT buy=106 sell=47 px=10003 qty=5
+  PARTIAL seq=156 ts=188 id=47 filled=5 left=24 px=10003
+  RESTED seq=157 ts=188 id=47 MSFT SELL px=10003 qty=5
+  TRADE seq=158 ts=188 match=10 MSFT buy=106 sell=47 px=10003 qty=5
+  PARTIAL seq=159 ts=188 id=47 filled=5 left=19 px=10003
+  RESTED seq=160 ts=188 id=47 MSFT SELL px=10003 qty=5
+  TRADE seq=161 ts=188 match=11 MSFT buy=106 sell=47 px=10003 qty=3
+  PARTIAL seq=162 ts=188 id=47 filled=3 left=16 px=10003
+  FILLED seq=163 ts=188 id=106 filled=18 px=10003
+R ADD MSFT id=107 BUY IOC px=9985 qty=36 trig=0 disp=0 p=4 ts=189
+  ACCEPTED seq=164 ts=189 id=107 MSFT BUY IOC px=9985 qty=36
+  CANCELED seq=165 ts=189 id=107 qty=36
+R ADD MSFT id=108 BUY MARKET px=0 qty=55 trig=0 disp=0 p=1 ts=190
+  ACCEPTED seq=166 ts=190 id=108 MSFT BUY MARKET px=0 qty=55
+  TRADE seq=167 ts=190 match=12 MSFT buy=108 sell=47 px=10003 qty=2
+  PARTIAL seq=168 ts=190 id=47 filled=2 left=14 px=10003
+  RESTED seq=169 ts=190 id=47 MSFT SELL px=10003 qty=5
+  TRADE seq=170 ts=190 match=13 MSFT buy=108 sell=47 px=10003 qty=5
+  PARTIAL seq=171 ts=190 id=47 filled=5 left=9 px=10003
+  RESTED seq=172 ts=190 id=47 MSFT SELL px=10003 qty=5
+  TRADE seq=173 ts=190 match=14 MSFT buy=108 sell=47 px=10003 qty=5
+  PARTIAL seq=174 ts=190 id=47 filled=5 left=4 px=10003
+  RESTED seq=175 ts=190 id=47 MSFT SELL px=10003 qty=4
+  TRADE seq=176 ts=190 match=15 MSFT buy=108 sell=47 px=10003 qty=4
+  FILLED seq=177 ts=190 id=47 filled=4 px=10003
+  TRADE seq=178 ts=190 match=16 MSFT buy=108 sell=100 px=10007 qty=26
+  FILLED seq=179 ts=190 id=100 filled=26 px=10007
+  TRADE seq=180 ts=190 match=17 MSFT buy=108 sell=69 px=10009 qty=13
+  PARTIAL seq=181 ts=190 id=69 filled=13 left=80 px=10009
+  FILLED seq=182 ts=190 id=108 filled=55 px=10009
+R ADD MSFT id=109 BUY POST_ONLY px=9980 qty=61 trig=0 disp=0 p=7 ts=191
+  ACCEPTED seq=183 ts=191 id=109 MSFT BUY POST_ONLY px=9980 qty=61
+  RESTED seq=184 ts=191 id=109 MSFT BUY px=9980 qty=61
+R ADD AAPL id=110 BUY FOK px=9985 qty=1 trig=0 disp=0 p=1 ts=192
+  REJECTED seq=195 ts=192 id=110 reason=7
+R ADD MSFT id=111 SELL FOK px=9999 qty=78 trig=0 disp=0 p=8 ts=193
+  ACCEPTED seq=185 ts=193 id=111 MSFT SELL FOK px=9999 qty=78
+  TRADE seq=186 ts=193 match=18 MSFT buy=102 sell=111 px=10000 qty=78
+  PARTIAL seq=187 ts=193 id=102 filled=78 left=15 px=10000
+  FILLED seq=188 ts=193 id=111 filled=78 px=10000
+R ADD AAPL id=112 SELL POST_ONLY px=10004 qty=30 trig=0 disp=0 p=2 ts=194
+  ACCEPTED seq=196 ts=194 id=112 AAPL SELL POST_ONLY px=10004 qty=30
+  RESTED seq=197 ts=194 id=112 AAPL SELL px=10004 qty=30
+R ADD MSFT id=113 SELL POST_ONLY px=10007 qty=83 trig=0 disp=0 p=6 ts=195
+  ACCEPTED seq=189 ts=195 id=113 MSFT SELL POST_ONLY px=10007 qty=83
+  RESTED seq=190 ts=195 id=113 MSFT SELL px=10007 qty=83
+R MODIFY AAPL id=96 SELL LIMIT px=10011 qty=53 trig=0 disp=0 p=0 ts=196
+  CANCELED seq=198 ts=196 id=96 qty=85
+  ACCEPTED seq=199 ts=196 id=96 AAPL SELL ICEBERG px=10011 qty=53
+  RESTED seq=200 ts=196 id=96 AAPL SELL px=10011 qty=19
+R CANCEL AAPL id=50 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=197
+  REJECTED seq=201 ts=197 id=50 reason=5
+R ADD MSFT id=114 BUY POST_ONLY px=9998 qty=58 trig=0 disp=0 p=4 ts=198
+  ACCEPTED seq=191 ts=198 id=114 MSFT BUY POST_ONLY px=9998 qty=58
+  RESTED seq=192 ts=198 id=114 MSFT BUY px=9998 qty=58
+R CANCEL MSFT id=57 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=199
+  REJECTED seq=193 ts=199 id=57 reason=5
+R ADD MSFT id=115 BUY IOC px=9983 qty=100 trig=0 disp=0 p=6 ts=200
+  ACCEPTED seq=194 ts=200 id=115 MSFT BUY IOC px=9983 qty=100
+  CANCELED seq=195 ts=200 id=115 qty=100
+R ADD MSFT id=116 SELL IOC px=9998 qty=57 trig=0 disp=0 p=3 ts=201
+  ACCEPTED seq=196 ts=201 id=116 MSFT SELL IOC px=9998 qty=57
+  TRADE seq=197 ts=201 match=19 MSFT buy=102 sell=116 px=10000 qty=15
+  FILLED seq=198 ts=201 id=102 filled=15 px=10000
+  TRADE seq=199 ts=201 match=20 MSFT buy=114 sell=116 px=9998 qty=42
+  PARTIAL seq=200 ts=201 id=114 filled=42 left=16 px=9998
+  RESTED seq=201 ts=201 id=63 MSFT SELL px=10003 qty=37
+  FILLED seq=202 ts=201 id=116 filled=57 px=9998
+R ADD AAPL id=117 SELL LIMIT px=10009 qty=99 trig=0 disp=0 p=5 ts=202
+  ACCEPTED seq=202 ts=202 id=117 AAPL SELL LIMIT px=10009 qty=99
+  RESTED seq=203 ts=202 id=117 AAPL SELL px=10009 qty=99
+R MODIFY MSFT id=64 BUY LIMIT px=9997 qty=42 trig=0 disp=0 p=0 ts=203
+  REJECTED seq=203 ts=203 id=64 reason=5
+R ADD AAPL id=118 BUY LIMIT px=9988 qty=96 trig=0 disp=0 p=1 ts=204
+  ACCEPTED seq=204 ts=204 id=118 AAPL BUY LIMIT px=9988 qty=96
+  RESTED seq=205 ts=204 id=118 AAPL BUY px=9988 qty=96
+R CANCEL AAPL id=73 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=205
+  REJECTED seq=206 ts=205 id=73 reason=5
+R CANCEL MSFT id=115 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=206
+  REJECTED seq=204 ts=206 id=115 reason=5
+R CANCEL AAPL id=66 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=207
+  REJECTED seq=207 ts=207 id=66 reason=5
+R ADD MSFT id=119 BUY STOP_LIMIT px=10004 qty=68 trig=10005 disp=0 p=4 ts=208
+  ACCEPTED seq=205 ts=208 id=119 MSFT BUY STOP_LIMIT px=10004 qty=68
+R ADD MSFT id=120 BUY LIMIT px=9996 qty=98 trig=0 disp=0 p=4 ts=209
+  ACCEPTED seq=206 ts=209 id=120 MSFT BUY LIMIT px=9996 qty=98
+  RESTED seq=207 ts=209 id=120 MSFT BUY px=9996 qty=98
+R CANCEL AAPL id=37 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=210
+  REJECTED seq=208 ts=210 id=37 reason=5
+R ADD MSFT id=121 SELL LIMIT px=10014 qty=95 trig=0 disp=0 p=1 ts=211
+  ACCEPTED seq=208 ts=211 id=121 MSFT SELL LIMIT px=10014 qty=95
+  RESTED seq=209 ts=211 id=121 MSFT SELL px=10014 qty=95
+R ADD AAPL id=122 BUY LIMIT px=10000 qty=36 trig=0 disp=0 p=8 ts=212
+  ACCEPTED seq=209 ts=212 id=122 AAPL BUY LIMIT px=10000 qty=36
+  RESTED seq=210 ts=212 id=122 AAPL BUY px=10000 qty=36
+R ADD MSFT id=123 SELL LIMIT px=10005 qty=94 trig=0 disp=0 p=5 ts=213
+  ACCEPTED seq=210 ts=213 id=123 MSFT SELL LIMIT px=10005 qty=94
+  RESTED seq=211 ts=213 id=123 MSFT SELL px=10005 qty=94
+R ADD AAPL id=124 SELL IOC px=10013 qty=25 trig=0 disp=0 p=3 ts=214
+  ACCEPTED seq=211 ts=214 id=124 AAPL SELL IOC px=10013 qty=25
+  CANCELED seq=212 ts=214 id=124 qty=25
+R MODIFY MSFT id=106 BUY LIMIT px=9991 qty=65 trig=0 disp=0 p=0 ts=215
+  REJECTED seq=212 ts=215 id=106 reason=5
+R CANCEL MSFT id=19 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=216
+  REJECTED seq=213 ts=216 id=19 reason=5
+R ADD AAPL id=125 SELL IOC px=10019 qty=88 trig=0 disp=0 p=4 ts=217
+  ACCEPTED seq=213 ts=217 id=125 AAPL SELL IOC px=10019 qty=88
+  CANCELED seq=214 ts=217 id=125 qty=88
+R CANCEL AAPL id=95 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=218
+  CANCELED seq=215 ts=218 id=95 qty=30
+R MODIFY AAPL id=86 SELL LIMIT px=10005 qty=71 trig=0 disp=0 p=0 ts=219
+  REJECTED seq=216 ts=219 id=86 reason=5
+R ADD AAPL id=126 BUY MARKET px=0 qty=27 trig=0 disp=0 p=3 ts=220
+  ACCEPTED seq=217 ts=220 id=126 AAPL BUY MARKET px=0 qty=27
+  TRADE seq=218 ts=220 match=13 AAPL buy=126 sell=112 px=10004 qty=27
+  PARTIAL seq=219 ts=220 id=112 filled=27 left=3 px=10004
+  FILLED seq=220 ts=220 id=126 filled=27 px=10004
+R MODIFY AAPL id=51 BUY LIMIT px=9994 qty=61 trig=0 disp=0 p=0 ts=221
+  REJECTED seq=221 ts=221 id=51 reason=5
+R CANCEL AAPL id=81 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=222
+  CANCELED seq=222 ts=222 id=81 qty=39
+R ADD AAPL id=127 BUY LIMIT px=9981 qty=25 trig=0 disp=0 p=2 ts=223
+  ACCEPTED seq=223 ts=223 id=127 AAPL BUY LIMIT px=9981 qty=25
+  RESTED seq=224 ts=223 id=127 AAPL BUY px=9981 qty=25
+R ADD AAPL id=128 SELL LIMIT px=10017 qty=88 trig=0 disp=0 p=2 ts=224
+  ACCEPTED seq=225 ts=224 id=128 AAPL SELL LIMIT px=10017 qty=88
+  RESTED seq=226 ts=224 id=128 AAPL SELL px=10017 qty=88
+R ADD AAPL id=129 SELL LIMIT px=10017 qty=25 trig=0 disp=0 p=7 ts=225
+  ACCEPTED seq=227 ts=225 id=129 AAPL SELL LIMIT px=10017 qty=25
+  RESTED seq=228 ts=225 id=129 AAPL SELL px=10017 qty=25
+R CANCEL AAPL id=118 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=226
+  CANCELED seq=229 ts=226 id=118 qty=96
+R ADD MSFT id=130 BUY POST_ONLY px=9979 qty=88 trig=0 disp=0 p=6 ts=227
+  ACCEPTED seq=214 ts=227 id=130 MSFT BUY POST_ONLY px=9979 qty=88
+  RESTED seq=215 ts=227 id=130 MSFT BUY px=9979 qty=88
+R ADD MSFT id=131 BUY LIMIT px=10001 qty=88 trig=0 disp=0 p=3 ts=228
+  ACCEPTED seq=216 ts=228 id=131 MSFT BUY LIMIT px=10001 qty=88
+  RESTED seq=217 ts=228 id=131 MSFT BUY px=10001 qty=88
+R ADD AAPL id=132 SELL LIMIT px=10000 qty=25 trig=0 disp=0 p=5 ts=229
+  ACCEPTED seq=230 ts=229 id=132 AAPL SELL LIMIT px=10000 qty=25
+  TRADE seq=231 ts=229 match=14 AAPL buy=103 sell=132 px=10003 qty=25
+  PARTIAL seq=232 ts=229 id=103 filled=25 left=1 px=10003
+  FILLED seq=233 ts=229 id=132 filled=25 px=10003
+R ADD MSFT id=133 BUY LIMIT px=9999 qty=97 trig=0 disp=0 p=7 ts=230
+  ACCEPTED seq=218 ts=230 id=133 MSFT BUY LIMIT px=9999 qty=97
+  RESTED seq=219 ts=230 id=133 MSFT BUY px=9999 qty=97
+R ADD MSFT id=134 SELL STOP px=0 qty=55 trig=9989 disp=0 p=8 ts=231
+  ACCEPTED seq=220 ts=231 id=134 MSFT SELL STOP px=9989 qty=55
+R MODIFY MSFT id=102 BUY LIMIT px=9985 qty=88 trig=0 disp=0 p=0 ts=232
+  REJECTED seq=221 ts=232 id=102 reason=5
+R ADD AAPL id=135 BUY IOC px=9992 qty=46 trig=0 disp=0 p=2 ts=233
+  ACCEPTED seq=234 ts=233 id=135 AAPL BUY IOC px=9992 qty=46
+  CANCELED seq=235 ts=233 id=135 qty=46
+R ADD MSFT id=136 SELL LIMIT px=9998 qty=59 trig=0 disp=0 p=5 ts=234
+  ACCEPTED seq=222 ts=234 id=136 MSFT SELL LIMIT px=9998 qty=59
+  TRADE seq=223 ts=234 match=21 MSFT buy=131 sell=136 px=10001 qty=59
+  PARTIAL seq=224 ts=234 id=131 filled=59 left=29 px=10001
+  FILLED seq=225 ts=234 id=136 filled=59 px=10001
+R ADD AAPL id=137 SELL GTC px=10001 qty=65 trig=0 disp=0 p=4 ts=235
+  ACCEPTED seq=236 ts=235 id=137 AAPL SELL GTC px=10001 qty=65
+  TRADE seq=237 ts=235 match=15 AAPL buy=103 sell=137 px=10003 qty=1
+  FILLED seq=238 ts=235 id=103 filled=1 px=10003
+  PARTIAL seq=239 ts=235 id=137 filled=1 left=64 px=10003
+  RESTED seq=240 ts=235 id=137 AAPL SELL px=10001 qty=64
+R CANCEL AAPL id=89 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=236
+  CANCELED seq=241 ts=236 id=89 qty=67
+R CANCEL AAPL id=127 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=237
+  CANCELED seq=242 ts=237 id=127 qty=25
+R ADD MSFT id=138 SELL LIMIT px=10017 qty=35 trig=0 disp=0 p=2 ts=238
+  ACCEPTED seq=226 ts=238 id=138 MSFT SELL LIMIT px=10017 qty=35
+  RESTED seq=227 ts=238 id=138 MSFT SELL px=10017 qty=35
+R MODIFY MSFT id=114 BUY LIMIT px=9988 qty=68 trig=0 disp=0 p=0 ts=239
+  CANCELED seq=228 ts=239 id=114 qty=16
+  ACCEPTED seq=229 ts=239 id=114 MSFT BUY POST_ONLY px=9988 qty=68
+  RESTED seq=230 ts=239 id=114 MSFT BUY px=9988 qty=68
+R ADD MSFT id=139 SELL LIMIT px=10006 qty=31 trig=0 disp=0 p=5 ts=240
+  ACCEPTED seq=231 ts=240 id=139 MSFT SELL LIMIT px=10006 qty=31
+  RESTED seq=232 ts=240 id=139 MSFT SELL px=10006 qty=31
+R ADD MSFT id=140 BUY IOC px=9995 qty=92 trig=0 disp=0 p=7 ts=241
+  ACCEPTED seq=233 ts=241 id=140 MSFT BUY IOC px=9995 qty=92
+  CANCELED seq=234 ts=241 id=140 qty=92
+R CANCEL MSFT id=121 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=242
+  CANCELED seq=235 ts=242 id=121 qty=95
+R MODIFY AAPL id=135 BUY LIMIT px=9993 qty=71 trig=0 disp=0 p=0 ts=243
+  REJECTED seq=243 ts=243 id=135 reason=5
+R CANCEL AAPL id=125 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=244
+  REJECTED seq=244 ts=244 id=125 reason=5
+R ADD MSFT id=141 SELL ICEBERG px=10014 qty=11 trig=0 disp=11 p=8 ts=245
+  ACCEPTED seq=236 ts=245 id=141 MSFT SELL ICEBERG px=10014 qty=11
+  RESTED seq=237 ts=245 id=141 MSFT SELL px=10014 qty=11
+R MODIFY AAPL id=132 SELL LIMIT px=10012 qty=65 trig=0 disp=0 p=0 ts=246
+  REJECTED seq=245 ts=246 id=132 reason=5
+R CANCEL MSFT id=60 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=247
+  REJECTED seq=238 ts=247 id=60 reason=5
+R ADD MSFT id=142 BUY ICEBERG px=9983 qty=98 trig=0 disp=8 p=7 ts=248
+  ACCEPTED seq=239 ts=248 id=142 MSFT BUY ICEBERG px=9983 qty=98
+  RESTED seq=240 ts=248 id=142 MSFT BUY px=9983 qty=8
+R MODIFY AAPL id=25 SELL LIMIT px=10016 qty=39 trig=0 disp=0 p=0 ts=249
+  REJECTED seq=246 ts=249 id=25 reason=5
+R ADD MSFT id=143 BUY LIMIT px=10004 qty=23 trig=0 disp=0 p=6 ts=250
+  ACCEPTED seq=241 ts=250 id=143 MSFT BUY LIMIT px=10004 qty=23
+  TRADE seq=242 ts=250 match=22 MSFT buy=143 sell=63 px=10003 qty=23
+  PARTIAL seq=243 ts=250 id=63 filled=23 left=14 px=10003
+  FILLED seq=244 ts=250 id=143 filled=23 px=10003
+R CANCEL MSFT id=67 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=251
+  REJECTED seq=245 ts=251 id=67 reason=5
+R MODIFY AAPL id=128 SELL LIMIT px=10005 qty=28 trig=0 disp=0 p=0 ts=252
+  CANCELED seq=247 ts=252 id=128 qty=88
+  ACCEPTED seq=248 ts=252 id=128 AAPL SELL LIMIT px=10005 qty=28
+  RESTED seq=249 ts=252 id=128 AAPL SELL px=10005 qty=28
+R ADD AAPL id=144 SELL IOC px=10015 qty=1 trig=0 disp=0 p=6 ts=253
+  ACCEPTED seq=250 ts=253 id=144 AAPL SELL IOC px=10015 qty=1
+  CANCELED seq=251 ts=253 id=144 qty=1
+R ADD AAPL id=145 BUY IOC px=9999 qty=38 trig=0 disp=0 p=6 ts=254
+  ACCEPTED seq=252 ts=254 id=145 AAPL BUY IOC px=9999 qty=38
+  CANCELED seq=253 ts=254 id=145 qty=38
+R ADD MSFT id=146 SELL LIMIT px=10004 qty=47 trig=0 disp=0 p=8 ts=255
+  ACCEPTED seq=246 ts=255 id=146 MSFT SELL LIMIT px=10004 qty=47
+  RESTED seq=247 ts=255 id=146 MSFT SELL px=10004 qty=47
+R MODIFY AAPL id=110 BUY LIMIT px=9982 qty=26 trig=0 disp=0 p=0 ts=256
+  REJECTED seq=254 ts=256 id=110 reason=5
+R ADD MSFT id=147 SELL LIMIT px=10006 qty=13 trig=0 disp=0 p=7 ts=257
+  ACCEPTED seq=248 ts=257 id=147 MSFT SELL LIMIT px=10006 qty=13
+  RESTED seq=249 ts=257 id=147 MSFT SELL px=10006 qty=13
+R CANCEL MSFT id=48 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=258
+  CANCELED seq=250 ts=258 id=48 qty=49
+R ADD MSFT id=148 SELL LIMIT px=10015 qty=47 trig=0 disp=0 p=5 ts=259
+  ACCEPTED seq=251 ts=259 id=148 MSFT SELL LIMIT px=10015 qty=47
+  RESTED seq=252 ts=259 id=148 MSFT SELL px=10015 qty=47
+R ADD AAPL id=149 BUY IOC px=9987 qty=10 trig=0 disp=0 p=7 ts=260
+  ACCEPTED seq=255 ts=260 id=149 AAPL BUY IOC px=9987 qty=10
+  CANCELED seq=256 ts=260 id=149 qty=10
+R CANCEL MSFT id=138 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=261
+  CANCELED seq=253 ts=261 id=138 qty=35
+R CANCEL MSFT id=148 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=262
+  CANCELED seq=254 ts=262 id=148 qty=47
+R ADD MSFT id=150 SELL IOC px=10012 qty=86 trig=0 disp=0 p=4 ts=263
+  ACCEPTED seq=255 ts=263 id=150 MSFT SELL IOC px=10012 qty=86
+  CANCELED seq=256 ts=263 id=150 qty=86
+R ADD MSFT id=151 BUY IOC px=9983 qty=62 trig=0 disp=0 p=5 ts=264
+  ACCEPTED seq=257 ts=264 id=151 MSFT BUY IOC px=9983 qty=62
+  CANCELED seq=258 ts=264 id=151 qty=62
+R ADD AAPL id=152 SELL LIMIT px=10015 qty=92 trig=0 disp=0 p=4 ts=265
+  ACCEPTED seq=257 ts=265 id=152 AAPL SELL LIMIT px=10015 qty=92
+  RESTED seq=258 ts=265 id=152 AAPL SELL px=10015 qty=92
+R ADD MSFT id=153 SELL LIMIT px=10018 qty=38 trig=0 disp=0 p=1 ts=266
+  ACCEPTED seq=259 ts=266 id=153 MSFT SELL LIMIT px=10018 qty=38
+  RESTED seq=260 ts=266 id=153 MSFT SELL px=10018 qty=38
+R CANCEL MSFT id=153 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=267
+  CANCELED seq=261 ts=267 id=153 qty=38
+R CANCEL MSFT id=72 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=268
+  CANCELED seq=262 ts=268 id=72 qty=19
+R CANCEL AAPL id=96 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=269
+  CANCELED seq=259 ts=269 id=96 qty=53
+R CANCEL MSFT id=28 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=270
+  CANCELED seq=263 ts=270 id=28 qty=57
+R ADD AAPL id=154 BUY IOC px=10001 qty=60 trig=0 disp=0 p=6 ts=271
+  ACCEPTED seq=260 ts=271 id=154 AAPL BUY IOC px=10001 qty=60
+  TRADE seq=261 ts=271 match=16 AAPL buy=154 sell=137 px=10001 qty=60
+  PARTIAL seq=262 ts=271 id=137 filled=60 left=4 px=10001
+  FILLED seq=263 ts=271 id=154 filled=60 px=10001
+R ADD AAPL id=155 SELL MARKET px=0 qty=27 trig=0 disp=0 p=7 ts=272
+  ACCEPTED seq=264 ts=272 id=155 AAPL SELL MARKET px=0 qty=27
+  TRADE seq=265 ts=272 match=17 AAPL buy=122 sell=155 px=10000 qty=27
+  PARTIAL seq=266 ts=272 id=122 filled=27 left=9 px=10000
+  FILLED seq=267 ts=272 id=155 filled=27 px=10000
+R MODIFY MSFT id=147 SELL LIMIT px=10001 qty=40 trig=0 disp=0 p=0 ts=273
+  CANCELED seq=264 ts=273 id=147 qty=13
+  ACCEPTED seq=265 ts=273 id=147 MSFT SELL LIMIT px=10001 qty=40
+  TRADE seq=266 ts=273 match=23 MSFT buy=131 sell=147 px=10001 qty=29
+  FILLED seq=267 ts=273 id=131 filled=29 px=10001
+  PARTIAL seq=268 ts=273 id=147 filled=29 left=11 px=10001
+  RESTED seq=269 ts=273 id=147 MSFT SELL px=10001 qty=11
+R ADD AAPL id=156 BUY ICEBERG px=10004 qty=17 trig=0 disp=2 p=6 ts=274
+  ACCEPTED seq=268 ts=274 id=156 AAPL BUY ICEBERG px=10004 qty=17
+  TRADE seq=269 ts=274 match=18 AAPL buy=156 sell=137 px=10001 qty=4
+  FILLED seq=270 ts=274 id=137 filled=4 px=10001
+  TRADE seq=271 ts=274 match=19 AAPL buy=156 sell=112 px=10004 qty=3
+  FILLED seq=272 ts=274 id=112 filled=3 px=10004
+  PARTIAL seq=273 ts=274 id=156 filled=7 left=10 px=10004
+  RESTED seq=274 ts=274 id=156 AAPL BUY px=10004 qty=2
+R CANCEL MSFT id=106 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=275
+  REJECTED seq=270 ts=275 id=106 reason=5
+R ADD AAPL id=157 SELL LIMIT px=9996 qty=10 trig=0 disp=0 p=7 ts=276
+  ACCEPTED seq=275 ts=276 id=157 AAPL SELL LIMIT px=9996 qty=10
+  TRADE seq=276 ts=276 match=20 AAPL buy=156 sell=157 px=10004 qty=2
+  PARTIAL seq=277 ts=276 id=156 filled=2 left=8 px=10004
+  RESTED seq=278 ts=276 id=156 AAPL BUY px=10004 qty=2
+  TRADE seq=279 ts=276 match=21 AAPL buy=156 sell=157 px=10004 qty=2
+  PARTIAL seq=280 ts=276 id=156 filled=2 left=6 px=10004
+  RESTED seq=281 ts=276 id=156 AAPL BUY px=10004 qty=2
+  TRADE seq=282 ts=276 match=22 AAPL buy=156 sell=157 px=10004 qty=2
+  PARTIAL seq=283 ts=276 id=156 filled=2 left=4 px=10004
+  RESTED seq=284 ts=276 id=156 AAPL BUY px=10004 qty=2
+  TRADE seq=285 ts=276 match=23 AAPL buy=156 sell=157 px=10004 qty=2
+  PARTIAL seq=286 ts=276 id=156 filled=2 left=2 px=10004
+  RESTED seq=287 ts=276 id=156 AAPL BUY px=10004 qty=2
+  TRADE seq=288 ts=276 match=24 AAPL buy=156 sell=157 px=10004 qty=2
+  FILLED seq=289 ts=276 id=156 filled=2 px=10004
+  FILLED seq=290 ts=276 id=157 filled=10 px=10004
+R MODIFY MSFT id=111 SELL LIMIT px=10013 qty=90 trig=0 disp=0 p=0 ts=277
+  REJECTED seq=271 ts=277 id=111 reason=5
+R CANCEL MSFT id=64 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=278
+  REJECTED seq=272 ts=278 id=64 reason=5
+R ADD AAPL id=158 BUY STOP_LIMIT px=9990 qty=31 trig=10010 disp=0 p=6 ts=279
+  ACCEPTED seq=291 ts=279 id=158 AAPL BUY STOP_LIMIT px=9990 qty=31
+R ADD AAPL id=159 BUY POST_ONLY px=9981 qty=60 trig=0 disp=0 p=1 ts=280
+  ACCEPTED seq=292 ts=280 id=159 AAPL BUY POST_ONLY px=9981 qty=60
+  RESTED seq=293 ts=280 id=159 AAPL BUY px=9981 qty=60
+R ADD MSFT id=160 BUY LIMIT px=9993 qty=25 trig=0 disp=0 p=8 ts=281
+  ACCEPTED seq=273 ts=281 id=160 MSFT BUY LIMIT px=9993 qty=25
+  RESTED seq=274 ts=281 id=160 MSFT BUY px=9993 qty=25
+R ADD MSFT id=161 SELL ICEBERG px=9995 qty=62 trig=0 disp=14 p=1 ts=282
+  ACCEPTED seq=275 ts=282 id=161 MSFT SELL ICEBERG px=9995 qty=62
+  TRADE seq=276 ts=282 match=24 MSFT buy=133 sell=161 px=9999 qty=62
+  PARTIAL seq=277 ts=282 id=133 filled=62 left=35 px=9999
+  FILLED seq=278 ts=282 id=161 filled=62 px=9999
+R ADD MSFT id=162 SELL LIMIT px=10002 qty=28 trig=0 disp=0 p=2 ts=283
+  ACCEPTED seq=279 ts=283 id=162 MSFT SELL LIMIT px=10002 qty=28
+  RESTED seq=280 ts=283 id=162 MSFT SELL px=10002 qty=28
+R CANCEL AAPL id=79 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=284
+  CANCELED seq=294 ts=284 id=79 qty=54
+R ADD MSFT id=163 BUY GTC px=9990 qty=16 trig=0 disp=0 p=1 ts=285
+  ACCEPTED seq=281 ts=285 id=163 MSFT BUY GTC px=9990 qty=16
+  RESTED seq=282 ts=285 id=163 MSFT BUY px=9990 qty=16
+R ADD AAPL id=164 BUY STOP_LIMIT px=9994 qty=13 trig=10003 disp=0 p=5 ts=286
+  ACCEPTED seq=295 ts=286 id=164 AAPL BUY STOP_LIMIT px=9994 qty=13
+R ADD AAPL id=165 SELL STOP_LIMIT px=10018 qty=86 trig=9999 disp=0 p=7 ts=287
+  ACCEPTED seq=296 ts=287 id=165 AAPL SELL STOP_LIMIT px=10018 qty=86
+R ADD MSFT id=166 SELL IOC px=10014 qty=21 trig=0 disp=0 p=8 ts=288
+  ACCEPTED seq=283 ts=288 id=166 MSFT SELL IOC px=10014 qty=21
+  CANCELED seq=284 ts=288 id=166 qty=21
+R ADD AAPL id=167 SELL LIMIT px=10021 qty=60 trig=0 disp=0 p=7 ts=289
+  ACCEPTED seq=297 ts=289 id=167 AAPL SELL LIMIT px=10021 qty=60
+  RESTED seq=298 ts=289 id=167 AAPL SELL px=10021 qty=60
+R ADD AAPL id=168 BUY IOC px=9983 qty=73 trig=0 disp=0 p=1 ts=290
+  ACCEPTED seq=299 ts=290 id=168 AAPL BUY IOC px=9983 qty=73
+  CANCELED seq=300 ts=290 id=168 qty=73
+R MODIFY AAPL id=105 BUY LIMIT px=9985 qty=80 trig=0 disp=0 p=0 ts=291
+  REJECTED seq=301 ts=291 id=105 reason=5
+R ADD AAPL id=169 BUY LIMIT px=9983 qty=25 trig=0 disp=0 p=5 ts=292
+  ACCEPTED seq=302 ts=292 id=169 AAPL BUY LIMIT px=9983 qty=25
+  RESTED seq=303 ts=292 id=169 AAPL BUY px=9983 qty=25
+R ADD AAPL id=170 BUY LIMIT px=10001 qty=67 trig=0 disp=0 p=1 ts=293
+  ACCEPTED seq=304 ts=293 id=170 AAPL BUY LIMIT px=10001 qty=67
+  RESTED seq=305 ts=293 id=170 AAPL BUY px=10001 qty=67
+R ADD AAPL id=171 BUY POST_ONLY px=9990 qty=52 trig=0 disp=0 p=4 ts=294
+  ACCEPTED seq=306 ts=294 id=171 AAPL BUY POST_ONLY px=9990 qty=52
+  RESTED seq=307 ts=294 id=171 AAPL BUY px=9990 qty=52
+R ADD AAPL id=172 BUY LIMIT px=9981 qty=14 trig=0 disp=0 p=3 ts=295
+  ACCEPTED seq=308 ts=295 id=172 AAPL BUY LIMIT px=9981 qty=14
+  RESTED seq=309 ts=295 id=172 AAPL BUY px=9981 qty=14
+R ADD AAPL id=173 BUY FOK px=9988 qty=33 trig=0 disp=0 p=2 ts=296
+  REJECTED seq=310 ts=296 id=173 reason=7
+R ADD AAPL id=174 SELL IOC px=10007 qty=76 trig=0 disp=0 p=5 ts=297
+  ACCEPTED seq=311 ts=297 id=174 AAPL SELL IOC px=10007 qty=76
+  CANCELED seq=312 ts=297 id=174 qty=76
+R ADD AAPL id=175 BUY IOC px=9994 qty=74 trig=0 disp=0 p=3 ts=298
+  ACCEPTED seq=313 ts=298 id=175 AAPL BUY IOC px=9994 qty=74
+  CANCELED seq=314 ts=298 id=175 qty=74
+R ADD MSFT id=176 BUY IOC px=9997 qty=49 trig=0 disp=0 p=2 ts=299
+  ACCEPTED seq=285 ts=299 id=176 MSFT BUY IOC px=9997 qty=49
+  CANCELED seq=286 ts=299 id=176 qty=49
+R ADD AAPL id=177 BUY LIMIT px=10005 qty=32 trig=0 disp=0 p=3 ts=300
+  ACCEPTED seq=315 ts=300 id=177 AAPL BUY LIMIT px=10005 qty=32
+  TRADE seq=316 ts=300 match=25 AAPL buy=177 sell=128 px=10005 qty=28
+  FILLED seq=317 ts=300 id=128 filled=28 px=10005
+  RESTED seq=318 ts=300 id=164 AAPL BUY px=9994 qty=13
+  PARTIAL seq=319 ts=300 id=177 filled=28 left=4 px=10005
+  RESTED seq=320 ts=300 id=177 AAPL BUY px=10005 qty=4
+R CANCEL MSFT id=176 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=301
+  REJECTED seq=287 ts=301 id=176 reason=5
+R MODIFY AAPL id=105 BUY LIMIT px=10002 qty=20 trig=0 disp=0 p=0 ts=302
+  REJECTED seq=321 ts=302 id=105 reason=5
+R ADD AAPL id=178 SELL POST_ONLY px=10010 qty=8 trig=0 disp=0 p=5 ts=303
+  ACCEPTED seq=322 ts=303 id=178 AAPL SELL POST_ONLY px=10010 qty=8
+  RESTED seq=323 ts=303 id=178 AAPL SELL px=10010 qty=8
+R ADD AAPL id=179 SELL MARKET px=0 qty=97 trig=0 disp=0 p=7 ts=304
+  ACCEPTED seq=324 ts=304 id=179 AAPL SELL MARKET px=0 qty=97
+  TRADE seq=325 ts=304 match=26 AAPL buy=177 sell=179 px=10005 qty=4
+  FILLED seq=326 ts=304 id=177 filled=4 px=10005
+  TRADE seq=327 ts=304 match=27 AAPL buy=170 sell=179 px=10001 qty=67
+  FILLED seq=328 ts=304 id=170 filled=67 px=10001
+  TRADE seq=329 ts=304 match=28 AAPL buy=122 sell=179 px=10000 qty=9
+  FILLED seq=330 ts=304 id=122 filled=9 px=10000
+  TRADE seq=331 ts=304 match=29 AAPL buy=94 sell=179 px=9999 qty=17
+  FILLED seq=332 ts=304 id=94 filled=17 px=9999
+  RESTED seq=333 ts=304 id=165 AAPL SELL px=10018 qty=86
+  FILLED seq=334 ts=304 id=179 filled=97 px=9999
+R CANCEL MSFT id=69 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=305
+  CANCELED seq=288 ts=305 id=69 qty=80
+R ADD MSFT id=180 BUY FOK px=10003 qty=2 trig=0 disp=0 p=2 ts=306
+  ACCEPTED seq=289 ts=306 id=180 MSFT BUY FOK px=10003 qty=2
+  TRADE seq=290 ts=306 match=25 MSFT buy=180 sell=147 px=10001 qty=2
+  PARTIAL seq=291 ts=306 id=147 filled=2 left=9 px=10001
+  FILLED seq=292 ts=306 id=180 filled=2 px=10001
+R CANCEL AAPL id=117 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=307
+  CANCELED seq=335 ts=307 id=117 qty=99
+R ADD MSFT id=181 SELL GTC px=10015 qty=40 trig=0 disp=0 p=6 ts=308
+  ACCEPTED seq=293 ts=308 id=181 MSFT SELL GTC px=10015 qty=40
+  RESTED seq=294 ts=308 id=181 MSFT SELL px=10015 qty=40
+R CANCEL AAPL id=124 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=309
+  REJECTED seq=336 ts=309 id=124 reason=5
+R ADD MSFT id=182 SELL LIMIT px=10006 qty=26 trig=0 disp=0 p=6 ts=310
+  ACCEPTED seq=295 ts=310 id=182 MSFT SELL LIMIT px=10006 qty=26
+  RESTED seq=296 ts=310 id=182 MSFT SELL px=10006 qty=26
+R ADD AAPL id=183 SELL IOC px=10015 qty=29 trig=0 disp=0 p=7 ts=311
+  ACCEPTED seq=337 ts=311 id=183 AAPL SELL IOC px=10015 qty=29
+  CANCELED seq=338 ts=311 id=183 qty=29
+R CANCEL MSFT id=146 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=312
+  CANCELED seq=297 ts=312 id=146 qty=47
+R ADD MSFT id=184 SELL LIMIT px=10006 qty=56 trig=0 disp=0 p=6 ts=313
+  ACCEPTED seq=298 ts=313 id=184 MSFT SELL LIMIT px=10006 qty=56
+  RESTED seq=299 ts=313 id=184 MSFT SELL px=10006 qty=56
+R MODIFY AAPL id=135 BUY LIMIT px=9990 qty=66 trig=0 disp=0 p=0 ts=314
+  REJECTED seq=339 ts=314 id=135 reason=5
+R CANCEL MSFT id=123 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=315
+  CANCELED seq=300 ts=315 id=123 qty=94
+R CANCEL MSFT id=163 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=316
+  CANCELED seq=301 ts=316 id=163 qty=16
+R CANCEL AAPL id=132 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=317
+  REJECTED seq=340 ts=317 id=132 reason=5
+R ADD MSFT id=185 SELL MARKET px=0 qty=31 trig=0 disp=0 p=2 ts=318
+  ACCEPTED seq=302 ts=318 id=185 MSFT SELL MARKET px=0 qty=31
+  TRADE seq=303 ts=318 match=26 MSFT buy=133 sell=185 px=9999 qty=31
+  PARTIAL seq=304 ts=318 id=133 filled=31 left=4 px=9999
+  FILLED seq=305 ts=318 id=185 filled=31 px=9999
+R CANCEL MSFT id=116 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=319
+  REJECTED seq=306 ts=319 id=116 reason=5
+R ADD MSFT id=186 BUY IOC px=9986 qty=94 trig=0 disp=0 p=3 ts=320
+  ACCEPTED seq=307 ts=320 id=186 MSFT BUY IOC px=9986 qty=94
+  CANCELED seq=308 ts=320 id=186 qty=94
+R MODIFY AAPL id=152 SELL LIMIT px=10004 qty=24 trig=0 disp=0 p=0 ts=321
+  CANCELED seq=341 ts=321 id=152 qty=92
+  ACCEPTED seq=342 ts=321 id=152 AAPL SELL LIMIT px=10004 qty=24
+  RESTED seq=343 ts=321 id=152 AAPL SELL px=10004 qty=24
+R ADD AAPL id=187 SELL IOC px=10006 qty=56 trig=0 disp=0 p=2 ts=322
+  ACCEPTED seq=344 ts=322 id=187 AAPL SELL IOC px=10006 qty=56
+  CANCELED seq=345 ts=322 id=187 qty=56
+R ADD MSFT id=188 SELL ICEBERG px=9999 qty=4 trig=0 disp=2 p=5 ts=323
+  ACCEPTED seq=309 ts=323 id=188 MSFT SELL ICEBERG px=9999 qty=4
+  TRADE seq=310 ts=323 match=27 MSFT buy=133 sell=188 px=9999 qty=4
+  FILLED seq=311 ts=323 id=133 filled=4 px=9999
+  FILLED seq=312 ts=323 id=188 filled=4 px=9999
+R ADD MSFT id=189 BUY FOK px=9998 qty=94 trig=0 disp=0 p=3 ts=324
+  REJECTED seq=313 ts=324 id=189 reason=7
+R ADD AAPL id=190 SELL STOP px=0 qty=50 trig=9994 disp=0 p=6 ts=325
+  ACCEPTED seq=346 ts=325 id=190 AAPL SELL STOP px=9994 qty=50
+R ADD MSFT id=191 SELL IOC px=9996 qty=38 trig=0 disp=0 p=8 ts=326
+  ACCEPTED seq=314 ts=326 id=191 MSFT SELL IOC px=9996 qty=38
+  TRADE seq=315 ts=326 match=28 MSFT buy=101 sell=191 px=9997 qty=30
+  FILLED seq=316 ts=326 id=101 filled=30 px=9997
+  TRADE seq=317 ts=326 match=29 MSFT buy=120 sell=191 px=9996 qty=8
+  PARTIAL seq=318 ts=326 id=120 filled=8 left=90 px=9996
+  FILLED seq=319 ts=326 id=191 filled=38 px=9996
+R ADD AAPL id=192 SELL LIMIT px=10017 qty=80 trig=0 disp=0 p=5 ts=327
+  ACCEPTED seq=347 ts=327 id=192 AAPL SELL LIMIT px=10017 qty=80
+  RESTED seq=348 ts=327 id=192 AAPL SELL px=10017 qty=80
+R ADD MSFT id=193 SELL IOC px=9999 qty=65 trig=0 disp=0 p=4 ts=328
+  ACCEPTED seq=320 ts=328 id=193 MSFT SELL IOC px=9999 qty=65
+  CANCELED seq=321 ts=328 id=193 qty=65
+R CANCEL MSFT id=141 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=329
+  CANCELED seq=322 ts=329 id=141 qty=11
+R MODIFY MSFT id=189 BUY LIMIT px=9980 qty=42 trig=0 disp=0 p=0 ts=330
+  REJECTED seq=323 ts=330 id=189 reason=5
+R ADD AAPL id=194 BUY MARKET px=0 qty=3 trig=0 disp=0 p=8 ts=331
+  ACCEPTED seq=349 ts=331 id=194 AAPL BUY MARKET px=0 qty=3
+  TRADE seq=350 ts=331 match=30 AAPL buy=194 sell=152 px=10004 qty=3
+  PARTIAL seq=351 ts=331 id=152 filled=3 left=21 px=10004
+  FILLED seq=352 ts=331 id=194 filled=3 px=10004
+R ADD AAPL id=195 BUY LIMIT px=9997 qty=87 trig=0 disp=0 p=6 ts=332
+  ACCEPTED seq=353 ts=332 id=195 AAPL BUY LIMIT px=9997 qty=87
+  RESTED seq=354 ts=332 id=195 AAPL BUY px=9997 qty=87
+R ADD MSFT id=196 SELL IOC px=10001 qty=75 trig=0 disp=0 p=1 ts=333
+  ACCEPTED seq=324 ts=333 id=196 MSFT SELL IOC px=10001 qty=75
+  CANCELED seq=325 ts=333 id=196 qty=75
+R MODIFY AAPL id=178 SELL LIMIT px=10002 qty=29 trig=0 disp=0 p=0 ts=334
+  CANCELED seq=355 ts=334 id=178 qty=8
+  ACCEPTED seq=356 ts=334 id=178 AAPL SELL POST_ONLY px=10002 qty=29
+  RESTED seq=357 ts=334 id=178 AAPL SELL px=10002 qty=29
+R ADD AAPL id=197 SELL STOP px=0 qty=78 trig=9992 disp=0 p=8 ts=335
+  ACCEPTED seq=358 ts=335 id=197 AAPL SELL STOP px=9992 qty=78
+R MODIFY MSFT id=184 SELL LIMIT px=9999 qty=75 trig=0 disp=0 p=0 ts=336
+  CANCELED seq=326 ts=336 id=184 qty=56
+  ACCEPTED seq=327 ts=336 id=184 MSFT SELL LIMIT px=9999 qty=75
+  RESTED seq=328 ts=336 id=184 MSFT SELL px=9999 qty=75
+R ADD AAPL id=198 BUY IOC px=10001 qty=14 trig=0 disp=0 p=2 ts=337
+  ACCEPTED seq=359 ts=337 id=198 AAPL BUY IOC px=10001 qty=14
+  CANCELED seq=360 ts=337 id=198 qty=14
+R ADD MSFT id=199 BUY IOC px=9991 qty=17 trig=0 disp=0 p=8 ts=338
+  ACCEPTED seq=329 ts=338 id=199 MSFT BUY IOC px=9991 qty=17
+  CANCELED seq=330 ts=338 id=199 qty=17
+R ADD MSFT id=200 BUY POST_ONLY px=10002 qty=47 trig=0 disp=0 p=6 ts=339
+  REJECTED seq=331 ts=339 id=200 reason=8
+R CANCEL MSFT id=100 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=340
+  REJECTED seq=332 ts=340 id=100 reason=5
+R ADD MSFT id=201 BUY ICEBERG px=9986 qty=74 trig=0 disp=63 p=7 ts=341
+  ACCEPTED seq=333 ts=341 id=201 MSFT BUY ICEBERG px=9986 qty=74
+  RESTED seq=334 ts=341 id=201 MSFT BUY px=9986 qty=63
+R CANCEL AAPL id=171 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=342
+  CANCELED seq=361 ts=342 id=171 qty=52
+R ADD MSFT id=202 SELL ICEBERG px=10000 qty=45 trig=0 disp=9 p=1 ts=343
+  ACCEPTED seq=335 ts=343 id=202 MSFT SELL ICEBERG px=10000 qty=45
+  RESTED seq=336 ts=343 id=202 MSFT SELL px=10000 qty=9
+R ADD AAPL id=203 BUY IOC px=10001 qty=11 trig=0 disp=0 p=5 ts=344
+  ACCEPTED seq=362 ts=344 id=203 AAPL BUY IOC px=10001 qty=11
+  CANCELED seq=363 ts=344 id=203 qty=11
+R ADD AAPL id=204 BUY IOC px=10004 qty=27 trig=0 disp=0 p=7 ts=345
+  ACCEPTED seq=364 ts=345 id=204 AAPL BUY IOC px=10004 qty=27
+  TRADE seq=365 ts=345 match=31 AAPL buy=204 sell=178 px=10002 qty=27
+  PARTIAL seq=366 ts=345 id=178 filled=27 left=2 px=10002
+  FILLED seq=367 ts=345 id=204 filled=27 px=10002
+R CANCEL MSFT id=143 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=346
+  REJECTED seq=337 ts=346 id=143 reason=5
+R ADD MSFT id=205 SELL IOC px=10004 qty=99 trig=0 disp=0 p=1 ts=347
+  ACCEPTED seq=338 ts=347 id=205 MSFT SELL IOC px=10004 qty=99
+  CANCELED seq=339 ts=347 id=205 qty=99
+R CANCEL MSFT id=136 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=348
+  REJECTED seq=340 ts=348 id=136 reason=5
+R MODIFY AAPL id=145 BUY LIMIT px=10003 qty=22 trig=0 disp=0 p=0 ts=349
+  REJECTED seq=368 ts=349 id=145 reason=5
+R ADD AAPL id=206 SELL IOC px=10006 qty=82 trig=0 disp=0 p=2 ts=350
+  ACCEPTED seq=369 ts=350 id=206 AAPL SELL IOC px=10006 qty=82
+  CANCELED seq=370 ts=350 id=206 qty=82
+R ADD AAPL id=207 SELL LIMIT px=10000 qty=84 trig=0 disp=0 p=2 ts=351
+  ACCEPTED seq=371 ts=351 id=207 AAPL SELL LIMIT px=10000 qty=84
+  RESTED seq=372 ts=351 id=207 AAPL SELL px=10000 qty=84
+R ADD AAPL id=208 SELL LIMIT px=9998 qty=69 trig=0 disp=0 p=5 ts=352
+  ACCEPTED seq=373 ts=352 id=208 AAPL SELL LIMIT px=9998 qty=69
+  RESTED seq=374 ts=352 id=208 AAPL SELL px=9998 qty=69
+R ADD AAPL id=209 BUY STOP px=0 qty=79 trig=10010 disp=0 p=8 ts=353
+  ACCEPTED seq=375 ts=353 id=209 AAPL BUY STOP px=10010 qty=79
+R ADD MSFT id=210 BUY IOC px=9983 qty=34 trig=0 disp=0 p=4 ts=354
+  ACCEPTED seq=341 ts=354 id=210 MSFT BUY IOC px=9983 qty=34
+  CANCELED seq=342 ts=354 id=210 qty=34
+R CANCEL AAPL id=75 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=355
+  REJECTED seq=376 ts=355 id=75 reason=5
+R ADD MSFT id=211 SELL LIMIT px=10015 qty=41 trig=0 disp=0 p=4 ts=356
+  ACCEPTED seq=343 ts=356 id=211 MSFT SELL LIMIT px=10015 qty=41
+  RESTED seq=344 ts=356 id=211 MSFT SELL px=10015 qty=41
+R ADD AAPL id=212 BUY IOC px=9993 qty=2 trig=0 disp=0 p=7 ts=357
+  ACCEPTED seq=377 ts=357 id=212 AAPL BUY IOC px=9993 qty=2
+  CANCELED seq=378 ts=357 id=212 qty=2
+R CANCEL MSFT id=45 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=358
+  REJECTED seq=345 ts=358 id=45 reason=5
+R CANCEL MSFT id=111 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=359
+  REJECTED seq=346 ts=359 id=111 reason=5
+R ADD MSFT id=213 BUY LIMIT px=9979 qty=12 trig=0 disp=0 p=5 ts=360
+  ACCEPTED seq=347 ts=360 id=213 MSFT BUY LIMIT px=9979 qty=12
+  RESTED seq=348 ts=360 id=213 MSFT BUY px=9979 qty=12
+R CANCEL MSFT id=202 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=361
+  CANCELED seq=349 ts=361 id=202 qty=45
+R MODIFY AAPL id=91 BUY LIMIT px=9982 qty=55 trig=0 disp=0 p=0 ts=362
+  REJECTED seq=379 ts=362 id=91 reason=5
+R ADD AAPL id=214 BUY GTC px=9985 qty=44 trig=0 disp=0 p=8 ts=363
+  ACCEPTED seq=380 ts=363 id=214 AAPL BUY GTC px=9985 qty=44
+  RESTED seq=381 ts=363 id=214 AAPL BUY px=9985 qty=44
+R CANCEL AAPL id=172 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=364
+  CANCELED seq=382 ts=364 id=172 qty=14
+R ADD MSFT id=215 SELL LIMIT px=10006 qty=89 trig=0 disp=0 p=1 ts=365
+  ACCEPTED seq=350 ts=365 id=215 MSFT SELL LIMIT px=10006 qty=89
+  RESTED seq=351 ts=365 id=215 MSFT SELL px=10006 qty=89
+R ADD AAPL id=216 BUY POST_ONLY px=10004 qty=25 trig=0 disp=0 p=8 ts=366
+  REJECTED seq=383 ts=366 id=216 reason=8
+R ADD MSFT id=217 SELL LIMIT px=9994 qty=36 trig=0 disp=0 p=8 ts=367
+  ACCEPTED seq=352 ts=367 id=217 MSFT SELL LIMIT px=9994 qty=36
+  TRADE seq=353 ts=367 match=30 MSFT buy=120 sell=217 px=9996 qty=36
+  PARTIAL seq=354 ts=367 id=120 filled=36 left=54 px=9996
+  FILLED seq=355 ts=367 id=217 filled=36 px=9996
+R ADD AAPL id=218 SELL IOC px=10000 qty=71 trig=0 disp=0 p=8 ts=368
+  ACCEPTED seq=384 ts=368 id=218 AAPL SELL IOC px=10000 qty=71
+  CANCELED seq=385 ts=368 id=218 qty=71
+R MODIFY AAPL id=190 SELL LIMIT px=10009 qty=54 trig=0 disp=0 p=0 ts=369
+  REJECTED seq=386 ts=369 id=190 reason=9
+R ADD MSFT id=219 SELL IOC px=10002 qty=96 trig=0 disp=0 p=6 ts=370
+  ACCEPTED seq=356 ts=370 id=219 MSFT SELL IOC px=10002 qty=96
+  CANCELED seq=357 ts=370 id=219 qty=96
+R MODIFY AAPL id=122 BUY LIMIT px=9998 qty=47 trig=0 disp=0 p=0 ts=371
+  REJECTED seq=387 ts=371 id=122 reason=5
+R ADD MSFT id=220 BUY IOC px=9986 qty=19 trig=0 disp=0 p=5 ts=372
+  ACCEPTED seq=358 ts=372 id=220 MSFT BUY IOC px=9986 qty=19
+  CANCELED seq=359 ts=372 id=220 qty=19
+R ADD AAPL id=221 BUY ICEBERG px=9994 qty=68 trig=0 disp=22 p=6 ts=373
+  ACCEPTED seq=388 ts=373 id=221 AAPL BUY ICEBERG px=9994 qty=68
+  RESTED seq=389 ts=373 id=221 AAPL BUY px=9994 qty=22
+R ADD AAPL id=222 BUY LIMIT px=10004 qty=90 trig=0 disp=0 p=2 ts=374
+  ACCEPTED seq=390 ts=374 id=222 AAPL BUY LIMIT px=10004 qty=90
+  TRADE seq=391 ts=374 match=32 AAPL buy=222 sell=208 px=9998 qty=69
+  FILLED seq=392 ts=374 id=208 filled=69 px=9998
+  TRADE seq=393 ts=374 match=33 AAPL buy=222 sell=207 px=10000 qty=21
+  PARTIAL seq=394 ts=374 id=207 filled=21 left=63 px=10000
+  FILLED seq=395 ts=374 id=222 filled=90 px=10000
+R ADD MSFT id=223 SELL IOC px=10010 qty=86 trig=0 disp=0 p=6 ts=375
+  ACCEPTED seq=360 ts=375 id=223 MSFT SELL IOC px=10010 qty=86
+  CANCELED seq=361 ts=375 id=223 qty=86
+R MODIFY MSFT id=213 BUY LIMIT px=9993 qty=68 trig=0 disp=0 p=0 ts=376
+  CANCELED seq=362 ts=376 id=213 qty=12
+  ACCEPTED seq=363 ts=376 id=213 MSFT BUY LIMIT px=9993 qty=68
+  RESTED seq=364 ts=376 id=213 MSFT BUY px=9993 qty=68
+R ADD MSFT id=224 SELL LIMIT px=10016 qty=21 trig=0 disp=0 p=7 ts=377
+  ACCEPTED seq=365 ts=377 id=224 MSFT SELL LIMIT px=10016 qty=21
+  RESTED seq=366 ts=377 id=224 MSFT SELL px=10016 qty=21
+R ADD MSFT id=225 SELL LIMIT px=10011 qty=5 trig=0 disp=0 p=5 ts=378
+  ACCEPTED seq=367 ts=378 id=225 MSFT SELL LIMIT px=10011 qty=5
+  RESTED seq=368 ts=378 id=225 MSFT SELL px=10011 qty=5
+R ADD MSFT id=226 BUY FOK px=9997 qty=74 trig=0 disp=0 p=4 ts=379
+  REJECTED seq=369 ts=379 id=226 reason=7
+R ADD AAPL id=227 SELL LIMIT px=10008 qty=27 trig=0 disp=0 p=3 ts=380
+  ACCEPTED seq=396 ts=380 id=227 AAPL SELL LIMIT px=10008 qty=27
+  RESTED seq=397 ts=380 id=227 AAPL SELL px=10008 qty=27
+R ADD MSFT id=228 SELL IOC px=9994 qty=43 trig=0 disp=0 p=8 ts=381
+  ACCEPTED seq=370 ts=381 id=228 MSFT SELL IOC px=9994 qty=43
+  TRADE seq=371 ts=381 match=31 MSFT buy=120 sell=228 px=9996 qty=43
+  PARTIAL seq=372 ts=381 id=120 filled=43 left=11 px=9996
+  FILLED seq=373 ts=381 id=228 filled=43 px=9996
+R CANCEL MSFT id=90 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=382
+  REJECTED seq=374 ts=382 id=90 reason=5
+R CANCEL AAPL id=155 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=383
+  REJECTED seq=398 ts=383 id=155 reason=5
+R ADD MSFT id=229 BUY IOC px=9981 qty=33 trig=0 disp=0 p=4 ts=384
+  ACCEPTED seq=375 ts=384 id=229 MSFT BUY IOC px=9981 qty=33
+  CANCELED seq=376 ts=384 id=229 qty=33
+R ADD MSFT id=230 BUY LIMIT px=9981 qty=40 trig=0 disp=0 p=5 ts=385
+  ACCEPTED seq=377 ts=385 id=230 MSFT BUY LIMIT px=9981 qty=40
+  RESTED seq=378 ts=385 id=230 MSFT BUY px=9981 qty=40
+R MODIFY MSFT id=104 SELL LIMIT px=10010 qty=18 trig=0 disp=0 p=0 ts=386
+  REJECTED seq=379 ts=386 id=104 reason=5
+R CANCEL AAPL id=110 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=387
+  REJECTED seq=399 ts=387 id=110 reason=5
+R ADD MSFT id=231 SELL IOC px=10007 qty=5 trig=0 disp=0 p=1 ts=388
+  ACCEPTED seq=380 ts=388 id=231 MSFT SELL IOC px=10007 qty=5
+  CANCELED seq=381 ts=388 id=231 qty=5
+R ADD MSFT id=232 BUY LIMIT px=9999 qty=50 trig=0 disp=0 p=1 ts=389
+  ACCEPTED seq=382 ts=389 id=232 MSFT BUY LIMIT px=9999 qty=50
+  TRADE seq=383 ts=389 match=32 MSFT buy=232 sell=184 px=9999 qty=50
+  PARTIAL seq=384 ts=389 id=184 filled=50 left=25 px=9999
+  FILLED seq=385 ts=389 id=232 filled=50 px=9999
+R ADD MSFT id=233 SELL IOC px=9997 qty=52 trig=0 disp=0 p=4 ts=390
+  ACCEPTED seq=386 ts=390 id=233 MSFT SELL IOC px=9997 qty=52
+  CANCELED seq=387 ts=390 id=233 qty=52
+R ADD MSFT id=234 SELL LIMIT px=10013 qty=72 trig=0 disp=0 p=4 ts=391
+  ACCEPTED seq=388 ts=391 id=234 MSFT SELL LIMIT px=10013 qty=72
+  RESTED seq=389 ts=391 id=234 MSFT SELL px=10013 qty=72
+R ADD AAPL id=235 SELL MARKET px=0 qty=36 trig=0 disp=0 p=6 ts=392
+  ACCEPTED seq=400 ts=392 id=235 AAPL SELL MARKET px=0 qty=36
+  TRADE seq=401 ts=392 match=34 AAPL buy=195 sell=235 px=9997 qty=36
+  PARTIAL seq=402 ts=392 id=195 filled=36 left=51 px=9997
+  FILLED seq=403 ts=392 id=235 filled=36 px=9997
+R ADD AAPL id=236 SELL LIMIT px=10008 qty=19 trig=0 disp=0 p=2 ts=393
+  ACCEPTED seq=404 ts=393 id=236 AAPL SELL LIMIT px=10008 qty=19
+  RESTED seq=405 ts=393 id=236 AAPL SELL px=10008 qty=19
+R MODIFY AAPL id=169 BUY LIMIT px=9995 qty=17 trig=0 disp=0 p=0 ts=394
+  CANCELED seq=406 ts=394 id=169 qty=25
+  ACCEPTED seq=407 ts=394 id=169 AAPL BUY LIMIT px=9995 qty=17
+  RESTED seq=408 ts=394 id=169 AAPL BUY px=9995 qty=17
+R ADD MSFT id=237 BUY LIMIT px=9994 qty=45 trig=0 disp=0 p=2 ts=395
+  ACCEPTED seq=390 ts=395 id=237 MSFT BUY LIMIT px=9994 qty=45
+  RESTED seq=391 ts=395 id=237 MSFT BUY px=9994 qty=45
+R MODIFY AAPL id=203 BUY LIMIT px=9985 qty=83 trig=0 disp=0 p=0 ts=396
+  REJECTED seq=409 ts=396 id=203 reason=5
+R ADD AAPL id=238 BUY IOC px=9983 qty=16 trig=0 disp=0 p=1 ts=397
+  ACCEPTED seq=410 ts=397 id=238 AAPL BUY IOC px=9983 qty=16
+  CANCELED seq=411 ts=397 id=238 qty=16
+R ADD MSFT id=239 BUY ICEBERG px=9994 qty=45 trig=0 disp=20 p=2 ts=398
+  ACCEPTED seq=392 ts=398 id=239 MSFT BUY ICEBERG px=9994 qty=45
+  RESTED seq=393 ts=398 id=239 MSFT BUY px=9994 qty=20
+R CANCEL MSFT id=131 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=399
+  REJECTED seq=394 ts=399 id=131 reason=5
+R MODIFY MSFT id=119 BUY LIMIT px=10000 qty=81 trig=0 disp=0 p=0 ts=400
+  REJECTED seq=395 ts=400 id=119 reason=9
+R CANCEL AAPL id=145 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=401
+  REJECTED seq=412 ts=401 id=145 reason=5
+R CANCEL AAPL id=158 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=402
+  CANCELED seq=413 ts=402 id=158 qty=31
+R ADD AAPL id=240 BUY IOC px=10001 qty=70 trig=0 disp=0 p=2 ts=403
+  ACCEPTED seq=414 ts=403 id=240 AAPL BUY IOC px=10001 qty=70
+  TRADE seq=415 ts=403 match=35 AAPL buy=240 sell=207 px=10000 qty=63
+  FILLED seq=416 ts=403 id=207 filled=63 px=10000
+  PARTIAL seq=417 ts=403 id=240 filled=63 left=7 px=10000
+  CANCELED seq=418 ts=403 id=240 qty=7
+R ADD AAPL id=241 SELL ICEBERG px=10009 qty=74 trig=0 disp=17 p=7 ts=404
+  ACCEPTED seq=419 ts=404 id=241 AAPL SELL ICEBERG px=10009 qty=74
+  RESTED seq=420 ts=404 id=241 AAPL SELL px=10009 qty=17
+R ADD AAPL id=242 SELL IOC px=10015 qty=78 trig=0 disp=0 p=1 ts=405
+  ACCEPTED seq=421 ts=405 id=242 AAPL SELL IOC px=10015 qty=78
+  CANCELED seq=422 ts=405 id=242 qty=78
+R MODIFY MSFT id=233 SELL LIMIT px=9999 qty=92 trig=0 disp=0 p=0 ts=406
+  REJECTED seq=396 ts=406 id=233 reason=5
+R ADD AAPL id=243 SELL STOP_LIMIT px=10001 qty=90 trig=9990 disp=0 p=3 ts=407
+  ACCEPTED seq=423 ts=407 id=243 AAPL SELL STOP_LIMIT px=10001 qty=90
+R ADD MSFT id=244 SELL STOP_LIMIT px=10005 qty=30 trig=9995 disp=0 p=3 ts=408
+  ACCEPTED seq=397 ts=408 id=244 MSFT SELL STOP_LIMIT px=10005 qty=30
+R CANCEL AAPL id=105 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=409
+  REJECTED seq=424 ts=409 id=105 reason=5
+R CANCEL MSFT id=220 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=410
+  REJECTED seq=398 ts=410 id=220 reason=5
+R ADD MSFT id=245 BUY LIMIT px=9998 qty=11 trig=0 disp=0 p=7 ts=411
+  ACCEPTED seq=399 ts=411 id=245 MSFT BUY LIMIT px=9998 qty=11
+  RESTED seq=400 ts=411 id=245 MSFT BUY px=9998 qty=11
+R ADD AAPL id=246 BUY IOC px=10003 qty=2 trig=0 disp=0 p=3 ts=412
+  ACCEPTED seq=425 ts=412 id=246 AAPL BUY IOC px=10003 qty=2
+  TRADE seq=426 ts=412 match=36 AAPL buy=246 sell=178 px=10002 qty=2
+  FILLED seq=427 ts=412 id=178 filled=2 px=10002
+  FILLED seq=428 ts=412 id=246 filled=2 px=10002
+R ADD AAPL id=247 BUY STOP_LIMIT px=10000 qty=87 trig=10002 disp=0 p=4 ts=413
+  ACCEPTED seq=429 ts=413 id=247 AAPL BUY STOP_LIMIT px=10000 qty=87
+R CANCEL AAPL id=70 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=414
+  CANCELED seq=430 ts=414 id=70 qty=64
+R ADD MSFT id=248 BUY LIMIT px=9993 qty=49 trig=0 disp=0 p=8 ts=415
+  ACCEPTED seq=401 ts=415 id=248 MSFT BUY LIMIT px=9993 qty=49
+  RESTED seq=402 ts=415 id=248 MSFT BUY px=9993 qty=49
+R CANCEL MSFT id=63 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=416
+  CANCELED seq=403 ts=416 id=63 qty=14
+R ADD AAPL id=249 BUY LIMIT px=9997 qty=44 trig=0 disp=0 p=6 ts=417
+  ACCEPTED seq=431 ts=417 id=249 AAPL BUY LIMIT px=9997 qty=44
+  RESTED seq=432 ts=417 id=249 AAPL BUY px=9997 qty=44
+R ADD AAPL id=250 SELL LIMIT px=10001 qty=39 trig=0 disp=0 p=3 ts=418
+  ACCEPTED seq=433 ts=418 id=250 AAPL SELL LIMIT px=10001 qty=39
+  RESTED seq=434 ts=418 id=250 AAPL SELL px=10001 qty=39
+R ADD MSFT id=251 SELL LIMIT px=10018 qty=30 trig=0 disp=0 p=1 ts=419
+  ACCEPTED seq=404 ts=419 id=251 MSFT SELL LIMIT px=10018 qty=30
+  RESTED seq=405 ts=419 id=251 MSFT SELL px=10018 qty=30
+R CANCEL MSFT id=150 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=420
+  REJECTED seq=406 ts=420 id=150 reason=5
+R ADD MSFT id=252 SELL GTC px=10006 qty=98 trig=0 disp=0 p=6 ts=421
+  ACCEPTED seq=407 ts=421 id=252 MSFT SELL GTC px=10006 qty=98
+  RESTED seq=408 ts=421 id=252 MSFT SELL px=10006 qty=98
+R MODIFY MSFT id=239 BUY LIMIT px=9983 qty=18 trig=0 disp=0 p=0 ts=422
+  CANCELED seq=409 ts=422 id=239 qty=45
+  ACCEPTED seq=410 ts=422 id=239 MSFT BUY ICEBERG px=9983 qty=18
+  RESTED seq=411 ts=422 id=239 MSFT BUY px=9983 qty=18
+R ADD AAPL id=253 BUY STOP px=0 qty=25 trig=10008 disp=0 p=3 ts=423
+  ACCEPTED seq=435 ts=423 id=253 AAPL BUY STOP px=10008 qty=25
+R CANCEL MSFT id=234 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=424
+  CANCELED seq=412 ts=424 id=234 qty=72
+R CANCEL MSFT id=233 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=425
+  REJECTED seq=413 ts=425 id=233 reason=5
+R CANCEL MSFT id=225 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=426
+  CANCELED seq=414 ts=426 id=225 qty=5
+R ADD AAPL id=254 SELL LIMIT px=10016 qty=53 trig=0 disp=0 p=4 ts=427
+  ACCEPTED seq=436 ts=427 id=254 AAPL SELL LIMIT px=10016 qty=53
+  RESTED seq=437 ts=427 id=254 AAPL SELL px=10016 qty=53
+R ADD MSFT id=255 SELL LIMIT px=9994 qty=44 trig=0 disp=0 p=1 ts=428
+  ACCEPTED seq=415 ts=428 id=255 MSFT SELL LIMIT px=9994 qty=44
+  TRADE seq=416 ts=428 match=33 MSFT buy=245 sell=255 px=9998 qty=11
+  FILLED seq=417 ts=428 id=245 filled=11 px=9998
+  TRADE seq=418 ts=428 match=34 MSFT buy=120 sell=255 px=9996 qty=11
+  FILLED seq=419 ts=428 id=120 filled=11 px=9996
+  TRADE seq=420 ts=428 match=35 MSFT buy=237 sell=255 px=9994 qty=22
+  PARTIAL seq=421 ts=428 id=237 filled=22 left=23 px=9994
+  RESTED seq=422 ts=428 id=244 MSFT SELL px=10005 qty=30
+  FILLED seq=423 ts=428 id=255 filled=44 px=9994
+R ADD MSFT id=256 SELL IOC px=10007 qty=55 trig=0 disp=0 p=6 ts=429
+  ACCEPTED seq=424 ts=429 id=256 MSFT SELL IOC px=10007 qty=55
+  CANCELED seq=425 ts=429 id=256 qty=55
+R ADD AAPL id=257 BUY IOC px=9988 qty=33 trig=0 disp=0 p=6 ts=430
+  ACCEPTED seq=438 ts=430 id=257 AAPL BUY IOC px=9988 qty=33
+  CANCELED seq=439 ts=430 id=257 qty=33
+R MODIFY AAPL id=194 BUY LIMIT px=9983 qty=95 trig=0 disp=0 p=0 ts=431
+  REJECTED seq=440 ts=431 id=194 reason=5
+R MODIFY MSFT id=188 SELL LIMIT px=10010 qty=34 trig=0 disp=0 p=0 ts=432
+  REJECTED seq=426 ts=432 id=188 reason=5
+R MODIFY AAPL id=197 SELL LIMIT px=10014 qty=7 trig=0 disp=0 p=0 ts=433
+  REJECTED seq=441 ts=433 id=197 reason=9
+R CANCEL MSFT id=196 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=434
+  REJECTED seq=427 ts=434 id=196 reason=5
+R MODIFY MSFT id=217 SELL LIMIT px=9997 qty=72 trig=0 disp=0 p=0 ts=435
+  REJECTED seq=428 ts=435 id=217 reason=5
+R CANCEL AAPL id=168 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=436
+  REJECTED seq=442 ts=436 id=168 reason=5
+R ADD AAPL id=258 SELL LIMIT px=10019 qty=53 trig=0 disp=0 p=4 ts=437
+  ACCEPTED seq=443 ts=437 id=258 AAPL SELL LIMIT px=10019 qty=53
+  RESTED seq=444 ts=437 id=258 AAPL SELL px=10019 qty=53
+R ADD AAPL id=259 BUY LIMIT px=10000 qty=49 trig=0 disp=0 p=4 ts=438
+  ACCEPTED seq=445 ts=438 id=259 AAPL BUY LIMIT px=10000 qty=49
+  RESTED seq=446 ts=438 id=259 AAPL BUY px=10000 qty=49
+R ADD AAPL id=260 BUY IOC px=9995 qty=66 trig=0 disp=0 p=2 ts=439
+  ACCEPTED seq=447 ts=439 id=260 AAPL BUY IOC px=9995 qty=66
+  CANCELED seq=448 ts=439 id=260 qty=66
+R CANCEL MSFT id=230 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=440
+  CANCELED seq=429 ts=440 id=230 qty=40
+R ADD AAPL id=261 SELL ICEBERG px=10013 qty=5 trig=0 disp=4 p=1 ts=441
+  ACCEPTED seq=449 ts=441 id=261 AAPL SELL ICEBERG px=10013 qty=5
+  RESTED seq=450 ts=441 id=261 AAPL SELL px=10013 qty=4
+R CANCEL MSFT id=245 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=442
+  REJECTED seq=430 ts=442 id=245 reason=5
+R ADD AAPL id=262 SELL LIMIT px=10015 qty=13 trig=0 disp=0 p=8 ts=443
+  ACCEPTED seq=451 ts=443 id=262 AAPL SELL LIMIT px=10015 qty=13
+  RESTED seq=452 ts=443 id=262 AAPL SELL px=10015 qty=13
+R ADD MSFT id=263 BUY LIMIT px=9983 qty=35 trig=0 disp=0 p=3 ts=444
+  ACCEPTED seq=431 ts=444 id=263 MSFT BUY LIMIT px=9983 qty=35
+  RESTED seq=432 ts=444 id=263 MSFT BUY px=9983 qty=35
+R ADD MSFT id=264 BUY IOC px=9986 qty=41 trig=0 disp=0 p=5 ts=445
+  ACCEPTED seq=433 ts=445 id=264 MSFT BUY IOC px=9986 qty=41
+  CANCELED seq=434 ts=445 id=264 qty=41
+R CANCEL AAPL id=243 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=446
+  CANCELED seq=453 ts=446 id=243 qty=90
+R ADD MSFT id=265 SELL STOP px=0 qty=75 trig=9991 disp=0 p=3 ts=447
+  ACCEPTED seq=435 ts=447 id=265 MSFT SELL STOP px=9991 qty=75
+R CANCEL AAPL id=126 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=448
+  REJECTED seq=454 ts=448 id=126 reason=5
+R ADD AAPL id=266 BUY LIMIT px=9985 qty=93 trig=0 disp=0 p=7 ts=449
+  ACCEPTED seq=455 ts=449 id=266 AAPL BUY LIMIT px=9985 qty=93
+  RESTED seq=456 ts=449 id=266 AAPL BUY px=9985 qty=93
+R ADD MSFT id=267 BUY ICEBERG px=9992 qty=5 trig=0 disp=2 p=6 ts=450
+  ACCEPTED seq=436 ts=450 id=267 MSFT BUY ICEBERG px=9992 qty=5
+  RESTED seq=437 ts=450 id=267 MSFT BUY px=9992 qty=2
+R CANCEL AAPL id=94 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=451
+  REJECTED seq=457 ts=451 id=94 reason=5
+R ADD MSFT id=268 SELL POST_ONLY px=10012 qty=2 trig=0 disp=0 p=1 ts=452
+  ACCEPTED seq=438 ts=452 id=268 MSFT SELL POST_ONLY px=10012 qty=2
+  RESTED seq=439 ts=452 id=268 MSFT SELL px=10012 qty=2
+R MODIFY AAPL id=214 BUY LIMIT px=9995 qty=90 trig=0 disp=0 p=0 ts=453
+  CANCELED seq=458 ts=453 id=214 qty=44
+  ACCEPTED seq=459 ts=453 id=214 AAPL BUY GTC px=9995 qty=90
+  RESTED seq=460 ts=453 id=214 AAPL BUY px=9995 qty=90
+R ADD MSFT id=269 BUY POST_ONLY px=9999 qty=65 trig=0 disp=0 p=5 ts=454
+  REJECTED seq=440 ts=454 id=269 reason=8
+R CANCEL MSFT id=256 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=455
+  REJECTED seq=441 ts=455 id=256 reason=5
+R ADD AAPL id=270 SELL STOP px=0 qty=66 trig=9996 disp=0 p=4 ts=456
+  ACCEPTED seq=461 ts=456 id=270 AAPL SELL STOP px=9996 qty=66
+R ADD MSFT id=271 BUY LIMIT px=10003 qty=94 trig=0 disp=0 p=1 ts=457
+  ACCEPTED seq=442 ts=457 id=271 MSFT BUY LIMIT px=10003 qty=94
+  TRADE seq=443 ts=457 match=36 MSFT buy=271 sell=184 px=9999 qty=25
+  FILLED seq=444 ts=457 id=184 filled=25 px=9999
+  TRADE seq=445 ts=457 match=37 MSFT buy=271 sell=147 px=10001 qty=9
+  FILLED seq=446 ts=457 id=147 filled=9 px=10001
+  TRADE seq=447 ts=457 match=38 MSFT buy=271 sell=162 px=10002 qty=28
+  FILLED seq=448 ts=457 id=162 filled=28 px=10002
+  PARTIAL seq=449 ts=457 id=271 filled=62 left=32 px=10002
+  RESTED seq=450 ts=457 id=271 MSFT BUY px=10003 qty=32
+R ADD AAPL id=272 BUY MARKET px=0 qty=2 trig=0 disp=0 p=6 ts=458
+  ACCEPTED seq=462 ts=458 id=272 AAPL BUY MARKET px=0 qty=2
+  TRADE seq=463 ts=458 match=37 AAPL buy=272 sell=250 px=10001 qty=2
+  PARTIAL seq=464 ts=458 id=250 filled=2 left=37 px=10001
+  FILLED seq=465 ts=458 id=272 filled=2 px=10001
+R MODIFY AAPL id=159 BUY LIMIT px=9989 qty=70 trig=0 disp=0 p=0 ts=459
+  CANCELED seq=466 ts=459 id=159 qty=60
+  ACCEPTED seq=467 ts=459 id=159 AAPL BUY POST_ONLY px=9989 qty=70
+  RESTED seq=468 ts=459 id=159 AAPL BUY px=9989 qty=70
+R ADD AAPL id=273 BUY IOC px=9982 qty=59 trig=0 disp=0 p=2 ts=460
+  ACCEPTED seq=469 ts=460 id=273 AAPL BUY IOC px=9982 qty=59
+  CANCELED seq=470 ts=460 id=273 qty=59
+R CANCEL MSFT id=130 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=461
+  CANCELED seq=451 ts=461 id=130 qty=88
+R ADD AAPL id=274 SELL STOP px=0 qty=50 trig=9993 disp=0 p=6 ts=462
+  ACCEPTED seq=471 ts=462 id=274 AAPL SELL STOP px=9993 qty=50
+R MODIFY AAPL id=197 SELL LIMIT px=10014 qty=31 trig=0 disp=0 p=0 ts=463
+  REJECTED seq=472 ts=463 id=197 reason=9
+R ADD AAPL id=275 SELL LIMIT px=10018 qty=18 trig=0 disp=0 p=1 ts=464
+  ACCEPTED seq=473 ts=464 id=275 AAPL SELL LIMIT px=10018 qty=18
+  RESTED seq=474 ts=464 id=275 AAPL SELL px=10018 qty=18
+R ADD AAPL id=276 BUY LIMIT px=9983 qty=37 trig=0 disp=0 p=1 ts=465
+  ACCEPTED seq=475 ts=465 id=276 AAPL BUY LIMIT px=9983 qty=37
+  RESTED seq=476 ts=465 id=276 AAPL BUY px=9983 qty=37
+R ADD MSFT id=277 SELL LIMIT px=10012 qty=14 trig=0 disp=0 p=8 ts=466
+  ACCEPTED seq=452 ts=466 id=277 MSFT SELL LIMIT px=10012 qty=14
+  RESTED seq=453 ts=466 id=277 MSFT SELL px=10012 qty=14
+R CANCEL MSFT id=109 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=467
+  CANCELED seq=454 ts=467 id=109 qty=61
+R ADD MSFT id=278 SELL LIMIT px=9994 qty=5 trig=0 disp=0 p=8 ts=468
+  ACCEPTED seq=455 ts=468 id=278 MSFT SELL LIMIT px=9994 qty=5
+  TRADE seq=456 ts=468 match=39 MSFT buy=271 sell=278 px=10003 qty=5
+  PARTIAL seq=457 ts=468 id=271 filled=5 left=27 px=10003
+  FILLED seq=458 ts=468 id=278 filled=5 px=10003
+R MODIFY AAPL id=128 SELL LIMIT px=10016 qty=54 trig=0 disp=0 p=0 ts=469
+  REJECTED seq=477 ts=469 id=128 reason=5
+R CANCEL MSFT id=200 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=470
+  REJECTED seq=459 ts=470 id=200 reason=5
+R CANCEL AAPL id=273 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=471
+  REJECTED seq=478 ts=471 id=273 reason=5
+R CANCEL MSFT id=215 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=472
+  CANCELED seq=460 ts=472 id=215 qty=89
+R CANCEL AAPL id=195 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=473
+  CANCELED seq=479 ts=473 id=195 qty=51
+R ADD AAPL id=279 BUY IOC px=9999 qty=32 trig=0 disp=0 p=5 ts=474
+  ACCEPTED seq=480 ts=474 id=279 AAPL BUY IOC px=9999 qty=32
+  CANCELED seq=481 ts=474 id=279 qty=32
+R ADD AAPL id=280 BUY LIMIT px=9980 qty=52 trig=0 disp=0 p=7 ts=475
+  ACCEPTED seq=482 ts=475 id=280 AAPL BUY LIMIT px=9980 qty=52
+  RESTED seq=483 ts=475 id=280 AAPL BUY px=9980 qty=52
+R CANCEL AAPL id=175 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=476
+  REJECTED seq=484 ts=476 id=175 reason=5
+R ADD MSFT id=281 SELL GTC px=9999 qty=97 trig=0 disp=0 p=3 ts=477
+  ACCEPTED seq=461 ts=477 id=281 MSFT SELL GTC px=9999 qty=97
+  TRADE seq=462 ts=477 match=40 MSFT buy=271 sell=281 px=10003 qty=27
+  FILLED seq=463 ts=477 id=271 filled=27 px=10003
+  PARTIAL seq=464 ts=477 id=281 filled=27 left=70 px=10003
+  RESTED seq=465 ts=477 id=281 MSFT SELL px=9999 qty=70
+R ADD AAPL id=282 BUY IOC px=9989 qty=7 trig=0 disp=0 p=1 ts=478
+  ACCEPTED seq=485 ts=478 id=282 AAPL BUY IOC px=9989 qty=7
+  CANCELED seq=486 ts=478 id=282 qty=7
+R ADD MSFT id=283 SELL IOC px=10001 qty=52 trig=0 disp=0 p=6 ts=479
+  ACCEPTED seq=466 ts=479 id=283 MSFT SELL IOC px=10001 qty=52
+  CANCELED seq=467 ts=479 id=283 qty=52
+R CANCEL MSFT id=108 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=480
+  REJECTED seq=468 ts=480 id=108 reason=5
+R CANCEL MSFT id=185 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=481
+  REJECTED seq=469 ts=481 id=185 reason=5
+R MODIFY AAPL id=260 BUY LIMIT px=9999 qty=25 trig=0 disp=0 p=0 ts=482
+  REJECTED seq=487 ts=482 id=260 reason=5
+R ADD AAPL id=284 BUY IOC px=9989 qty=85 trig=0 disp=0 p=3 ts=483
+  ACCEPTED seq=488 ts=483 id=284 AAPL BUY IOC px=9989 qty=85
+  CANCELED seq=489 ts=483 id=284 qty=85
+R ADD MSFT id=285 SELL IOC px=9998 qty=36 trig=0 disp=0 p=6 ts=484
+  ACCEPTED seq=470 ts=484 id=285 MSFT SELL IOC px=9998 qty=36
+  CANCELED seq=471 ts=484 id=285 qty=36
+R CANCEL AAPL id=174 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=485
+  REJECTED seq=490 ts=485 id=174 reason=5
+R CANCEL MSFT id=166 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=486
+  REJECTED seq=472 ts=486 id=166 reason=5
+R ADD MSFT id=286 BUY STOP_LIMIT px=9983 qty=58 trig=10003 disp=0 p=5 ts=487
+  ACCEPTED seq=473 ts=487 id=286 MSFT BUY STOP_LIMIT px=9983 qty=58
+R CANCEL AAPL id=85 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=488
+  CANCELED seq=491 ts=488 id=85 qty=11
+R ADD MSFT id=287 SELL GTC px=10007 qty=62 trig=0 disp=0 p=4 ts=489
+  ACCEPTED seq=474 ts=489 id=287 MSFT SELL GTC px=10007 qty=62
+  RESTED seq=475 ts=489 id=287 MSFT SELL px=10007 qty=62
+R CANCEL AAPL id=135 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=490
+  REJECTED seq=492 ts=490 id=135 reason=5
+R ADD MSFT id=288 BUY LIMIT px=9992 qty=70 trig=0 disp=0 p=7 ts=491
+  ACCEPTED seq=476 ts=491 id=288 MSFT BUY LIMIT px=9992 qty=70
+  RESTED seq=477 ts=491 id=288 MSFT BUY px=9992 qty=70
+R MODIFY MSFT id=160 BUY LIMIT px=9987 qty=100 trig=0 disp=0 p=0 ts=492
+  CANCELED seq=478 ts=492 id=160 qty=25
+  ACCEPTED seq=479 ts=492 id=160 MSFT BUY LIMIT px=9987 qty=100
+  RESTED seq=480 ts=492 id=160 MSFT BUY px=9987 qty=100
+R ADD MSFT id=289 SELL LIMIT px=9996 qty=73 trig=0 disp=0 p=8 ts=493
+  ACCEPTED seq=481 ts=493 id=289 MSFT SELL LIMIT px=9996 qty=73
+  RESTED seq=482 ts=493 id=289 MSFT SELL px=9996 qty=73
+R ADD MSFT id=290 BUY STOP px=0 qty=10 trig=10008 disp=0 p=5 ts=494
+  ACCEPTED seq=483 ts=494 id=290 MSFT BUY STOP px=10008 qty=10
+R ADD MSFT id=291 SELL ICEBERG px=10013 qty=91 trig=0 disp=51 p=8 ts=495
+  ACCEPTED seq=484 ts=495 id=291 MSFT SELL ICEBERG px=10013 qty=91
+  RESTED seq=485 ts=495 id=291 MSFT SELL px=10013 qty=51
+R CANCEL MSFT id=104 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=496
+  REJECTED seq=486 ts=496 id=104 reason=5
+R ADD AAPL id=292 BUY IOC px=9988 qty=15 trig=0 disp=0 p=7 ts=497
+  ACCEPTED seq=493 ts=497 id=292 AAPL BUY IOC px=9988 qty=15
+  CANCELED seq=494 ts=497 id=292 qty=15
+R MODIFY MSFT id=139 SELL LIMIT px=9998 qty=26 trig=0 disp=0 p=0 ts=498
+  CANCELED seq=487 ts=498 id=139 qty=31
+  ACCEPTED seq=488 ts=498 id=139 MSFT SELL LIMIT px=9998 qty=26
+  RESTED seq=489 ts=498 id=139 MSFT SELL px=9998 qty=26
+R CANCEL AAPL id=214 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=499
+  CANCELED seq=495 ts=499 id=214 qty=90
+R MODIFY AAPL id=128 SELL LIMIT px=10014 qty=31 trig=0 disp=0 p=0 ts=500
+  REJECTED seq=496 ts=500 id=128 reason=5
+R ADD AAPL id=293 SELL ICEBERG px=10020 qty=37 trig=0 disp=9 p=7 ts=501
+  ACCEPTED seq=497 ts=501 id=293 AAPL SELL ICEBERG px=10020 qty=37
+  RESTED seq=498 ts=501 id=293 AAPL SELL px=10020 qty=9
+R CANCEL MSFT id=205 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=502
+  REJECTED seq=490 ts=502 id=205 reason=5
+R CANCEL MSFT id=226 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=503
+  REJECTED seq=491 ts=503 id=226 reason=5
+R ADD AAPL id=294 BUY LIMIT px=9986 qty=49 trig=0 disp=0 p=6 ts=504
+  ACCEPTED seq=499 ts=504 id=294 AAPL BUY LIMIT px=9986 qty=49
+  RESTED seq=500 ts=504 id=294 AAPL BUY px=9986 qty=49
+R ADD AAPL id=295 BUY LIMIT px=9996 qty=78 trig=0 disp=0 p=2 ts=505
+  ACCEPTED seq=501 ts=505 id=295 AAPL BUY LIMIT px=9996 qty=78
+  RESTED seq=502 ts=505 id=295 AAPL BUY px=9996 qty=78
+R ADD MSFT id=296 SELL LIMIT px=9998 qty=27 trig=0 disp=0 p=4 ts=506
+  ACCEPTED seq=492 ts=506 id=296 MSFT SELL LIMIT px=9998 qty=27
+  RESTED seq=493 ts=506 id=296 MSFT SELL px=9998 qty=27
+R CANCEL MSFT id=80 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=507
+  REJECTED seq=494 ts=507 id=80 reason=5
+R MODIFY AAPL id=242 SELL LIMIT px=10015 qty=72 trig=0 disp=0 p=0 ts=508
+  REJECTED seq=503 ts=508 id=242 reason=5
+R ADD MSFT id=297 BUY LIMIT px=10003 qty=85 trig=0 disp=0 p=7 ts=509
+  ACCEPTED seq=495 ts=509 id=297 MSFT BUY LIMIT px=10003 qty=85
+  TRADE seq=496 ts=509 match=41 MSFT buy=297 sell=289 px=9996 qty=73
+  FILLED seq=497 ts=509 id=289 filled=73 px=9996
+  TRADE seq=498 ts=509 match=42 MSFT buy=297 sell=139 px=9998 qty=12
+  PARTIAL seq=499 ts=509 id=139 filled=12 left=14 px=9998
+  FILLED seq=500 ts=509 id=297 filled=85 px=9998
+R ADD AAPL id=298 BUY POST_ONLY px=10001 qty=86 trig=0 disp=0 p=4 ts=510
+  REJECTED seq=504 ts=510 id=298 reason=8
+R ADD MSFT id=299 BUY LIMIT px=9996 qty=19 trig=0 disp=0 p=6 ts=511
+  ACCEPTED seq=501 ts=511 id=299 MSFT BUY LIMIT px=9996 qty=19
+  RESTED seq=502 ts=511 id=299 MSFT BUY px=9996 qty=19
+R CANCEL MSFT id=213 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=512
+  CANCELED seq=503 ts=512 id=213 qty=68
+R ADD AAPL id=300 BUY POST_ONLY px=10001 qty=9 trig=0 disp=0 p=8 ts=513
+  REJECTED seq=505 ts=513 id=300 reason=8
+R ADD AAPL id=301 BUY IOC px=10001 qty=57 trig=0 disp=0 p=2 ts=514
+  ACCEPTED seq=506 ts=514 id=301 AAPL BUY IOC px=10001 qty=57
+  TRADE seq=507 ts=514 match=38 AAPL buy=301 sell=250 px=10001 qty=37
+  FILLED seq=508 ts=514 id=250 filled=37 px=10001
+  PARTIAL seq=509 ts=514 id=301 filled=37 left=20 px=10001
+  CANCELED seq=510 ts=514 id=301 qty=20
+R ADD MSFT id=302 BUY ICEBERG px=9980 qty=23 trig=0 disp=6 p=3 ts=515
+  ACCEPTED seq=504 ts=515 id=302 MSFT BUY ICEBERG px=9980 qty=23
+  RESTED seq=505 ts=515 id=302 MSFT BUY px=9980 qty=6
+R ADD MSFT id=303 BUY STOP px=0 qty=67 trig=10008 disp=0 p=4 ts=516
+  ACCEPTED seq=506 ts=516 id=303 MSFT BUY STOP px=10008 qty=67
+R ADD MSFT id=304 BUY LIMIT px=9998 qty=94 trig=0 disp=0 p=8 ts=517
+  ACCEPTED seq=507 ts=517 id=304 MSFT BUY LIMIT px=9998 qty=94
+  TRADE seq=508 ts=517 match=43 MSFT buy=304 sell=139 px=9998 qty=14
+  FILLED seq=509 ts=517 id=139 filled=14 px=9998
+  TRADE seq=510 ts=517 match=44 MSFT buy=304 sell=296 px=9998 qty=27
+  FILLED seq=511 ts=517 id=296 filled=27 px=9998
+  PARTIAL seq=512 ts=517 id=304 filled=41 left=53 px=9998
+  RESTED seq=513 ts=517 id=304 MSFT BUY px=9998 qty=53
+R ADD MSFT id=305 BUY LIMIT px=9985 qty=97 trig=0 disp=0 p=4 ts=518
+  ACCEPTED seq=514 ts=518 id=305 MSFT BUY LIMIT px=9985 qty=97
+  RESTED seq=515 ts=518 id=305 MSFT BUY px=9985 qty=97
+R ADD MSFT id=306 SELL MARKET px=0 qty=62 trig=0 disp=0 p=5 ts=519
+  ACCEPTED seq=516 ts=519 id=306 MSFT SELL MARKET px=0 qty=62
+  TRADE seq=517 ts=519 match=45 MSFT buy=304 sell=306 px=9998 qty=53
+  FILLED seq=518 ts=519 id=304 filled=53 px=9998
+  TRADE seq=519 ts=519 match=46 MSFT buy=299 sell=306 px=9996 qty=9
+  PARTIAL seq=520 ts=519 id=299 filled=9 left=10 px=9996
+  FILLED seq=521 ts=519 id=306 filled=62 px=9996
+R ADD AAPL id=307 BUY LIMIT px=9983 qty=68 trig=0 disp=0 p=6 ts=520
+  ACCEPTED seq=511 ts=520 id=307 AAPL BUY LIMIT px=9983 qty=68
+  RESTED seq=512 ts=520 id=307 AAPL BUY px=9983 qty=68
+R MODIFY MSFT id=186 BUY LIMIT px=9989 qty=36 trig=0 disp=0 p=0 ts=521
+  REJECTED seq=522 ts=521 id=186 reason=5
+R CANCEL MSFT id=120 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=522
+  REJECTED seq=523 ts=522 id=120 reason=5
+R ADD AAPL id=308 SELL STOP px=0 qty=87 trig=9992 disp=0 p=2 ts=523
+  ACCEPTED seq=513 ts=523 id=308 AAPL SELL STOP px=9992 qty=87
+R ADD MSFT id=309 BUY MARKET px=0 qty=18 trig=0 disp=0 p=4 ts=524
+  ACCEPTED seq=524 ts=524 id=309 MSFT BUY MARKET px=0 qty=18
+  TRADE seq=525 ts=524 match=47 MSFT buy=309 sell=281 px=9999 qty=18
+  PARTIAL seq=526 ts=524 id=281 filled=18 left=52 px=9999
+  FILLED seq=527 ts=524 id=309 filled=18 px=9999
+R ADD AAPL id=310 BUY LIMIT px=9989 qty=14 trig=0 disp=0 p=7 ts=525
+  ACCEPTED seq=514 ts=525 id=310 AAPL BUY LIMIT px=9989 qty=14
+  RESTED seq=515 ts=525 id=310 AAPL BUY px=9989 qty=14
+R ADD MSFT id=311 SELL POST_ONLY px=10006 qty=75 trig=0 disp=0 p=4 ts=526
+  ACCEPTED seq=528 ts=526 id=311 MSFT SELL POST_ONLY px=10006 qty=75
+  RESTED seq=529 ts=526 id=311 MSFT SELL px=10006 qty=75
+R CANCEL AAPL id=227 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=527
+  CANCELED seq=516 ts=527 id=227 qty=27
+R MODIFY MSFT id=263 BUY LIMIT px=9998 qty=52 trig=0 disp=0 p=0 ts=528
+  CANCELED seq=530 ts=528 id=263 qty=35
+  ACCEPTED seq=531 ts=528 id=263 MSFT BUY LIMIT px=9998 qty=52
+  RESTED seq=532 ts=528 id=263 MSFT BUY px=9998 qty=52
+R ADD AAPL id=312 BUY POST_ONLY px=9992 qty=51 trig=0 disp=0 p=6 ts=529
+  ACCEPTED seq=517 ts=529 id=312 AAPL BUY POST_ONLY px=9992 qty=51
+  RESTED seq=518 ts=529 id=312 AAPL BUY px=9992 qty=51
+R ADD AAPL id=313 BUY IOC px=9994 qty=89 trig=0 disp=0 p=8 ts=530
+  ACCEPTED seq=519 ts=530 id=313 AAPL BUY IOC px=9994 qty=89
+  CANCELED seq=520 ts=530 id=313 qty=89
+R ADD AAPL id=314 SELL LIMIT px=10002 qty=86 trig=0 disp=0 p=4 ts=531
+  ACCEPTED seq=521 ts=531 id=314 AAPL SELL LIMIT px=10002 qty=86
+  RESTED seq=522 ts=531 id=314 AAPL SELL px=10002 qty=86
+R ADD MSFT id=315 SELL LIMIT px=9997 qty=35 trig=0 disp=0 p=3 ts=532
+  ACCEPTED seq=533 ts=532 id=315 MSFT SELL LIMIT px=9997 qty=35
+  TRADE seq=534 ts=532 match=48 MSFT buy=263 sell=315 px=9998 qty=35
+  PARTIAL seq=535 ts=532 id=263 filled=35 left=17 px=9998
+  FILLED seq=536 ts=532 id=315 filled=35 px=9998
+R CANCEL AAPL id=276 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=533
+  CANCELED seq=523 ts=533 id=276 qty=37
+R ADD AAPL id=316 SELL LIMIT px=10001 qty=23 trig=0 disp=0 p=6 ts=534
+  ACCEPTED seq=524 ts=534 id=316 AAPL SELL LIMIT px=10001 qty=23
+  RESTED seq=525 ts=534 id=316 AAPL SELL px=10001 qty=23
+R ADD MSFT id=317 SELL IOC px=10011 qty=8 trig=0 disp=0 p=2 ts=535
+  ACCEPTED seq=537 ts=535 id=317 MSFT SELL IOC px=10011 qty=8
+  CANCELED seq=538 ts=535 id=317 qty=8
+R CANCEL AAPL id=292 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=536
+  REJECTED seq=526 ts=536 id=292 reason=5
+R ADD AAPL id=318 BUY LIMIT px=9997 qty=44 trig=0 disp=0 p=2 ts=537
+  ACCEPTED seq=527 ts=537 id=318 AAPL BUY LIMIT px=9997 qty=44
+  RESTED seq=528 ts=537 id=318 AAPL BUY px=9997 qty=44
+R CANCEL MSFT id=201 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=538
+  CANCELED seq=539 ts=538 id=201 qty=74
+R ADD MSFT id=319 SELL LIMIT px=10008 qty=54 trig=0 disp=0 p=6 ts=539
+  ACCEPTED seq=540 ts=539 id=319 MSFT SELL LIMIT px=10008 qty=54
+  RESTED seq=541 ts=539 id=319 MSFT SELL px=10008 qty=54
+R ADD MSFT id=320 SELL IOC px=9998 qty=60 trig=0 disp=0 p=3 ts=540
+  ACCEPTED seq=542 ts=540 id=320 MSFT SELL IOC px=9998 qty=60
+  TRADE seq=543 ts=540 match=49 MSFT buy=263 sell=320 px=9998 qty=17
+  FILLED seq=544 ts=540 id=263 filled=17 px=9998
+  PARTIAL seq=545 ts=540 id=320 filled=17 left=43 px=9998
+  CANCELED seq=546 ts=540 id=320 qty=43
+R CANCEL AAPL id=194 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=541
+  REJECTED seq=529 ts=541 id=194 reason=5
+R ADD AAPL id=321 SELL LIMIT px=10009 qty=63 trig=0 disp=0 p=2 ts=542
+  ACCEPTED seq=530 ts=542 id=321 AAPL SELL LIMIT px=10009 qty=63
+  RESTED seq=531 ts=542 id=321 AAPL SELL px=10009 qty=63
+R ADD MSFT id=322 SELL IOC px=10013 qty=80 trig=0 disp=0 p=1 ts=543
+  ACCEPTED seq=547 ts=543 id=322 MSFT SELL IOC px=10013 qty=80
+  CANCELED seq=548 ts=543 id=322 qty=80
+R CANCEL AAPL id=310 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=544
+  CANCELED seq=532 ts=544 id=310 qty=14
+R CANCEL AAPL id=250 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=545
+  REJECTED seq=533 ts=545 id=250 reason=5
+R CANCEL AAPL id=144 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=546
+  REJECTED seq=534 ts=546 id=144 reason=5
+R ADD AAPL id=323 SELL LIMIT px=10003 qty=88 trig=0 disp=0 p=2 ts=547
+  ACCEPTED seq=535 ts=547 id=323 AAPL SELL LIMIT px=10003 qty=88
+  RESTED seq=536 ts=547 id=323 AAPL SELL px=10003 qty=88
+R ADD MSFT id=324 SELL STOP_LIMIT px=10006 qty=26 trig=9988 disp=0 p=5 ts=548
+  ACCEPTED seq=549 ts=548 id=324 MSFT SELL STOP_LIMIT px=10006 qty=26
+R CANCEL MSFT id=107 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=549
+  REJECTED seq=550 ts=549 id=107 reason=5
+R CANCEL AAPL id=300 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=550
+  REJECTED seq=537 ts=550 id=300 reason=5
+R ADD AAPL id=325 SELL LIMIT px=10001 qty=8 trig=0 disp=0 p=5 ts=551
+  ACCEPTED seq=538 ts=551 id=325 AAPL SELL LIMIT px=10001 qty=8
+  RESTED seq=539 ts=551 id=325 AAPL SELL px=10001 qty=8
+R MODIFY MSFT id=113 SELL LIMIT px=10006 qty=86 trig=0 disp=0 p=0 ts=552
+  CANCELED seq=551 ts=552 id=113 qty=83
+  ACCEPTED seq=552 ts=552 id=113 MSFT SELL POST_ONLY px=10006 qty=86
+  RESTED seq=553 ts=552 id=113 MSFT SELL px=10006 qty=86
+R ADD AAPL id=326 SELL LIMIT px=10001 qty=11 trig=0 disp=0 p=5 ts=553
+  ACCEPTED seq=540 ts=553 id=326 AAPL SELL LIMIT px=10001 qty=11
+  RESTED seq=541 ts=553 id=326 AAPL SELL px=10001 qty=11
+R ADD AAPL id=327 BUY IOC px=10005 qty=84 trig=0 disp=0 p=2 ts=554
+  ACCEPTED seq=542 ts=554 id=327 AAPL BUY IOC px=10005 qty=84
+  TRADE seq=543 ts=554 match=39 AAPL buy=327 sell=316 px=10001 qty=23
+  FILLED seq=544 ts=554 id=316 filled=23 px=10001
+  TRADE seq=545 ts=554 match=40 AAPL buy=327 sell=325 px=10001 qty=8
+  FILLED seq=546 ts=554 id=325 filled=8 px=10001
+  TRADE seq=547 ts=554 match=41 AAPL buy=327 sell=326 px=10001 qty=11
+  FILLED seq=548 ts=554 id=326 filled=11 px=10001
+  TRADE seq=549 ts=554 match=42 AAPL buy=327 sell=314 px=10002 qty=42
+  PARTIAL seq=550 ts=554 id=314 filled=42 left=44 px=10002
+  RESTED seq=551 ts=554 id=247 AAPL BUY px=10000 qty=87
+  FILLED seq=552 ts=554 id=327 filled=84 px=10002
+R ADD MSFT id=328 BUY IOC px=9989 qty=93 trig=0 disp=0 p=8 ts=555
+  ACCEPTED seq=554 ts=555 id=328 MSFT BUY IOC px=9989 qty=93
+  CANCELED seq=555 ts=555 id=328 qty=93
+R ADD MSFT id=329 BUY ICEBERG px=9995 qty=16 trig=0 disp=10 p=5 ts=556
+  ACCEPTED seq=556 ts=556 id=329 MSFT BUY ICEBERG px=9995 qty=16
+  RESTED seq=557 ts=556 id=329 MSFT BUY px=9995 qty=10
+R ADD AAPL id=330 BUY LIMIT px=9987 qty=63 trig=0 disp=0 p=5 ts=557
+  ACCEPTED seq=553 ts=557 id=330 AAPL BUY LIMIT px=9987 qty=63
+  RESTED seq=554 ts=557 id=330 AAPL BUY px=9987 qty=63
+R MODIFY MSFT id=160 BUY LIMIT px=9989 qty=97 trig=0 disp=0 p=0 ts=558
+  CANCELED seq=558 ts=558 id=160 qty=100
+  ACCEPTED seq=559 ts=558 id=160 MSFT BUY LIMIT px=9989 qty=97
+  RESTED seq=560 ts=558 id=160 MSFT BUY px=9989 qty=97
+R CANCEL AAPL id=274 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=559
+  CANCELED seq=555 ts=559 id=274 qty=50
+R CANCEL AAPL id=270 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=560
+  CANCELED seq=556 ts=560 id=270 qty=66
+R ADD AAPL id=331 SELL LIMIT px=10013 qty=60 trig=0 disp=0 p=8 ts=561
+  ACCEPTED seq=557 ts=561 id=331 AAPL SELL LIMIT px=10013 qty=60
+  RESTED seq=558 ts=561 id=331 AAPL SELL px=10013 qty=60
+R ADD MSFT id=332 BUY LIMIT px=10002 qty=33 trig=0 disp=0 p=2 ts=562
+  ACCEPTED seq=561 ts=562 id=332 MSFT BUY LIMIT px=10002 qty=33
+  TRADE seq=562 ts=562 match=50 MSFT buy=332 sell=281 px=9999 qty=33
+  PARTIAL seq=563 ts=562 id=281 filled=33 left=19 px=9999
+  FILLED seq=564 ts=562 id=332 filled=33 px=9999
+R ADD MSFT id=333 SELL STOP_LIMIT px=10015 qty=31 trig=9996 disp=0 p=5 ts=563
+  ACCEPTED seq=565 ts=563 id=333 MSFT SELL STOP_LIMIT px=10015 qty=31
+R CANCEL MSFT id=287 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=564
+  CANCELED seq=566 ts=564 id=287 qty=62
+R CANCEL MSFT id=309 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=565
+  REJECTED seq=567 ts=565 id=309 reason=5
+R ADD AAPL id=334 SELL LIMIT px=9998 qty=94 trig=0 disp=0 p=7 ts=566
+  ACCEPTED seq=559 ts=566 id=334 AAPL SELL LIMIT px=9998 qty=94
+  TRADE seq=560 ts=566 match=43 AAPL buy=259 sell=334 px=10000 qty=49
+  FILLED seq=561 ts=566 id=259 filled=49 px=10000
+  TRADE seq=562 ts=566 match=44 AAPL buy=247 sell=334 px=10000 qty=45
+  PARTIAL seq=563 ts=566 id=247 filled=45 left=42 px=10000
+  FILLED seq=564 ts=566 id=334 filled=94 px=10000
+R MODIFY AAPL id=103 BUY LIMIT px=10002 qty=21 trig=0 disp=0 p=0 ts=567
+  REJECTED seq=565 ts=567 id=103 reason=5
+R CANCEL MSFT id=231 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=568
+  REJECTED seq=568 ts=568 id=231 reason=5
+R ADD AAPL id=335 BUY LIMIT px=9987 qty=15 trig=0 disp=0 p=4 ts=569
+  ACCEPTED seq=566 ts=569 id=335 AAPL BUY LIMIT px=9987 qty=15
+  RESTED seq=567 ts=569 id=335 AAPL BUY px=9987 qty=15
+R ADD MSFT id=336 BUY LIMIT px=9996 qty=67 trig=0 disp=0 p=2 ts=570
+  ACCEPTED seq=569 ts=570 id=336 MSFT BUY LIMIT px=9996 qty=67
+  RESTED seq=570 ts=570 id=336 MSFT BUY px=9996 qty=67
+R CANCEL MSFT id=311 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=571
+  CANCELED seq=571 ts=571 id=311 qty=75
+R ADD MSFT id=337 BUY POST_ONLY px=9995 qty=98 trig=0 disp=0 p=8 ts=572
+  ACCEPTED seq=572 ts=572 id=337 MSFT BUY POST_ONLY px=9995 qty=98
+  RESTED seq=573 ts=572 id=337 MSFT BUY px=9995 qty=98
+R CANCEL MSFT id=248 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=573
+  CANCELED seq=574 ts=573 id=248 qty=49
+R ADD MSFT id=338 BUY IOC px=9998 qty=96 trig=0 disp=0 p=1 ts=574
+  ACCEPTED seq=575 ts=574 id=338 MSFT BUY IOC px=9998 qty=96
+  CANCELED seq=576 ts=574 id=338 qty=96
+R MODIFY MSFT id=223 SELL LIMIT px=10008 qty=58 trig=0 disp=0 p=0 ts=575
+  REJECTED seq=577 ts=575 id=223 reason=5
+R MODIFY MSFT id=251 SELL LIMIT px=9999 qty=55 trig=0 disp=0 p=0 ts=576
+  CANCELED seq=578 ts=576 id=251 qty=30
+  ACCEPTED seq=579 ts=576 id=251 MSFT SELL LIMIT px=9999 qty=55
+  RESTED seq=580 ts=576 id=251 MSFT SELL px=9999 qty=55
+R CANCEL MSFT id=161 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=577
+  REJECTED seq=581 ts=577 id=161 reason=5
+R ADD MSFT id=339 SELL IOC px=10010 qty=61 trig=0 disp=0 p=6 ts=578
+  ACCEPTED seq=582 ts=578 id=339 MSFT SELL IOC px=10010 qty=61
+  CANCELED seq=583 ts=578 id=339 qty=61
+R ADD AAPL id=340 BUY LIMIT px=9987 qty=28 trig=0 disp=0 p=4 ts=579
+  ACCEPTED seq=568 ts=579 id=340 AAPL BUY LIMIT px=9987 qty=28
+  RESTED seq=569 ts=579 id=340 AAPL BUY px=9987 qty=28
+R CANCEL AAPL id=208 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=580
+  REJECTED seq=570 ts=580 id=208 reason=5
+R MODIFY MSFT id=139 SELL LIMIT px=10001 qty=24 trig=0 disp=0 p=0 ts=581
+  REJECTED seq=584 ts=581 id=139 reason=5
+R ADD MSFT id=341 BUY IOC px=9992 qty=77 trig=0 disp=0 p=7 ts=582
+  ACCEPTED seq=585 ts=582 id=341 MSFT BUY IOC px=9992 qty=77
+  CANCELED seq=586 ts=582 id=341 qty=77
+R MODIFY MSFT id=252 SELL LIMIT px=9997 qty=61 trig=0 disp=0 p=0 ts=583
+  CANCELED seq=587 ts=583 id=252 qty=98
+  ACCEPTED seq=588 ts=583 id=252 MSFT SELL GTC px=9997 qty=61
+  RESTED seq=589 ts=583 id=252 MSFT SELL px=9997 qty=61
+R MODIFY AAPL id=187 SELL LIMIT px=10019 qty=49 trig=0 disp=0 p=0 ts=584
+  REJECTED seq=571 ts=584 id=187 reason=5
+R ADD MSFT id=342 SELL LIMIT px=9994 qty=89 trig=0 disp=0 p=4 ts=585
+  ACCEPTED seq=590 ts=585 id=342 MSFT SELL LIMIT px=9994 qty=89
+  TRADE seq=591 ts=585 match=51 MSFT buy=299 sell=342 px=9996 qty=10
+  FILLED seq=592 ts=585 id=299 filled=10 px=9996
+  TRADE seq=593 ts=585 match=52 MSFT buy=336 sell=342 px=9996 qty=67
+  FILLED seq=594 ts=585 id=336 filled=67 px=9996
+  TRADE seq=595 ts=585 match=53 MSFT buy=329 sell=342 px=9995 qty=10
+  PARTIAL seq=596 ts=585 id=329 filled=10 left=6 px=9995
+  RESTED seq=597 ts=585 id=329 MSFT BUY px=9995 qty=6
+  TRADE seq=598 ts=585 match=54 MSFT buy=337 sell=342 px=9995 qty=2
+  PARTIAL seq=599 ts=585 id=337 filled=2 left=96 px=9995
+  RESTED seq=600 ts=585 id=333 MSFT SELL px=10015 qty=31
+  FILLED seq=601 ts=585 id=342 filled=89 px=9995
+R CANCEL AAPL id=197 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=586
+  CANCELED seq=572 ts=586 id=197 qty=78
+R CANCEL MSFT id=71 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=587
+  REJECTED seq=602 ts=587 id=71 reason=5
+R ADD AAPL id=343 BUY STOP_LIMIT px=10000 qty=69 trig=10009 disp=0 p=6 ts=588
+  ACCEPTED seq=573 ts=588 id=343 AAPL BUY STOP_LIMIT px=10000 qty=69
+R ADD MSFT id=344 SELL LIMIT px=10011 qty=34 trig=0 disp=0 p=5 ts=589
+  ACCEPTED seq=603 ts=589 id=344 MSFT SELL LIMIT px=10011 qty=34
+  RESTED seq=604 ts=589 id=344 MSFT SELL px=10011 qty=34
+R ADD AAPL id=345 SELL POST_ONLY px=10014 qty=7 trig=0 disp=0 p=1 ts=590
+  ACCEPTED seq=574 ts=590 id=345 AAPL SELL POST_ONLY px=10014 qty=7
+  RESTED seq=575 ts=590 id=345 AAPL SELL px=10014 qty=7
+R ADD AAPL id=346 SELL LIMIT px=10004 qty=18 trig=0 disp=0 p=6 ts=591
+  ACCEPTED seq=576 ts=591 id=346 AAPL SELL LIMIT px=10004 qty=18
+  RESTED seq=577 ts=591 id=346 AAPL SELL px=10004 qty=18
+R MODIFY MSFT id=228 SELL LIMIT px=10006 qty=34 trig=0 disp=0 p=0 ts=592
+  REJECTED seq=605 ts=592 id=228 reason=5
+R ADD MSFT id=347 SELL MARKET px=0 qty=58 trig=0 disp=0 p=2 ts=593
+  ACCEPTED seq=606 ts=593 id=347 MSFT SELL MARKET px=0 qty=58
+  TRADE seq=607 ts=593 match=55 MSFT buy=337 sell=347 px=9995 qty=58
+  PARTIAL seq=608 ts=593 id=337 filled=58 left=38 px=9995
+  FILLED seq=609 ts=593 id=347 filled=58 px=9995
+R MODIFY MSFT id=210 BUY LIMIT px=9993 qty=92 trig=0 disp=0 p=0 ts=594
+  REJECTED seq=610 ts=594 id=210 reason=5
+R ADD AAPL id=348 SELL LIMIT px=10020 qty=62 trig=0 disp=0 p=4 ts=595
+  ACCEPTED seq=578 ts=595 id=348 AAPL SELL LIMIT px=10020 qty=62
+  RESTED seq=579 ts=595 id=348 AAPL SELL px=10020 qty=62
+R CANCEL AAPL id=254 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=596
+  CANCELED seq=580 ts=596 id=254 qty=53
+R ADD AAPL id=349 SELL LIMIT px=10017 qty=3 trig=0 disp=0 p=2 ts=597
+  ACCEPTED seq=581 ts=597 id=349 AAPL SELL LIMIT px=10017 qty=3
+  RESTED seq=582 ts=597 id=349 AAPL SELL px=10017 qty=3
+R MODIFY MSFT id=288 BUY LIMIT px=9987 qty=19 trig=0 disp=0 p=0 ts=598
+  CANCELED seq=611 ts=598 id=288 qty=70
+  ACCEPTED seq=612 ts=598 id=288 MSFT BUY LIMIT px=9987 qty=19
+  RESTED seq=613 ts=598 id=288 MSFT BUY px=9987 qty=19
+R CANCEL MSFT id=101 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=599
+  REJECTED seq=614 ts=599 id=101 reason=5
+R ADD MSFT id=350 SELL LIMIT px=10009 qty=11 trig=0 disp=0 p=7 ts=600
+  ACCEPTED seq=615 ts=600 id=350 MSFT SELL LIMIT px=10009 qty=11
+  RESTED seq=616 ts=600 id=350 MSFT SELL px=10009 qty=11
+R ADD MSFT id=351 SELL IOC px=9998 qty=98 trig=0 disp=0 p=6 ts=601
+  ACCEPTED seq=617 ts=601 id=351 MSFT SELL IOC px=9998 qty=98
+  CANCELED seq=618 ts=601 id=351 qty=98
+R CANCEL MSFT id=283 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=602
+  REJECTED seq=619 ts=602 id=283 reason=5
+R ADD MSFT id=352 BUY GTC px=9992 qty=54 trig=0 disp=0 p=6 ts=603
+  ACCEPTED seq=620 ts=603 id=352 MSFT BUY GTC px=9992 qty=54
+  RESTED seq=621 ts=603 id=352 MSFT BUY px=9992 qty=54
+R ADD MSFT id=353 BUY IOC px=9996 qty=98 trig=0 disp=0 p=4 ts=604
+  ACCEPTED seq=622 ts=604 id=353 MSFT BUY IOC px=9996 qty=98
+  CANCELED seq=623 ts=604 id=353 qty=98
+R MODIFY MSFT id=304 BUY LIMIT px=9981 qty=95 trig=0 disp=0 p=0 ts=605
+  REJECTED seq=624 ts=605 id=304 reason=5
+R ADD AAPL id=354 SELL IOC px=9999 qty=19 trig=0 disp=0 p=7 ts=606
+  ACCEPTED seq=583 ts=606 id=354 AAPL SELL IOC px=9999 qty=19
+  TRADE seq=584 ts=606 match=45 AAPL buy=247 sell=354 px=10000 qty=19
+  PARTIAL seq=585 ts=606 id=247 filled=19 left=23 px=10000
+  FILLED seq=586 ts=606 id=354 filled=19 px=10000
+R ADD AAPL id=355 SELL ICEBERG px=10020 qty=27 trig=0 disp=24 p=1 ts=607
+  ACCEPTED seq=587 ts=607 id=355 AAPL SELL ICEBERG px=10020 qty=27
+  RESTED seq=588 ts=607 id=355 AAPL SELL px=10020 qty=24
+R CANCEL AAPL id=343 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=608
+  CANCELED seq=589 ts=608 id=343 qty=69
+R MODIFY MSFT id=299 BUY LIMIT px=9997 qty=38 trig=0 disp=0 p=0 ts=609
+  REJECTED seq=625 ts=609 id=299 reason=5
+R ADD AAPL id=356 SELL LIMIT px=10013 qty=48 trig=0 disp=0 p=3 ts=610
+  ACCEPTED seq=590 ts=610 id=356 AAPL SELL LIMIT px=10013 qty=48
+  RESTED seq=591 ts=610 id=356 AAPL SELL px=10013 qty=48
+R ADD MSFT id=357 SELL FOK px=9998 qty=41 trig=0 disp=0 p=1 ts=611
+  REJECTED seq=626 ts=611 id=357 reason=7
+R ADD MSFT id=358 SELL IOC px=10005 qty=68 trig=0 disp=0 p=8 ts=612
+  ACCEPTED seq=627 ts=612 id=358 MSFT SELL IOC px=10005 qty=68
+  CANCELED seq=628 ts=612 id=358 qty=68
+R ADD MSFT id=359 SELL LIMIT px=10006 qty=96 trig=0 disp=0 p=1 ts=613
+  ACCEPTED seq=629 ts=613 id=359 MSFT SELL LIMIT px=10006 qty=96
+  RESTED seq=630 ts=613 id=359 MSFT SELL px=10006 qty=96
+R ADD AAPL id=360 SELL IOC px=10015 qty=93 trig=0 disp=0 p=1 ts=614
+  ACCEPTED seq=592 ts=614 id=360 AAPL SELL IOC px=10015 qty=93
+  CANCELED seq=593 ts=614 id=360 qty=93
+R ADD MSFT id=361 BUY ICEBERG px=9994 qty=20 trig=0 disp=11 p=1 ts=615
+  ACCEPTED seq=631 ts=615 id=361 MSFT BUY ICEBERG px=9994 qty=20
+  RESTED seq=632 ts=615 id=361 MSFT BUY px=9994 qty=11
+R MODIFY AAPL id=154 BUY LIMIT px=9986 qty=73 trig=0 disp=0 p=0 ts=616
+  REJECTED seq=594 ts=616 id=154 reason=5
+R CANCEL MSFT id=41 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=617
+  CANCELED seq=633 ts=617 id=41 qty=66
+R CANCEL MSFT id=237 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=618
+  CANCELED seq=634 ts=618 id=237 qty=23
+R CANCEL MSFT id=352 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=619
+  CANCELED seq=635 ts=619 id=352 qty=54
+R ADD MSFT id=362 SELL STOP px=0 qty=30 trig=9990 disp=0 p=2 ts=620
+  ACCEPTED seq=636 ts=620 id=362 MSFT SELL STOP px=9990 qty=30
+R ADD AAPL id=363 SELL POST_ONLY px=10001 qty=96 trig=0 disp=0 p=2 ts=621
+  ACCEPTED seq=595 ts=621 id=363 AAPL SELL POST_ONLY px=10001 qty=96
+  RESTED seq=596 ts=621 id=363 AAPL SELL px=10001 qty=96
+R ADD AAPL id=364 BUY STOP_LIMIT px=9984 qty=90 trig=10007 disp=0 p=4 ts=622
+  ACCEPTED seq=597 ts=622 id=364 AAPL BUY STOP_LIMIT px=9984 qty=90
+R ADD MSFT id=365 SELL FOK px=10014 qty=84 trig=0 disp=0 p=8 ts=623
+  REJECTED seq=637 ts=623 id=365 reason=7
+R CANCEL MSFT id=336 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=624
+  REJECTED seq=638 ts=624 id=336 reason=5
+R ADD AAPL id=366 SELL STOP_LIMIT px=10010 qty=73 trig=9997 disp=0 p=3 ts=625
+  ACCEPTED seq=598 ts=625 id=366 AAPL SELL STOP_LIMIT px=10010 qty=73
+R CANCEL MSFT id=358 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=626
+  REJECTED seq=639 ts=626 id=358 reason=5
+R MODIFY MSFT id=347 SELL LIMIT px=9996 qty=16 trig=0 disp=0 p=0 ts=627
+  REJECTED seq=640 ts=627 id=347 reason=5
+R ADD AAPL id=367 SELL LIMIT px=10018 qty=94 trig=0 disp=0 p=4 ts=628
+  ACCEPTED seq=599 ts=628 id=367 AAPL SELL LIMIT px=10018 qty=94
+  RESTED seq=600 ts=628 id=367 AAPL SELL px=10018 qty=94
+R CANCEL AAPL id=247 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=629
+  CANCELED seq=601 ts=629 id=247 qty=23
+R ADD AAPL id=368 SELL LIMIT px=10015 qty=70 trig=0 disp=0 p=8 ts=630
+  ACCEPTED seq=602 ts=630 id=368 AAPL SELL LIMIT px=10015 qty=70
+  RESTED seq=603 ts=630 id=368 AAPL SELL px=10015 qty=70
+R ADD AAPL id=369 SELL LIMIT px=10019 qty=44 trig=0 disp=0 p=5 ts=631
+  ACCEPTED seq=604 ts=631 id=369 AAPL SELL LIMIT px=10019 qty=44
+  RESTED seq=605 ts=631 id=369 AAPL SELL px=10019 qty=44
+R ADD AAPL id=370 BUY LIMIT px=10002 qty=89 trig=0 disp=0 p=5 ts=632
+  ACCEPTED seq=606 ts=632 id=370 AAPL BUY LIMIT px=10002 qty=89
+  TRADE seq=607 ts=632 match=46 AAPL buy=370 sell=363 px=10001 qty=89
+  PARTIAL seq=608 ts=632 id=363 filled=89 left=7 px=10001
+  FILLED seq=609 ts=632 id=370 filled=89 px=10001
+R CANCEL AAPL id=266 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=633
+  CANCELED seq=610 ts=633 id=266 qty=93
+R MODIFY AAPL id=246 BUY LIMIT px=9990 qty=12 trig=0 disp=0 p=0 ts=634
+  REJECTED seq=611 ts=634 id=246 reason=5
+R MODIFY AAPL id=354 SELL LIMIT px=10009 qty=13 trig=0 disp=0 p=0 ts=635
+  REJECTED seq=612 ts=635 id=354 reason=5
+R ADD AAPL id=371 BUY LIMIT px=10001 qty=19 trig=0 disp=0 p=4 ts=636
+  ACCEPTED seq=613 ts=636 id=371 AAPL BUY LIMIT px=10001 qty=19
+  TRADE seq=614 ts=636 match=47 AAPL buy=371 sell=363 px=10001 qty=7
+  FILLED seq=615 ts=636 id=363 filled=7 px=10001
+  PARTIAL seq=616 ts=636 id=371 filled=7 left=12 px=10001
+  RESTED seq=617 ts=636 id=371 AAPL BUY px=10001 qty=12
+R ADD MSFT id=372 SELL LIMIT px=10000 qty=80 trig=0 disp=0 p=8 ts=637
+  ACCEPTED seq=641 ts=637 id=372 MSFT SELL LIMIT px=10000 qty=80
+  RESTED seq=642 ts=637 id=372 MSFT SELL px=10000 qty=80
+R MODIFY AAPL id=76 SELL LIMIT px=9999 qty=66 trig=0 disp=0 p=0 ts=638
+  CANCELED seq=618 ts=638 id=76 qty=42
+  ACCEPTED seq=619 ts=638 id=76 AAPL SELL LIMIT px=9999 qty=66
+  TRADE seq=620 ts=638 match=48 AAPL buy=371 sell=76 px=10001 qty=12
+  FILLED seq=621 ts=638 id=371 filled=12 px=10001
+  PARTIAL seq=622 ts=638 id=76 filled=12 left=54 px=10001
+  RESTED seq=623 ts=638 id=76 AAPL SELL px=9999 qty=54
+R ADD AAPL id=373 SELL STOP_LIMIT px=10007 qty=4 trig=9996 disp=0 p=4 ts=639
+  ACCEPTED seq=624 ts=639 id=373 AAPL SELL STOP_LIMIT px=10007 qty=4
+R ADD AAPL id=374 BUY POST_ONLY px=9990 qty=22 trig=0 disp=0 p=7 ts=640
+  ACCEPTED seq=625 ts=640 id=374 AAPL BUY POST_ONLY px=9990 qty=22
+  RESTED seq=626 ts=640 id=374 AAPL BUY px=9990 qty=22
+R MODIFY AAPL id=318 BUY LIMIT px=9994 qty=35 trig=0 disp=0 p=0 ts=641
+  CANCELED seq=627 ts=641 id=318 qty=44
+  ACCEPTED seq=628 ts=641 id=318 AAPL BUY LIMIT px=9994 qty=35
+  RESTED seq=629 ts=641 id=318 AAPL BUY px=9994 qty=35
+R CANCEL AAPL id=354 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=642
+  REJECTED seq=630 ts=642 id=354 reason=5
+R CANCEL MSFT id=87 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=643
+  REJECTED seq=643 ts=643 id=87 reason=5
+R CANCEL MSFT id=189 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=644
+  REJECTED seq=644 ts=644 id=189 reason=5
+R ADD MSFT id=375 BUY STOP_LIMIT px=9991 qty=71 trig=10002 disp=0 p=3 ts=645
+  ACCEPTED seq=645 ts=645 id=375 MSFT BUY STOP_LIMIT px=9991 qty=71
+R ADD MSFT id=376 SELL IOC px=10002 qty=67 trig=0 disp=0 p=6 ts=646
+  ACCEPTED seq=646 ts=646 id=376 MSFT SELL IOC px=10002 qty=67
+  CANCELED seq=647 ts=646 id=376 qty=67
+R CANCEL MSFT id=299 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=647
+  REJECTED seq=648 ts=647 id=299 reason=5
+R ADD MSFT id=377 SELL LIMIT px=10015 qty=83 trig=0 disp=0 p=5 ts=648
+  ACCEPTED seq=649 ts=648 id=377 MSFT SELL LIMIT px=10015 qty=83
+  RESTED seq=650 ts=648 id=377 MSFT SELL px=10015 qty=83
+R MODIFY MSFT id=184 SELL LIMIT px=10009 qty=38 trig=0 disp=0 p=0 ts=649
+  REJECTED seq=651 ts=649 id=184 reason=5
+R ADD MSFT id=378 SELL LIMIT px=9996 qty=39 trig=0 disp=0 p=8 ts=650
+  ACCEPTED seq=652 ts=650 id=378 MSFT SELL LIMIT px=9996 qty=39
+  RESTED seq=653 ts=650 id=378 MSFT SELL px=9996 qty=39
+R CANCEL AAPL id=209 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=651
+  CANCELED seq=631 ts=651 id=209 qty=79
+R CANCEL AAPL id=173 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=652
+  REJECTED seq=632 ts=652 id=173 reason=5
+R MODIFY MSFT id=341 BUY LIMIT px=9982 qty=78 trig=0 disp=0 p=0 ts=653
+  REJECTED seq=654 ts=653 id=341 reason=5
+R ADD AAPL id=379 SELL ICEBERG px=10001 qty=42 trig=0 disp=41 p=2 ts=654
+  ACCEPTED seq=633 ts=654 id=379 AAPL SELL ICEBERG px=10001 qty=42
+  RESTED seq=634 ts=654 id=379 AAPL SELL px=10001 qty=41
+R ADD AAPL id=380 BUY LIMIT px=9991 qty=13 trig=0 disp=0 p=2 ts=655
+  ACCEPTED seq=635 ts=655 id=380 AAPL BUY LIMIT px=9991 qty=13
+  RESTED seq=636 ts=655 id=380 AAPL BUY px=9991 qty=13
+R ADD MSFT id=381 SELL LIMIT px=10017 qty=63 trig=0 disp=0 p=5 ts=656
+  ACCEPTED seq=655 ts=656 id=381 MSFT SELL LIMIT px=10017 qty=63
+  RESTED seq=656 ts=656 id=381 MSFT SELL px=10017 qty=63
+R CANCEL AAPL id=314 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=657
+  CANCELED seq=637 ts=657 id=314 qty=44
+R ADD MSFT id=382 BUY GTC px=10001 qty=67 trig=0 disp=0 p=3 ts=658
+  ACCEPTED seq=657 ts=658 id=382 MSFT BUY GTC px=10001 qty=67
+  TRADE seq=658 ts=658 match=56 MSFT buy=382 sell=378 px=9996 qty=39
+  FILLED seq=659 ts=658 id=378 filled=39 px=9996
+  TRADE seq=660 ts=658 match=57 MSFT buy=382 sell=252 px=9997 qty=28
+  PARTIAL seq=661 ts=658 id=252 filled=28 left=33 px=9997
+  FILLED seq=662 ts=658 id=382 filled=67 px=9997
+R ADD AAPL id=383 SELL LIMIT px=9999 qty=26 trig=0 disp=0 p=6 ts=659
+  ACCEPTED seq=638 ts=659 id=383 AAPL SELL LIMIT px=9999 qty=26
+  RESTED seq=639 ts=659 id=383 AAPL SELL px=9999 qty=26
+R ADD MSFT id=384 BUY LIMIT px=9981 qty=44 trig=0 disp=0 p=6 ts=660
+  ACCEPTED seq=663 ts=660 id=384 MSFT BUY LIMIT px=9981 qty=44
+  RESTED seq=664 ts=660 id=384 MSFT BUY px=9981 qty=44
+R ADD MSFT id=385 BUY FOK px=9998 qty=92 trig=0 disp=0 p=5 ts=661
+  REJECTED seq=665 ts=661 id=385 reason=7
+R CANCEL AAPL id=242 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=662
+  REJECTED seq=640 ts=662 id=242 reason=5
+R CANCEL MSFT id=342 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=663
+  REJECTED seq=666 ts=663 id=342 reason=5
+R MODIFY AAPL id=294 BUY LIMIT px=9983 qty=95 trig=0 disp=0 p=0 ts=664
+  CANCELED seq=641 ts=664 id=294 qty=49
+  ACCEPTED seq=642 ts=664 id=294 AAPL BUY LIMIT px=9983 qty=95
+  RESTED seq=643 ts=664 id=294 AAPL BUY px=9983 qty=95
+R ADD MSFT id=386 BUY LIMIT px=9989 qty=83 trig=0 disp=0 p=2 ts=665
+  ACCEPTED seq=667 ts=665 id=386 MSFT BUY LIMIT px=9989 qty=83
+  RESTED seq=668 ts=665 id=386 MSFT BUY px=9989 qty=83
+R ADD AAPL id=387 SELL LIMIT px=10004 qty=84 trig=0 disp=0 p=3 ts=666
+  ACCEPTED seq=644 ts=666 id=387 AAPL SELL LIMIT px=10004 qty=84
+  RESTED seq=645 ts=666 id=387 AAPL SELL px=10004 qty=84
+R ADD AAPL id=388 SELL LIMIT px=10014 qty=14 trig=0 disp=0 p=8 ts=667
+  ACCEPTED seq=646 ts=667 id=388 AAPL SELL LIMIT px=10014 qty=14
+  RESTED seq=647 ts=667 id=388 AAPL SELL px=10014 qty=14
+R ADD MSFT id=389 BUY STOP px=0 qty=76 trig=10000 disp=0 p=2 ts=668
+  ACCEPTED seq=669 ts=668 id=389 MSFT BUY STOP px=10000 qty=76
+R ADD MSFT id=390 BUY LIMIT px=9979 qty=73 trig=0 disp=0 p=8 ts=669
+  ACCEPTED seq=670 ts=669 id=390 MSFT BUY LIMIT px=9979 qty=73
+  RESTED seq=671 ts=669 id=390 MSFT BUY px=9979 qty=73
+R CANCEL AAPL id=325 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=670
+  REJECTED seq=648 ts=670 id=325 reason=5
+R CANCEL MSFT id=269 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=671
+  REJECTED seq=672 ts=671 id=269 reason=5
+R ADD MSFT id=391 SELL POST_ONLY px=10004 qty=37 trig=0 disp=0 p=2 ts=672
+  ACCEPTED seq=673 ts=672 id=391 MSFT SELL POST_ONLY px=10004 qty=37
+  RESTED seq=674 ts=672 id=391 MSFT SELL px=10004 qty=37
+R ADD AAPL id=392 SELL LIMIT px=10005 qty=43 trig=0 disp=0 p=2 ts=673
+  ACCEPTED seq=649 ts=673 id=392 AAPL SELL LIMIT px=10005 qty=43
+  RESTED seq=650 ts=673 id=392 AAPL SELL px=10005 qty=43
+R MODIFY AAPL id=165 SELL LIMIT px=10017 qty=50 trig=0 disp=0 p=0 ts=674
+  CANCELED seq=651 ts=674 id=165 qty=86
+  ACCEPTED seq=652 ts=674 id=165 AAPL SELL LIMIT px=10017 qty=50
+  RESTED seq=653 ts=674 id=165 AAPL SELL px=10017 qty=50
+R ADD AAPL id=393 SELL IOC px=10001 qty=94 trig=0 disp=0 p=6 ts=675
+  ACCEPTED seq=654 ts=675 id=393 AAPL SELL IOC px=10001 qty=94
+  CANCELED seq=655 ts=675 id=393 qty=94
+R ADD AAPL id=394 BUY LIMIT px=10004 qty=86 trig=0 disp=0 p=7 ts=676
+  ACCEPTED seq=656 ts=676 id=394 AAPL BUY LIMIT px=10004 qty=86
+  TRADE seq=657 ts=676 match=49 AAPL buy=394 sell=76 px=9999 qty=54
+  FILLED seq=658 ts=676 id=76 filled=54 px=9999
+  TRADE seq=659 ts=676 match=50 AAPL buy=394 sell=383 px=9999 qty=26
+  FILLED seq=660 ts=676 id=383 filled=26 px=9999
+  TRADE seq=661 ts=676 match=51 AAPL buy=394 sell=379 px=10001 qty=6
+  PARTIAL seq=662 ts=676 id=379 filled=6 left=36 px=10001
+  FILLED seq=663 ts=676 id=394 filled=86 px=10001
+R CANCEL AAPL id=76 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=677
+  REJECTED seq=664 ts=677 id=76 reason=5
+R ADD AAPL id=395 SELL IOC px=10010 qty=6 trig=0 disp=0 p=3 ts=678
+  ACCEPTED seq=665 ts=678 id=395 AAPL SELL IOC px=10010 qty=6
+  CANCELED seq=666 ts=678 id=395 qty=6
+R ADD MSFT id=396 BUY IOC px=9978 qty=1 trig=0 disp=0 p=5 ts=679
+  ACCEPTED seq=675 ts=679 id=396 MSFT BUY IOC px=9978 qty=1
+  CANCELED seq=676 ts=679 id=396 qty=1
+R CANCEL AAPL id=392 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=680
+  CANCELED seq=667 ts=680 id=392 qty=43
+R ADD MSFT id=397 BUY LIMIT px=9978 qty=59 trig=0 disp=0 p=1 ts=681
+  ACCEPTED seq=677 ts=681 id=397 MSFT BUY LIMIT px=9978 qty=59
+  RESTED seq=678 ts=681 id=397 MSFT BUY px=9978 qty=59
+R ADD AAPL id=398 BUY LIMIT px=10002 qty=10 trig=0 disp=0 p=5 ts=682
+  ACCEPTED seq=668 ts=682 id=398 AAPL BUY LIMIT px=10002 qty=10
+  TRADE seq=669 ts=682 match=52 AAPL buy=398 sell=379 px=10001 qty=10
+  PARTIAL seq=670 ts=682 id=379 filled=10 left=26 px=10001
+  FILLED seq=671 ts=682 id=398 filled=10 px=10001
+R ADD AAPL id=399 BUY LIMIT px=10004 qty=52 trig=0 disp=0 p=5 ts=683
+  ACCEPTED seq=672 ts=683 id=399 AAPL BUY LIMIT px=10004 qty=52
+  TRADE seq=673 ts=683 match=53 AAPL buy=399 sell=379 px=10001 qty=25
+  PARTIAL seq=674 ts=683 id=379 filled=25 left=1 px=10001
+  RESTED seq=675 ts=683 id=379 AAPL SELL px=10001 qty=1
+  TRADE seq=676 ts=683 match=54 AAPL buy=399 sell=379 px=10001 qty=1
+  FILLED seq=677 ts=683 id=379 filled=1 px=10001
+  TRADE seq=678 ts=683 match=55 AAPL buy=399 sell=323 px=10003 qty=26
+  PARTIAL seq=679 ts=683 id=323 filled=26 left=62 px=10003
+  FILLED seq=680 ts=683 id=399 filled=52 px=10003
+R ADD AAPL id=400 BUY LIMIT px=9988 qty=69 trig=0 disp=0 p=4 ts=684
+  ACCEPTED seq=681 ts=684 id=400 AAPL BUY LIMIT px=9988 qty=69
+  RESTED seq=682 ts=684 id=400 AAPL BUY px=9988 qty=69
+R CANCEL MSFT id=319 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=685
+  CANCELED seq=679 ts=685 id=319 qty=54
+R CANCEL AAPL id=308 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=686
+  CANCELED seq=683 ts=686 id=308 qty=87
+R ADD AAPL id=401 BUY LIMIT px=10001 qty=16 trig=0 disp=0 p=8 ts=687
+  ACCEPTED seq=684 ts=687 id=401 AAPL BUY LIMIT px=10001 qty=16
+  RESTED seq=685 ts=687 id=401 AAPL BUY px=10001 qty=16
+R MODIFY MSFT id=184 SELL LIMIT px=10018 qty=39 trig=0 disp=0 p=0 ts=688
+  REJECTED seq=680 ts=688 id=184 reason=5
+R ADD AAPL id=402 BUY IOC px=9985 qty=6 trig=0 disp=0 p=5 ts=689
+  ACCEPTED seq=686 ts=689 id=402 AAPL BUY IOC px=9985 qty=6
+  CANCELED seq=687 ts=689 id=402 qty=6
+R MODIFY AAPL id=312 BUY LIMIT px=9983 qty=86 trig=0 disp=0 p=0 ts=690
+  CANCELED seq=688 ts=690 id=312 qty=51
+  ACCEPTED seq=689 ts=690 id=312 AAPL BUY POST_ONLY px=9983 qty=86
+  RESTED seq=690 ts=690 id=312 AAPL BUY px=9983 qty=86
+R ADD MSFT id=403 BUY LIMIT px=9992 qty=89 trig=0 disp=0 p=5 ts=691
+  ACCEPTED seq=681 ts=691 id=403 MSFT BUY LIMIT px=9992 qty=89
+  RESTED seq=682 ts=691 id=403 MSFT BUY px=9992 qty=89
+R ADD MSFT id=404 SELL LIMIT px=9997 qty=33 trig=0 disp=0 p=4 ts=692
+  ACCEPTED seq=683 ts=692 id=404 MSFT SELL LIMIT px=9997 qty=33
+  RESTED seq=684 ts=692 id=404 MSFT SELL px=9997 qty=33
+R ADD AAPL id=405 BUY LIMIT px=9996 qty=21 trig=0 disp=0 p=1 ts=693
+  ACCEPTED seq=691 ts=693 id=405 AAPL BUY LIMIT px=9996 qty=21
+  RESTED seq=692 ts=693 id=405 AAPL BUY px=9996 qty=21
+R MODIFY MSFT id=102 BUY LIMIT px=9981 qty=58 trig=0 disp=0 p=0 ts=694
+  REJECTED seq=685 ts=694 id=102 reason=5
+R ADD AAPL id=406 BUY LIMIT px=10001 qty=4 trig=0 disp=0 p=8 ts=695
+  ACCEPTED seq=693 ts=695 id=406 AAPL BUY LIMIT px=10001 qty=4
+  RESTED seq=694 ts=695 id=406 AAPL BUY px=10001 qty=4
+R MODIFY MSFT id=229 BUY LIMIT px=9980 qty=88 trig=0 disp=0 p=0 ts=696
+  REJECTED seq=686 ts=696 id=229 reason=5
+R MODIFY MSFT id=58 SELL LIMIT px=10010 qty=20 trig=0 disp=0 p=0 ts=697
+  REJECTED seq=687 ts=697 id=58 reason=5
+R MODIFY AAPL id=179 SELL LIMIT px=10020 qty=9 trig=0 disp=0 p=0 ts=698
+  REJECTED seq=695 ts=698 id=179 reason=5
+R CANCEL MSFT id=332 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=699
+  REJECTED seq=688 ts=699 id=332 reason=5
+R ADD AAPL id=407 SELL ICEBERG px=10014 qty=82 trig=0 disp=25 p=4 ts=700
+  ACCEPTED seq=696 ts=700 id=407 AAPL SELL ICEBERG px=10014 qty=82
+  RESTED seq=697 ts=700 id=407 AAPL SELL px=10014 qty=25
+R CANCEL AAPL id=312 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=701
+  CANCELED seq=698 ts=701 id=312 qty=86
+R ADD MSFT id=408 BUY POST_ONLY px=9996 qty=79 trig=0 disp=0 p=5 ts=702
+  ACCEPTED seq=689 ts=702 id=408 MSFT BUY POST_ONLY px=9996 qty=79
+  RESTED seq=690 ts=702 id=408 MSFT BUY px=9996 qty=79
+R ADD MSFT id=409 BUY LIMIT px=9998 qty=55 trig=0 disp=0 p=2 ts=703
+  ACCEPTED seq=691 ts=703 id=409 MSFT BUY LIMIT px=9998 qty=55
+  TRADE seq=692 ts=703 match=58 MSFT buy=409 sell=252 px=9997 qty=33
+  FILLED seq=693 ts=703 id=252 filled=33 px=9997
+  TRADE seq=694 ts=703 match=59 MSFT buy=409 sell=404 px=9997 qty=22
+  PARTIAL seq=695 ts=703 id=404 filled=22 left=11 px=9997
+  FILLED seq=696 ts=703 id=409 filled=55 px=9997
+R CANCEL AAPL id=301 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=704
+  REJECTED seq=699 ts=704 id=301 reason=5
+R ADD MSFT id=410 SELL LIMIT px=9993 qty=10 trig=0 disp=0 p=8 ts=705
+  ACCEPTED seq=697 ts=705 id=410 MSFT SELL LIMIT px=9993 qty=10
+  TRADE seq=698 ts=705 match=60 MSFT buy=408 sell=410 px=9996 qty=10
+  PARTIAL seq=699 ts=705 id=408 filled=10 left=69 px=9996
+  FILLED seq=700 ts=705 id=410 filled=10 px=9996
+R ADD AAPL id=411 SELL IOC px=10004 qty=84 trig=0 disp=0 p=7 ts=706
+  ACCEPTED seq=700 ts=706 id=411 AAPL SELL IOC px=10004 qty=84
+  CANCELED seq=701 ts=706 id=411 qty=84
+R ADD MSFT id=412 BUY LIMIT px=9984 qty=19 trig=0 disp=0 p=3 ts=707
+  ACCEPTED seq=701 ts=707 id=412 MSFT BUY LIMIT px=9984 qty=19
+  RESTED seq=702 ts=707 id=412 MSFT BUY px=9984 qty=19
+R CANCEL MSFT id=210 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=708
+  REJECTED seq=703 ts=708 id=210 reason=5
+R ADD AAPL id=413 SELL FOK px=9998 qty=70 trig=0 disp=0 p=2 ts=709
+  REJECTED seq=702 ts=709 id=413 reason=7
+R MODIFY AAPL id=323 SELL LIMIT px=10012 qty=57 trig=0 disp=0 p=0 ts=710
+  CANCELED seq=703 ts=710 id=323 qty=62
+  ACCEPTED seq=704 ts=710 id=323 AAPL SELL LIMIT px=10012 qty=57
+  RESTED seq=705 ts=710 id=323 AAPL SELL px=10012 qty=57
+R MODIFY AAPL id=167 SELL LIMIT px=10006 qty=70 trig=0 disp=0 p=0 ts=711
+  CANCELED seq=706 ts=711 id=167 qty=60
+  ACCEPTED seq=707 ts=711 id=167 AAPL SELL LIMIT px=10006 qty=70
+  RESTED seq=708 ts=711 id=167 AAPL SELL px=10006 qty=70
+R ADD MSFT id=414 SELL STOP px=0 qty=29 trig=9996 disp=0 p=6 ts=712
+  ACCEPTED seq=704 ts=712 id=414 MSFT SELL STOP px=9996 qty=29
+R CANCEL AAPL id=316 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=713
+  REJECTED seq=709 ts=713 id=316 reason=5
+R ADD AAPL id=415 SELL GTC px=9999 qty=22 trig=0 disp=0 p=7 ts=714
+  ACCEPTED seq=710 ts=714 id=415 AAPL SELL GTC px=9999 qty=22
+  TRADE seq=711 ts=714 match=56 AAPL buy=401 sell=415 px=10001 qty=16
+  FILLED seq=712 ts=714 id=401 filled=16 px=10001
+  TRADE seq=713 ts=714 match=57 AAPL buy=406 sell=415 px=10001 qty=4
+  FILLED seq=714 ts=714 id=406 filled=4 px=10001
+  PARTIAL seq=715 ts=714 id=415 filled=20 left=2 px=10001
+  RESTED seq=716 ts=714 id=415 AAPL SELL px=9999 qty=2
+R ADD MSFT id=416 BUY FOK px=9993 qty=49 trig=0 disp=0 p=7 ts=715
+  REJECTED seq=705 ts=715 id=416 reason=7
+R CANCEL MSFT id=410 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=716
+  REJECTED seq=706 ts=716 id=410 reason=5
+R CANCEL MSFT id=268 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=717
+  CANCELED seq=707 ts=717 id=268 qty=2
+R ADD MSFT id=417 SELL LIMIT px=9997 qty=80 trig=0 disp=0 p=3 ts=718
+  ACCEPTED seq=708 ts=718 id=417 MSFT SELL LIMIT px=9997 qty=80
+  RESTED seq=709 ts=718 id=417 MSFT SELL px=9997 qty=80
+R ADD AAPL id=418 BUY FOK px=9980 qty=23 trig=0 disp=0 p=2 ts=719
+  REJECTED seq=717 ts=719 id=418 reason=7
+R CANCEL AAPL id=179 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=720
+  REJECTED seq=718 ts=720 id=179 reason=5
+R ADD MSFT id=419 BUY LIMIT px=9994 qty=47 trig=0 disp=0 p=8 ts=721
+  ACCEPTED seq=710 ts=721 id=419 MSFT BUY LIMIT px=9994 qty=47
+  RESTED seq=711 ts=721 id=419 MSFT BUY px=9994 qty=47
+R ADD MSFT id=420 SELL LIMIT px=10001 qty=77 trig=0 disp=0 p=1 ts=722
+  ACCEPTED seq=712 ts=722 id=420 MSFT SELL LIMIT px=10001 qty=77
+  RESTED seq=713 ts=722 id=420 MSFT SELL px=10001 qty=77
+R CANCEL MSFT id=119 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=723
+  CANCELED seq=714 ts=723 id=119 qty=68
+R CANCEL AAPL id=323 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=724
+  CANCELED seq=719 ts=724 id=323 qty=57
+R ADD MSFT id=421 BUY IOC px=9991 qty=14 trig=0 disp=0 p=5 ts=725
+  ACCEPTED seq=715 ts=725 id=421 MSFT BUY IOC px=9991 qty=14
+  CANCELED seq=716 ts=725 id=421 qty=14
+R ADD AAPL id=422 SELL LIMIT px=10015 qty=65 trig=0 disp=0 p=2 ts=726
+  ACCEPTED seq=720 ts=726 id=422 AAPL SELL LIMIT px=10015 qty=65
+  RESTED seq=721 ts=726 id=422 AAPL SELL px=10015 qty=65
+R ADD MSFT id=423 SELL LIMIT px=9998 qty=4 trig=0 disp=0 p=1 ts=727
+  ACCEPTED seq=717 ts=727 id=423 MSFT SELL LIMIT px=9998 qty=4
+  RESTED seq=718 ts=727 id=423 MSFT SELL px=9998 qty=4
+R ADD MSFT id=424 BUY STOP px=0 qty=15 trig=10005 disp=0 p=8 ts=728
+  ACCEPTED seq=719 ts=728 id=424 MSFT BUY STOP px=10005 qty=15
+R ADD MSFT id=425 BUY GTC px=9993 qty=81 trig=0 disp=0 p=3 ts=729
+  ACCEPTED seq=720 ts=729 id=425 MSFT BUY GTC px=9993 qty=81
+  RESTED seq=721 ts=729 id=425 MSFT BUY px=9993 qty=81
+R MODIFY AAPL id=260 BUY LIMIT px=9987 qty=43 trig=0 disp=0 p=0 ts=730
+  REJECTED seq=722 ts=730 id=260 reason=5
+R CANCEL MSFT id=289 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=731
+  REJECTED seq=722 ts=731 id=289 reason=5
+R ADD MSFT id=426 SELL ICEBERG px=10004 qty=92 trig=0 disp=62 p=8 ts=732
+  ACCEPTED seq=723 ts=732 id=426 MSFT SELL ICEBERG px=10004 qty=92
+  RESTED seq=724 ts=732 id=426 MSFT SELL px=10004 qty=62
+R MODIFY AAPL id=360 SELL LIMIT px=10015 qty=91 trig=0 disp=0 p=0 ts=733
+  REJECTED seq=723 ts=733 id=360 reason=5
+R ADD AAPL id=427 SELL STOP_LIMIT px=9995 qty=57 trig=9993 disp=0 p=4 ts=734
+  ACCEPTED seq=724 ts=734 id=427 AAPL SELL STOP_LIMIT px=9995 qty=57
+R MODIFY MSFT id=347 SELL LIMIT px=9998 qty=100 trig=0 disp=0 p=0 ts=735
+  REJECTED seq=725 ts=735 id=347 reason=5
+R ADD AAPL id=428 BUY STOP px=0 qty=42 trig=10003 disp=0 p=6 ts=736
+  ACCEPTED seq=725 ts=736 id=428 AAPL BUY STOP px=10003 qty=42
+R ADD MSFT id=429 SELL LIMIT px=10008 qty=90 trig=0 disp=0 p=8 ts=737
+  ACCEPTED seq=726 ts=737 id=429 MSFT SELL LIMIT px=10008 qty=90
+  RESTED seq=727 ts=737 id=429 MSFT SELL px=10008 qty=90
+R ADD AAPL id=430 BUY LIMIT px=9988 qty=54 trig=0 disp=0 p=6 ts=738
+  ACCEPTED seq=726 ts=738 id=430 AAPL BUY LIMIT px=9988 qty=54
+  RESTED seq=727 ts=738 id=430 AAPL BUY px=9988 qty=54
+R ADD AAPL id=431 SELL FOK px=10017 qty=97 trig=0 disp=0 p=4 ts=739
+  REJECTED seq=728 ts=739 id=431 reason=7
+R CANCEL MSFT id=385 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=740
+  REJECTED seq=728 ts=740 id=385 reason=5
+R ADD MSFT id=432 SELL LIMIT px=9993 qty=87 trig=0 disp=0 p=2 ts=741
+  ACCEPTED seq=729 ts=741 id=432 MSFT SELL LIMIT px=9993 qty=87
+  TRADE seq=730 ts=741 match=61 MSFT buy=408 sell=432 px=9996 qty=69
+  FILLED seq=731 ts=741 id=408 filled=69 px=9996
+  TRADE seq=732 ts=741 match=62 MSFT buy=337 sell=432 px=9995 qty=18
+  PARTIAL seq=733 ts=741 id=337 filled=18 left=20 px=9995
+  TRADE seq=734 ts=741 match=63 MSFT buy=337 sell=414 px=9995 qty=20
+  FILLED seq=735 ts=741 id=337 filled=20 px=9995
+  TRADE seq=736 ts=741 match=64 MSFT buy=329 sell=414 px=9995 qty=6
+  FILLED seq=737 ts=741 id=329 filled=6 px=9995
+  TRADE seq=738 ts=741 match=65 MSFT buy=361 sell=414 px=9994 qty=3
+  PARTIAL seq=739 ts=741 id=361 filled=3 left=17 px=9994
+  FILLED seq=740 ts=741 id=414 filled=29 px=9994
+  FILLED seq=741 ts=741 id=432 filled=87 px=9995
+R CANCEL AAPL id=280 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=742
+  CANCELED seq=729 ts=742 id=280 qty=52
+R MODIFY AAPL id=307 BUY LIMIT px=9992 qty=2 trig=0 disp=0 p=0 ts=743
+  CANCELED seq=730 ts=743 id=307 qty=68
+  ACCEPTED seq=731 ts=743 id=307 AAPL BUY LIMIT px=9992 qty=2
+  RESTED seq=732 ts=743 id=307 AAPL BUY px=9992 qty=2
+R CANCEL MSFT id=396 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=744
+  REJECTED seq=742 ts=744 id=396 reason=5
+R ADD MSFT id=433 SELL LIMIT px=10013 qty=41 trig=0 disp=0 p=2 ts=745
+  ACCEPTED seq=743 ts=745 id=433 MSFT SELL LIMIT px=10013 qty=41
+  RESTED seq=744 ts=745 id=433 MSFT SELL px=10013 qty=41
+R ADD AAPL id=434 BUY LIMIT px=9994 qty=95 trig=0 disp=0 p=3 ts=746
+  ACCEPTED seq=733 ts=746 id=434 AAPL BUY LIMIT px=9994 qty=95
+  RESTED seq=734 ts=746 id=434 AAPL BUY px=9994 qty=95
+R ADD AAPL id=435 BUY IOC px=9985 qty=1 trig=0 disp=0 p=1 ts=747
+  ACCEPTED seq=735 ts=747 id=435 AAPL BUY IOC px=9985 qty=1
+  CANCELED seq=736 ts=747 id=435 qty=1
+R MODIFY AAPL id=346 SELL LIMIT px=10018 qty=39 trig=0 disp=0 p=0 ts=748
+  CANCELED seq=737 ts=748 id=346 qty=18
+  ACCEPTED seq=738 ts=748 id=346 AAPL SELL LIMIT px=10018 qty=39
+  RESTED seq=739 ts=748 id=346 AAPL SELL px=10018 qty=39
+R CANCEL AAPL id=431 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=749
+  REJECTED seq=740 ts=749 id=431 reason=5
+R CANCEL MSFT id=386 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=750
+  CANCELED seq=745 ts=750 id=386 qty=83
+R ADD AAPL id=436 BUY FOK px=9998 qty=82 trig=0 disp=0 p=3 ts=751
+  REJECTED seq=741 ts=751 id=436 reason=7
+R ADD AAPL id=437 BUY LIMIT px=9981 qty=35 trig=0 disp=0 p=8 ts=752
+  ACCEPTED seq=742 ts=752 id=437 AAPL BUY LIMIT px=9981 qty=35
+  RESTED seq=743 ts=752 id=437 AAPL BUY px=9981 qty=35
+R ADD AAPL id=438 BUY GTC px=9981 qty=29 trig=0 disp=0 p=3 ts=753
+  ACCEPTED seq=744 ts=753 id=438 AAPL BUY GTC px=9981 qty=29
+  RESTED seq=745 ts=753 id=438 AAPL BUY px=9981 qty=29
+R MODIFY AAPL id=275 SELL LIMIT px=10004 qty=61 trig=0 disp=0 p=0 ts=754
+  CANCELED seq=746 ts=754 id=275 qty=18
+  ACCEPTED seq=747 ts=754 id=275 AAPL SELL LIMIT px=10004 qty=61
+  RESTED seq=748 ts=754 id=275 AAPL SELL px=10004 qty=61
+R CANCEL AAPL id=26 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=755
+  REJECTED seq=749 ts=755 id=26 reason=5
+R ADD MSFT id=439 BUY LIMIT px=9982 qty=72 trig=0 disp=0 p=1 ts=756
+  ACCEPTED seq=746 ts=756 id=439 MSFT BUY LIMIT px=9982 qty=72
+  RESTED seq=747 ts=756 id=439 MSFT BUY px=9982 qty=72
+R ADD AAPL id=440 BUY LIMIT px=10003 qty=32 trig=0 disp=0 p=7 ts=757
+  ACCEPTED seq=750 ts=757 id=440 AAPL BUY LIMIT px=10003 qty=32
+  TRADE seq=751 ts=757 match=58 AAPL buy=440 sell=415 px=9999 qty=2
+  FILLED seq=752 ts=757 id=415 filled=2 px=9999
+  PARTIAL seq=753 ts=757 id=440 filled=2 left=30 px=9999
+  RESTED seq=754 ts=757 id=440 AAPL BUY px=10003 qty=30
+R ADD AAPL id=441 BUY ICEBERG px=9998 qty=44 trig=0 disp=41 p=1 ts=758
+  ACCEPTED seq=755 ts=758 id=441 AAPL BUY ICEBERG px=9998 qty=44
+  RESTED seq=756 ts=758 id=441 AAPL BUY px=9998 qty=41
+R CANCEL AAPL id=198 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=759
+  REJECTED seq=757 ts=759 id=198 reason=5
+R ADD AAPL id=442 BUY POST_ONLY px=9994 qty=70 trig=0 disp=0 p=1 ts=760
+  ACCEPTED seq=758 ts=760 id=442 AAPL BUY POST_ONLY px=9994 qty=70
+  RESTED seq=759 ts=760 id=442 AAPL BUY px=9994 qty=70
+R CANCEL MSFT id=424 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=761
+  CANCELED seq=748 ts=761 id=424 qty=15
+R ADD MSFT id=443 BUY GTC px=10003 qty=71 trig=0 disp=0 p=5 ts=762
+  ACCEPTED seq=749 ts=762 id=443 MSFT BUY GTC px=10003 qty=71
+  TRADE seq=750 ts=762 match=66 MSFT buy=443 sell=404 px=9997 qty=11
+  FILLED seq=751 ts=762 id=404 filled=11 px=9997
+  TRADE seq=752 ts=762 match=67 MSFT buy=443 sell=417 px=9997 qty=60
+  PARTIAL seq=753 ts=762 id=417 filled=60 left=20 px=9997
+  FILLED seq=754 ts=762 id=443 filled=71 px=9997
+R CANCEL MSFT id=403 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=763
+  CANCELED seq=755 ts=763 id=403 qty=89
+R ADD MSFT id=444 SELL LIMIT px=10002 qty=13 trig=0 disp=0 p=7 ts=764
+  ACCEPTED seq=756 ts=764 id=444 MSFT SELL LIMIT px=10002 qty=13
+  RESTED seq=757 ts=764 id=444 MSFT SELL px=10002 qty=13
+R ADD MSFT id=445 SELL FOK px=10009 qty=35 trig=0 disp=0 p=3 ts=765
+  REJECTED seq=758 ts=765 id=445 reason=7
+R ADD AAPL id=446 SELL POST_ONLY px=10014 qty=78 trig=0 disp=0 p=3 ts=766
+  ACCEPTED seq=760 ts=766 id=446 AAPL SELL POST_ONLY px=10014 qty=78
+  RESTED seq=761 ts=766 id=446 AAPL SELL px=10014 qty=78
+R MODIFY MSFT id=445 SELL LIMIT px=10007 qty=82 trig=0 disp=0 p=0 ts=767
+  REJECTED seq=759 ts=767 id=445 reason=5
+R MODIFY MSFT id=372 SELL LIMIT px=10007 qty=47 trig=0 disp=0 p=0 ts=768
+  CANCELED seq=760 ts=768 id=372 qty=80
+  ACCEPTED seq=761 ts=768 id=372 MSFT SELL LIMIT px=10007 qty=47
+  RESTED seq=762 ts=768 id=372 MSFT SELL px=10007 qty=47
+R ADD MSFT id=447 BUY LIMIT px=10001 qty=30 trig=0 disp=0 p=1 ts=769
+  ACCEPTED seq=763 ts=769 id=447 MSFT BUY LIMIT px=10001 qty=30
+  TRADE seq=764 ts=769 match=68 MSFT buy=447 sell=417 px=9997 qty=20
+  FILLED seq=765 ts=769 id=417 filled=20 px=9997
+  TRADE seq=766 ts=769 match=69 MSFT buy=447 sell=423 px=9998 qty=4
+  FILLED seq=767 ts=769 id=423 filled=4 px=9998
+  TRADE seq=768 ts=769 match=70 MSFT buy=447 sell=281 px=9999 qty=6
+  PARTIAL seq=769 ts=769 id=281 filled=6 left=13 px=9999
+  FILLED seq=770 ts=769 id=447 filled=30 px=9999
+R CANCEL AAPL id=122 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=770
+  REJECTED seq=762 ts=770 id=122 reason=5
+R MODIFY MSFT id=286 BUY LIMIT px=9978 qty=82 trig=0 disp=0 p=0 ts=771
+  REJECTED seq=771 ts=771 id=286 reason=9
+R ADD MSFT id=448 BUY LIMIT px=9996 qty=20 trig=0 disp=0 p=6 ts=772
+  ACCEPTED seq=772 ts=772 id=448 MSFT BUY LIMIT px=9996 qty=20
+  RESTED seq=773 ts=772 id=448 MSFT BUY px=9996 qty=20
+R CANCEL MSFT id=416 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=773
+  REJECTED seq=774 ts=773 id=416 reason=5
+R ADD MSFT id=449 BUY LIMIT px=9993 qty=1 trig=0 disp=0 p=2 ts=774
+  ACCEPTED seq=775 ts=774 id=449 MSFT BUY LIMIT px=9993 qty=1
+  RESTED seq=776 ts=774 id=449 MSFT BUY px=9993 qty=1
+R ADD MSFT id=450 SELL LIMIT px=10006 qty=61 trig=0 disp=0 p=6 ts=775
+  ACCEPTED seq=777 ts=775 id=450 MSFT SELL LIMIT px=10006 qty=61
+  RESTED seq=778 ts=775 id=450 MSFT SELL px=10006 qty=61
+R ADD MSFT id=451 BUY LIMIT px=9998 qty=95 trig=0 disp=0 p=7 ts=776
+  ACCEPTED seq=779 ts=776 id=451 MSFT BUY LIMIT px=9998 qty=95
+  RESTED seq=780 ts=776 id=451 MSFT BUY px=9998 qty=95
+R MODIFY AAPL id=368 SELL LIMIT px=10014 qty=87 trig=0 disp=0 p=0 ts=777
+  CANCELED seq=763 ts=777 id=368 qty=70
+  ACCEPTED seq=764 ts=777 id=368 AAPL SELL LIMIT px=10014 qty=87
+  RESTED seq=765 ts=777 id=368 AAPL SELL px=10014 qty=87
+R ADD MSFT id=452 SELL LIMIT px=10018 qty=41 trig=0 disp=0 p=5 ts=778
+  ACCEPTED seq=781 ts=778 id=452 MSFT SELL LIMIT px=10018 qty=41
+  RESTED seq=782 ts=778 id=452 MSFT SELL px=10018 qty=41
+R CANCEL AAPL id=326 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=779
+  REJECTED seq=766 ts=779 id=326 reason=5
+R ADD MSFT id=453 BUY IOC px=9991 qty=92 trig=0 disp=0 p=3 ts=780
+  ACCEPTED seq=783 ts=780 id=453 MSFT BUY IOC px=9991 qty=92
+  CANCELED seq=784 ts=780 id=453 qty=92
+R ADD MSFT id=454 SELL LIMIT px=10006 qty=100 trig=0 disp=0 p=5 ts=781
+  ACCEPTED seq=785 ts=781 id=454 MSFT SELL LIMIT px=10006 qty=100
+  RESTED seq=786 ts=781 id=454 MSFT SELL px=10006 qty=100
+R CANCEL AAPL id=235 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=782
+  REJECTED seq=767 ts=782 id=235 reason=5
+R ADD AAPL id=455 BUY FOK px=10005 qty=35 trig=0 disp=0 p=4 ts=783
+  ACCEPTED seq=768 ts=783 id=455 AAPL BUY FOK px=10005 qty=35
+  TRADE seq=769 ts=783 match=59 AAPL buy=455 sell=152 px=10004 qty=21
+  FILLED seq=770 ts=783 id=152 filled=21 px=10004
+  TRADE seq=771 ts=783 match=60 AAPL buy=455 sell=387 px=10004 qty=14
+  PARTIAL seq=772 ts=783 id=387 filled=14 left=70 px=10004
+  TRADE seq=773 ts=783 match=61 AAPL buy=428 sell=387 px=10004 qty=42
+  PARTIAL seq=774 ts=783 id=387 filled=42 left=28 px=10004
+  FILLED seq=775 ts=783 id=428 filled=42 px=10004
+  FILLED seq=776 ts=783 id=455 filled=35 px=10004
+R ADD MSFT id=456 BUY STOP_LIMIT px=9980 qty=69 trig=10001 disp=0 p=8 ts=784
+  ACCEPTED seq=787 ts=784 id=456 MSFT BUY STOP_LIMIT px=9980 qty=69
+R MODIFY AAPL id=413 SELL LIMIT px=9999 qty=6 trig=0 disp=0 p=0 ts=785
+  REJECTED seq=777 ts=785 id=413 reason=5
+R MODIFY AAPL id=367 SELL LIMIT px=10002 qty=43 trig=0 disp=0 p=0 ts=786
+  CANCELED seq=778 ts=786 id=367 qty=94
+  ACCEPTED seq=779 ts=786 id=367 AAPL SELL LIMIT px=10002 qty=43
+  TRADE seq=780 ts=786 match=62 AAPL buy=440 sell=367 px=10003 qty=30
+  FILLED seq=781 ts=786 id=440 filled=30 px=10003
+  PARTIAL seq=782 ts=786 id=367 filled=30 left=13 px=10003
+  RESTED seq=783 ts=786 id=367 AAPL SELL px=10002 qty=13
+R CANCEL AAPL id=137 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=787
+  REJECTED seq=784 ts=787 id=137 reason=5
+R ADD MSFT id=457 SELL IOC px=9998 qty=78 trig=0 disp=0 p=4 ts=788
+  ACCEPTED seq=788 ts=788 id=457 MSFT SELL IOC px=9998 qty=78
+  TRADE seq=789 ts=788 match=71 MSFT buy=451 sell=457 px=9998 qty=78
+  PARTIAL seq=790 ts=788 id=451 filled=78 left=17 px=9998
+  FILLED seq=791 ts=788 id=457 filled=78 px=9998
+R CANCEL AAPL id=128 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=789
+  REJECTED seq=785 ts=789 id=128 reason=5
+R ADD MSFT id=458 SELL LIMIT px=9997 qty=44 trig=0 disp=0 p=5 ts=790
+  ACCEPTED seq=792 ts=790 id=458 MSFT SELL LIMIT px=9997 qty=44
+  TRADE seq=793 ts=790 match=72 MSFT buy=451 sell=458 px=9998 qty=17
+  FILLED seq=794 ts=790 id=451 filled=17 px=9998
+  PARTIAL seq=795 ts=790 id=458 filled=17 left=27 px=9998
+  RESTED seq=796 ts=790 id=458 MSFT SELL px=9997 qty=27
+R CANCEL MSFT id=423 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=791
+  REJECTED seq=797 ts=791 id=423 reason=5
+R ADD MSFT id=459 BUY FOK px=9991 qty=5 trig=0 disp=0 p=6 ts=792
+  REJECTED seq=798 ts=792 id=459 reason=7
+R ADD MSFT id=460 SELL MARKET px=0 qty=62 trig=0 disp=0 p=3 ts=793
+  ACCEPTED seq=799 ts=793 id=460 MSFT SELL MARKET px=0 qty=62
+  TRADE seq=800 ts=793 match=73 MSFT buy=448 sell=460 px=9996 qty=20
+  FILLED seq=801 ts=793 id=448 filled=20 px=9996
+  TRADE seq=802 ts=793 match=74 MSFT buy=361 sell=460 px=9994 qty=8
+  PARTIAL seq=803 ts=793 id=361 filled=8 left=9 px=9994
+  RESTED seq=804 ts=793 id=361 MSFT BUY px=9994 qty=9
+  TRADE seq=805 ts=793 match=75 MSFT buy=419 sell=460 px=9994 qty=34
+  PARTIAL seq=806 ts=793 id=419 filled=34 left=13 px=9994
+  FILLED seq=807 ts=793 id=460 filled=62 px=9994
+R CANCEL MSFT id=113 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=794
+  CANCELED seq=808 ts=794 id=113 qty=86
+R ADD MSFT id=461 SELL LIMIT px=9998 qty=38 trig=0 disp=0 p=4 ts=795
+  ACCEPTED seq=809 ts=795 id=461 MSFT SELL LIMIT px=9998 qty=38
+  RESTED seq=810 ts=795 id=461 MSFT SELL px=9998 qty=38
+R CANCEL MSFT id=277 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=796
+  CANCELED seq=811 ts=796 id=277 qty=14
+R ADD MSFT id=462 SELL POST_ONLY px=9994 qty=1 trig=0 disp=0 p=2 ts=797
+  REJECTED seq=812 ts=797 id=462 reason=8
+R ADD MSFT id=463 BUY GTC px=10002 qty=47 trig=0 disp=0 p=4 ts=798
+  ACCEPTED seq=813 ts=798 id=463 MSFT BUY GTC px=10002 qty=47
+  TRADE seq=814 ts=798 match=76 MSFT buy=463 sell=458 px=9997 qty=27
+  FILLED seq=815 ts=798 id=458 filled=27 px=9997
+  TRADE seq=816 ts=798 match=77 MSFT buy=463 sell=461 px=9998 qty=20
+  PARTIAL seq=817 ts=798 id=461 filled=20 left=18 px=9998
+  FILLED seq=818 ts=798 id=463 filled=47 px=9998
+R CANCEL AAPL id=331 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=799
+  CANCELED seq=786 ts=799 id=331 qty=60
+R ADD MSFT id=464 BUY GTC px=9993 qty=69 trig=0 disp=0 p=2 ts=800
+  ACCEPTED seq=819 ts=800 id=464 MSFT BUY GTC px=9993 qty=69
+  RESTED seq=820 ts=800 id=464 MSFT BUY px=9993 qty=69
+R ADD MSFT id=465 BUY STOP_LIMIT px=9990 qty=12 trig=10001 disp=0 p=1 ts=801
+  ACCEPTED seq=821 ts=801 id=465 MSFT BUY STOP_LIMIT px=9990 qty=12
+R ADD AAPL id=466 BUY STOP px=0 qty=29 trig=10002 disp=0 p=2 ts=802
+  ACCEPTED seq=787 ts=802 id=466 AAPL BUY STOP px=10002 qty=29
+R ADD AAPL id=467 SELL POST_ONLY px=10017 qty=74 trig=0 disp=0 p=2 ts=803
+  ACCEPTED seq=788 ts=803 id=467 AAPL SELL POST_ONLY px=10017 qty=74
+  RESTED seq=789 ts=803 id=467 AAPL SELL px=10017 qty=74
+R ADD MSFT id=468 BUY ICEBERG px=9985 qty=91 trig=0 disp=15 p=8 ts=804
+  ACCEPTED seq=822 ts=804 id=468 MSFT BUY ICEBERG px=9985 qty=91
+  RESTED seq=823 ts=804 id=468 MSFT BUY px=9985 qty=15
+R CANCEL MSFT id=188 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=805
+  REJECTED seq=824 ts=805 id=188 reason=5
+R ADD MSFT id=469 BUY LIMIT px=9994 qty=44 trig=0 disp=0 p=8 ts=806
+  ACCEPTED seq=825 ts=806 id=469 MSFT BUY LIMIT px=9994 qty=44
+  RESTED seq=826 ts=806 id=469 MSFT BUY px=9994 qty=44
+R ADD MSFT id=470 BUY LIMIT px=9982 qty=28 trig=0 disp=0 p=1 ts=807
+  ACCEPTED seq=827 ts=807 id=470 MSFT BUY LIMIT px=9982 qty=28
+  RESTED seq=828 ts=807 id=470 MSFT BUY px=9982 qty=28
+R ADD AAPL id=471 BUY POST_ONLY px=9983 qty=30 trig=0 disp=0 p=1 ts=808
+  ACCEPTED seq=790 ts=808 id=471 AAPL BUY POST_ONLY px=9983 qty=30
+  RESTED seq=791 ts=808 id=471 AAPL BUY px=9983 qty=30
+R ADD AAPL id=472 SELL STOP_LIMIT px=10005 qty=94 trig=9993 disp=0 p=8 ts=809
+  ACCEPTED seq=792 ts=809 id=472 AAPL SELL STOP_LIMIT px=10005 qty=94
+R CANCEL AAPL id=212 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=810
+  REJECTED seq=793 ts=810 id=212 reason=5
+R ADD MSFT id=473 BUY MARKET px=0 qty=20 trig=0 disp=0 p=4 ts=811
+  ACCEPTED seq=829 ts=811 id=473 MSFT BUY MARKET px=0 qty=20
+  TRADE seq=830 ts=811 match=78 MSFT buy=473 sell=461 px=9998 qty=18
+  FILLED seq=831 ts=811 id=461 filled=18 px=9998
+  TRADE seq=832 ts=811 match=79 MSFT buy=473 sell=281 px=9999 qty=2
+  PARTIAL seq=833 ts=811 id=281 filled=2 left=11 px=9999
+  FILLED seq=834 ts=811 id=473 filled=20 px=9999
+R CANCEL MSFT id=460 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=812
+  REJECTED seq=835 ts=812 id=460 reason=5
+R ADD AAPL id=474 BUY LIMIT px=9996 qty=41 trig=0 disp=0 p=4 ts=813
+  ACCEPTED seq=794 ts=813 id=474 AAPL BUY LIMIT px=9996 qty=41
+  RESTED seq=795 ts=813 id=474 AAPL BUY px=9996 qty=41
+R MODIFY MSFT id=351 SELL LIMIT px=10013 qty=33 trig=0 disp=0 p=0 ts=814
+  REJECTED seq=836 ts=814 id=351 reason=5
+R ADD AAPL id=475 BUY LIMIT px=9981 qty=11 trig=0 disp=0 p=4 ts=815
+  ACCEPTED seq=796 ts=815 id=475 AAPL BUY LIMIT px=9981 qty=11
+  RESTED seq=797 ts=815 id=475 AAPL BUY px=9981 qty=11
+R ADD MSFT id=476 SELL LIMIT px=10017 qty=27 trig=0 disp=0 p=5 ts=816
+  ACCEPTED seq=837 ts=816 id=476 MSFT SELL LIMIT px=10017 qty=27
+  RESTED seq=838 ts=816 id=476 MSFT SELL px=10017 qty=27
+R ADD AAPL id=477 BUY LIMIT px=9985 qty=76 trig=0 disp=0 p=5 ts=817
+  ACCEPTED seq=798 ts=817 id=477 AAPL BUY LIMIT px=9985 qty=76
+  RESTED seq=799 ts=817 id=477 AAPL BUY px=9985 qty=76
+R ADD MSFT id=478 SELL STOP_LIMIT px=9997 qty=9 trig=9990 disp=0 p=1 ts=818
+  ACCEPTED seq=839 ts=818 id=478 MSFT SELL STOP_LIMIT px=9997 qty=9
+R CANCEL MSFT id=357 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=819
+  REJECTED seq=840 ts=819 id=357 reason=5
+R ADD MSFT id=479 SELL LIMIT px=10000 qty=98 trig=0 disp=0 p=4 ts=820
+  ACCEPTED seq=841 ts=820 id=479 MSFT SELL LIMIT px=10000 qty=98
+  RESTED seq=842 ts=820 id=479 MSFT SELL px=10000 qty=98
+R ADD MSFT id=480 SELL LIMIT px=10002 qty=34 trig=0 disp=0 p=2 ts=821
+  ACCEPTED seq=843 ts=821 id=480 MSFT SELL LIMIT px=10002 qty=34
+  RESTED seq=844 ts=821 id=480 MSFT SELL px=10002 qty=34
+R ADD MSFT id=481 SELL LIMIT px=9995 qty=89 trig=0 disp=0 p=4 ts=822
+  ACCEPTED seq=845 ts=822 id=481 MSFT SELL LIMIT px=9995 qty=89
+  RESTED seq=846 ts=822 id=481 MSFT SELL px=9995 qty=89
+R ADD AAPL id=482 SELL LIMIT px=10020 qty=9 trig=0 disp=0 p=3 ts=823
+  ACCEPTED seq=800 ts=823 id=482 AAPL SELL LIMIT px=10020 qty=9
+  RESTED seq=801 ts=823 id=482 AAPL SELL px=10020 qty=9
+R ADD AAPL id=483 SELL FOK px=10007 qty=26 trig=0 disp=0 p=5 ts=824
+  REJECTED seq=802 ts=824 id=483 reason=7
+R MODIFY MSFT id=389 BUY LIMIT px=9991 qty=11 trig=0 disp=0 p=0 ts=825
+  REJECTED seq=847 ts=825 id=389 reason=9
+R ADD AAPL id=484 SELL LIMIT px=10014 qty=3 trig=0 disp=0 p=1 ts=826
+  ACCEPTED seq=803 ts=826 id=484 AAPL SELL LIMIT px=10014 qty=3
+  RESTED seq=804 ts=826 id=484 AAPL SELL px=10014 qty=3
+R ADD MSFT id=485 BUY LIMIT px=9983 qty=71 trig=0 disp=0 p=4 ts=827
+  ACCEPTED seq=848 ts=827 id=485 MSFT BUY LIMIT px=9983 qty=71
+  RESTED seq=849 ts=827 id=485 MSFT BUY px=9983 qty=71
+R CANCEL MSFT id=251 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=828
+  CANCELED seq=850 ts=828 id=251 qty=55
+R ADD MSFT id=486 SELL LIMIT px=10007 qty=12 trig=0 disp=0 p=2 ts=829
+  ACCEPTED seq=851 ts=829 id=486 MSFT SELL LIMIT px=10007 qty=12
+  RESTED seq=852 ts=829 id=486 MSFT SELL px=10007 qty=12
+R CANCEL MSFT id=329 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=830
+  REJECTED seq=853 ts=830 id=329 reason=5
+R ADD AAPL id=487 BUY STOP px=0 qty=62 trig=10010 disp=0 p=8 ts=831
+  ACCEPTED seq=805 ts=831 id=487 AAPL BUY STOP px=10010 qty=62
+R CANCEL MSFT id=211 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=832
+  CANCELED seq=854 ts=832 id=211 qty=41
+R ADD AAPL id=488 SELL LIMIT px=9996 qty=55 trig=0 disp=0 p=4 ts=833
+  ACCEPTED seq=806 ts=833 id=488 AAPL SELL LIMIT px=9996 qty=55
+  TRADE seq=807 ts=833 match=63 AAPL buy=441 sell=488 px=9998 qty=41
+  PARTIAL seq=808 ts=833 id=441 filled=41 left=3 px=9998
+  RESTED seq=809 ts=833 id=441 AAPL BUY px=9998 qty=3
+  TRADE seq=810 ts=833 match=64 AAPL buy=441 sell=488 px=9998 qty=3
+  FILLED seq=811 ts=833 id=441 filled=3 px=9998
+  TRADE seq=812 ts=833 match=65 AAPL buy=249 sell=488 px=9997 qty=11
+  PARTIAL seq=813 ts=833 id=249 filled=11 left=33 px=9997
+  RESTED seq=814 ts=833 id=366 AAPL SELL px=10010 qty=73
+  FILLED seq=815 ts=833 id=488 filled=55 px=9997
+R CANCEL AAPL id=373 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=834
+  CANCELED seq=816 ts=834 id=373 qty=4
+R CANCEL AAPL id=455 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=835
+  REJECTED seq=817 ts=835 id=455 reason=5
+R ADD AAPL id=489 BUY IOC px=9987 qty=20 trig=0 disp=0 p=8 ts=836
+  ACCEPTED seq=818 ts=836 id=489 AAPL BUY IOC px=9987 qty=20
+  CANCELED seq=819 ts=836 id=489 qty=20
+R CANCEL AAPL id=434 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=837
+  CANCELED seq=820 ts=837 id=434 qty=95
+R CANCEL AAPL id=74 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=838
+  REJECTED seq=821 ts=838 id=74 reason=5
+R CANCEL MSFT id=429 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=839
+  CANCELED seq=855 ts=839 id=429 qty=90
+R ADD MSFT id=490 BUY ICEBERG px=9987 qty=42 trig=0 disp=5 p=1 ts=840
+  ACCEPTED seq=856 ts=840 id=490 MSFT BUY ICEBERG px=9987 qty=42
+  RESTED seq=857 ts=840 id=490 MSFT BUY px=9987 qty=5
+R ADD AAPL id=491 BUY FOK px=10003 qty=25 trig=0 disp=0 p=3 ts=841
+  REJECTED seq=822 ts=841 id=491 reason=7
+R CANCEL MSFT id=425 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=842
+  CANCELED seq=858 ts=842 id=425 qty=81
+R MODIFY MSFT id=454 SELL LIMIT px=10006 qty=13 trig=0 disp=0 p=0 ts=843
+  REDUCED seq=859 ts=843 id=454 qty=13
+R CANCEL AAPL id=489 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=844
+  REJECTED seq=823 ts=844 id=489 reason=5
+R ADD AAPL id=492 SELL LIMIT px=10009 qty=49 trig=0 disp=0 p=5 ts=845
+  ACCEPTED seq=824 ts=845 id=492 AAPL SELL LIMIT px=10009 qty=49
+  RESTED seq=825 ts=845 id=492 AAPL SELL px=10009 qty=49
+R ADD MSFT id=493 SELL LIMIT px=10007 qty=69 trig=0 disp=0 p=2 ts=846
+  ACCEPTED seq=860 ts=846 id=493 MSFT SELL LIMIT px=10007 qty=69
+  RESTED seq=861 ts=846 id=493 MSFT SELL px=10007 qty=69
+R ADD AAPL id=494 SELL IOC px=10001 qty=36 trig=0 disp=0 p=2 ts=847
+  ACCEPTED seq=826 ts=847 id=494 AAPL SELL IOC px=10001 qty=36
+  CANCELED seq=827 ts=847 id=494 qty=36
+R ADD MSFT id=495 BUY LIMIT px=9990 qty=47 trig=0 disp=0 p=6 ts=848
+  ACCEPTED seq=862 ts=848 id=495 MSFT BUY LIMIT px=9990 qty=47
+  RESTED seq=863 ts=848 id=495 MSFT BUY px=9990 qty=47
+R ADD MSFT id=496 BUY LIMIT px=9997 qty=4 trig=0 disp=0 p=2 ts=849
+  ACCEPTED seq=864 ts=849 id=496 MSFT BUY LIMIT px=9997 qty=4
+  TRADE seq=865 ts=849 match=80 MSFT buy=496 sell=481 px=9995 qty=4
+  PARTIAL seq=866 ts=849 id=481 filled=4 left=85 px=9995
+  FILLED seq=867 ts=849 id=496 filled=4 px=9995
+R ADD MSFT id=497 SELL GTC px=10007 qty=59 trig=0 disp=0 p=7 ts=850
+  ACCEPTED seq=868 ts=850 id=497 MSFT SELL GTC px=10007 qty=59
+  RESTED seq=869 ts=850 id=497 MSFT SELL px=10007 qty=59
+R MODIFY MSFT id=239 BUY LIMIT px=9989 qty=59 trig=0 disp=0 p=0 ts=851
+  CANCELED seq=870 ts=851 id=239 qty=18
+  ACCEPTED seq=871 ts=851 id=239 MSFT BUY ICEBERG px=9989 qty=59
+  RESTED seq=872 ts=851 id=239 MSFT BUY px=9989 qty=20
+R ADD MSFT id=498 SELL LIMIT px=10014 qty=78 trig=0 disp=0 p=2 ts=852
+  ACCEPTED seq=873 ts=852 id=498 MSFT SELL LIMIT px=10014 qty=78
+  RESTED seq=874 ts=852 id=498 MSFT SELL px=10014 qty=78
+R ADD MSFT id=499 SELL LIMIT px=10010 qty=16 trig=0 disp=0 p=6 ts=853
+  ACCEPTED seq=875 ts=853 id=499 MSFT SELL LIMIT px=10010 qty=16
+  RESTED seq=876 ts=853 id=499 MSFT SELL px=10010 qty=16
+R ADD MSFT id=500 SELL POST_ONLY px=10008 qty=40 trig=0 disp=0 p=2 ts=854
+  ACCEPTED seq=877 ts=854 id=500 MSFT SELL POST_ONLY px=10008 qty=40
+  RESTED seq=878 ts=854 id=500 MSFT SELL px=10008 qty=40
+R ADD AAPL id=501 BUY GTC px=9996 qty=63 trig=0 disp=0 p=5 ts=855
+  ACCEPTED seq=828 ts=855 id=501 AAPL BUY GTC px=9996 qty=63
+  RESTED seq=829 ts=855 id=501 AAPL BUY px=9996 qty=63
+R ADD MSFT id=502 SELL LIMIT px=9993 qty=4 trig=0 disp=0 p=8 ts=856
+  ACCEPTED seq=879 ts=856 id=502 MSFT SELL LIMIT px=9993 qty=4
+  TRADE seq=880 ts=856 match=81 MSFT buy=419 sell=502 px=9994 qty=4
+  PARTIAL seq=881 ts=856 id=419 filled=4 left=9 px=9994
+  FILLED seq=882 ts=856 id=502 filled=4 px=9994
+R ADD AAPL id=503 SELL LIMIT px=9996 qty=28 trig=0 disp=0 p=3 ts=857
+  ACCEPTED seq=830 ts=857 id=503 AAPL SELL LIMIT px=9996 qty=28
+  TRADE seq=831 ts=857 match=66 AAPL buy=249 sell=503 px=9997 qty=28
+  PARTIAL seq=832 ts=857 id=249 filled=28 left=5 px=9997
+  FILLED seq=833 ts=857 id=503 filled=28 px=9997
+R ADD MSFT id=504 SELL POST_ONLY px=10015 qty=4 trig=0 disp=0 p=2 ts=858
+  ACCEPTED seq=883 ts=858 id=504 MSFT SELL POST_ONLY px=10015 qty=4
+  RESTED seq=884 ts=858 id=504 MSFT SELL px=10015 qty=4
+R ADD AAPL id=505 SELL IOC px=10002 qty=19 trig=0 disp=0 p=2 ts=859
+  ACCEPTED seq=834 ts=859 id=505 AAPL SELL IOC px=10002 qty=19
+  CANCELED seq=835 ts=859 id=505 qty=19
+R ADD AAPL id=506 BUY LIMIT px=9984 qty=74 trig=0 disp=0 p=5 ts=860
+  ACCEPTED seq=836 ts=860 id=506 AAPL BUY LIMIT px=9984 qty=74
+  RESTED seq=837 ts=860 id=506 AAPL BUY px=9984 qty=74
+R CANCEL MSFT id=384 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=861
+  CANCELED seq=885 ts=861 id=384 qty=44
+R ADD MSFT id=507 BUY LIMIT px=9980 qty=24 trig=0 disp=0 p=8 ts=862
+  ACCEPTED seq=886 ts=862 id=507 MSFT BUY LIMIT px=9980 qty=24
+  RESTED seq=887 ts=862 id=507 MSFT BUY px=9980 qty=24
+R ADD AAPL id=508 BUY STOP px=0 qty=2 trig=10002 disp=0 p=6 ts=863
+  ACCEPTED seq=838 ts=863 id=508 AAPL BUY STOP px=10002 qty=2
+R ADD MSFT id=509 BUY POST_ONLY px=9992 qty=72 trig=0 disp=0 p=2 ts=864
+  ACCEPTED seq=888 ts=864 id=509 MSFT BUY POST_ONLY px=9992 qty=72
+  RESTED seq=889 ts=864 id=509 MSFT BUY px=9992 qty=72
+R MODIFY AAPL id=446 SELL LIMIT px=10001 qty=22 trig=0 disp=0 p=0 ts=865
+  CANCELED seq=839 ts=865 id=446 qty=78
+  ACCEPTED seq=840 ts=865 id=446 AAPL SELL POST_ONLY px=10001 qty=22
+  RESTED seq=841 ts=865 id=446 AAPL SELL px=10001 qty=22
+R ADD AAPL id=510 SELL IOC px=10016 qty=68 trig=0 disp=0 p=8 ts=866
+  ACCEPTED seq=842 ts=866 id=510 AAPL SELL IOC px=10016 qty=68
+  CANCELED seq=843 ts=866 id=510 qty=68
+R ADD MSFT id=511 BUY LIMIT px=9978 qty=58 trig=0 disp=0 p=6 ts=867
+  ACCEPTED seq=890 ts=867 id=511 MSFT BUY LIMIT px=9978 qty=58
+  RESTED seq=891 ts=867 id=511 MSFT BUY px=9978 qty=58
+R ADD AAPL id=512 BUY LIMIT px=9999 qty=85 trig=0 disp=0 p=2 ts=868
+  ACCEPTED seq=844 ts=868 id=512 AAPL BUY LIMIT px=9999 qty=85
+  RESTED seq=845 ts=868 id=512 AAPL BUY px=9999 qty=85
+R ADD AAPL id=513 BUY LIMIT px=9996 qty=66 trig=0 disp=0 p=5 ts=869
+  ACCEPTED seq=846 ts=869 id=513 AAPL BUY LIMIT px=9996 qty=66
+  RESTED seq=847 ts=869 id=513 AAPL BUY px=9996 qty=66
+R ADD MSFT id=514 SELL IOC px=10002 qty=93 trig=0 disp=0 p=8 ts=870
+  ACCEPTED seq=892 ts=870 id=514 MSFT SELL IOC px=10002 qty=93
+  CANCELED seq=893 ts=870 id=514 qty=93
+R ADD AAPL id=515 BUY IOC px=9989 qty=34 trig=0 disp=0 p=7 ts=871
+  ACCEPTED seq=848 ts=871 id=515 AAPL BUY IOC px=9989 qty=34
+  CANCELED seq=849 ts=871 id=515 qty=34
+R MODIFY MSFT id=341 BUY LIMIT px=9994 qty=99 trig=0 disp=0 p=0 ts=872
+  REJECTED seq=894 ts=872 id=341 reason=5
+R ADD AAPL id=516 BUY POST_ONLY px=9996 qty=30 trig=0 disp=0 p=5 ts=873
+  ACCEPTED seq=850 ts=873 id=516 AAPL BUY POST_ONLY px=9996 qty=30
+  RESTED seq=851 ts=873 id=516 AAPL BUY px=9996 qty=30
+R ADD MSFT id=517 BUY LIMIT px=9989 qty=3 trig=0 disp=0 p=1 ts=874
+  ACCEPTED seq=895 ts=874 id=517 MSFT BUY LIMIT px=9989 qty=3
+  RESTED seq=896 ts=874 id=517 MSFT BUY px=9989 qty=3
+R MODIFY MSFT id=229 BUY LIMIT px=10000 qty=48 trig=0 disp=0 p=0 ts=875
+  REJECTED seq=897 ts=875 id=229 reason=5
+R ADD AAPL id=518 BUY ICEBERG px=9981 qty=75 trig=0 disp=38 p=7 ts=876
+  ACCEPTED seq=852 ts=876 id=518 AAPL BUY ICEBERG px=9981 qty=75
+  RESTED seq=853 ts=876 id=518 AAPL BUY px=9981 qty=38
+R ADD MSFT id=519 SELL LIMIT px=10003 qty=86 trig=0 disp=0 p=3 ts=877
+  ACCEPTED seq=898 ts=877 id=519 MSFT SELL LIMIT px=10003 qty=86
+  RESTED seq=899 ts=877 id=519 MSFT SELL px=10003 qty=86
+R ADD MSFT id=520 BUY ICEBERG px=9989 qty=29 trig=0 disp=21 p=5 ts=878
+  ACCEPTED seq=900 ts=878 id=520 MSFT BUY ICEBERG px=9989 qty=29
+  RESTED seq=901 ts=878 id=520 MSFT BUY px=9989 qty=21
+R ADD AAPL id=521 SELL LIMIT px=10001 qty=52 trig=0 disp=0 p=5 ts=879
+  ACCEPTED seq=854 ts=879 id=521 AAPL SELL LIMIT px=10001 qty=52
+  RESTED seq=855 ts=879 id=521 AAPL SELL px=10001 qty=52
+R ADD AAPL id=522 BUY STOP px=0 qty=64 trig=10007 disp=0 p=6 ts=880
+  ACCEPTED seq=856 ts=880 id=522 AAPL BUY STOP px=10007 qty=64
+R ADD AAPL id=523 BUY LIMIT px=9995 qty=74 trig=0 disp=0 p=8 ts=881
+  ACCEPTED seq=857 ts=881 id=523 AAPL BUY LIMIT px=9995 qty=74
+  RESTED seq=858 ts=881 id=523 AAPL BUY px=9995 qty=74
+R ADD MSFT id=524 SELL ICEBERG px=10018 qty=87 trig=0 disp=23 p=6 ts=882
+  ACCEPTED seq=902 ts=882 id=524 MSFT SELL ICEBERG px=10018 qty=87
+  RESTED seq=903 ts=882 id=524 MSFT SELL px=10018 qty=23
+R ADD AAPL id=525 SELL LIMIT px=10018 qty=67 trig=0 disp=0 p=1 ts=883
+  ACCEPTED seq=859 ts=883 id=525 AAPL SELL LIMIT px=10018 qty=67
+  RESTED seq=860 ts=883 id=525 AAPL SELL px=10018 qty=67
+R ADD AAPL id=526 BUY ICEBERG px=9988 qty=40 trig=0 disp=33 p=2 ts=884
+  ACCEPTED seq=861 ts=884 id=526 AAPL BUY ICEBERG px=9988 qty=40
+  RESTED seq=862 ts=884 id=526 AAPL BUY px=9988 qty=33
+R ADD MSFT id=527 SELL LIMIT px=10018 qty=50 trig=0 disp=0 p=7 ts=885
+  ACCEPTED seq=904 ts=885 id=527 MSFT SELL LIMIT px=10018 qty=50
+  RESTED seq=905 ts=885 id=527 MSFT SELL px=10018 qty=50
+R MODIFY AAPL id=318 BUY LIMIT px=10001 qty=80 trig=0 disp=0 p=0 ts=886
+  CANCELED seq=863 ts=886 id=318 qty=35
+  ACCEPTED seq=864 ts=886 id=318 AAPL BUY LIMIT px=10001 qty=80
+  TRADE seq=865 ts=886 match=67 AAPL buy=318 sell=446 px=10001 qty=22
+  FILLED seq=866 ts=886 id=446 filled=22 px=10001
+  TRADE seq=867 ts=886 match=68 AAPL buy=318 sell=521 px=10001 qty=52
+  FILLED seq=868 ts=886 id=521 filled=52 px=10001
+  PARTIAL seq=869 ts=886 id=318 filled=74 left=6 px=10001
+  RESTED seq=870 ts=886 id=318 AAPL BUY px=10001 qty=6
+R MODIFY AAPL id=349 SELL LIMIT px=10005 qty=67 trig=0 disp=0 p=0 ts=887
+  CANCELED seq=871 ts=887 id=349 qty=3
+  ACCEPTED seq=872 ts=887 id=349 AAPL SELL LIMIT px=10005 qty=67
+  RESTED seq=873 ts=887 id=349 AAPL SELL px=10005 qty=67
+R CANCEL MSFT id=493 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=888
+  CANCELED seq=906 ts=888 id=493 qty=69
+R CANCEL AAPL id=203 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=889
+  REJECTED seq=874 ts=889 id=203 reason=5
+R CANCEL MSFT id=443 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=890
+  REJECTED seq=907 ts=890 id=443 reason=5
+R CANCEL MSFT id=328 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=891
+  REJECTED seq=908 ts=891 id=328 reason=5
+R CANCEL AAPL id=369 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=892
+  CANCELED seq=875 ts=892 id=369 qty=44
+R CANCEL AAPL id=284 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=893
+  REJECTED seq=876 ts=893 id=284 reason=5
+R MODIFY MSFT id=445 SELL LIMIT px=10012 qty=21 trig=0 disp=0 p=0 ts=894
+  REJECTED seq=909 ts=894 id=445 reason=5
+R ADD MSFT id=528 SELL GTC px=10011 qty=79 trig=0 disp=0 p=2 ts=895
+  ACCEPTED seq=910 ts=895 id=528 MSFT SELL GTC px=10011 qty=79
+  RESTED seq=911 ts=895 id=528 MSFT SELL px=10011 qty=79
+R ADD MSFT id=529 SELL STOP px=0 qty=66 trig=9997 disp=0 p=8 ts=896
+  ACCEPTED seq=912 ts=896 id=529 MSFT SELL STOP px=9997 qty=66
+R ADD MSFT id=530 SELL GTC px=10000 qty=85 trig=0 disp=0 p=2 ts=897
+  ACCEPTED seq=913 ts=897 id=530 MSFT SELL GTC px=10000 qty=85
+  RESTED seq=914 ts=897 id=530 MSFT SELL px=10000 qty=85
+R ADD AAPL id=531 BUY LIMIT px=9997 qty=60 trig=0 disp=0 p=8 ts=898
+  ACCEPTED seq=877 ts=898 id=531 AAPL BUY LIMIT px=9997 qty=60
+  RESTED seq=878 ts=898 id=531 AAPL BUY px=9997 qty=60
+R ADD AAPL id=532 SELL ICEBERG px=10020 qty=41 trig=0 disp=21 p=4 ts=899
+  ACCEPTED seq=879 ts=899 id=532 AAPL SELL ICEBERG px=10020 qty=41
+  RESTED seq=880 ts=899 id=532 AAPL SELL px=10020 qty=21
+R ADD AAPL id=533 SELL LIMIT px=10018 qty=36 trig=0 disp=0 p=6 ts=900
+  ACCEPTED seq=881 ts=900 id=533 AAPL SELL LIMIT px=10018 qty=36
+  RESTED seq=882 ts=900 id=533 AAPL SELL px=10018 qty=36
+R ADD MSFT id=534 SELL STOP px=0 qty=90 trig=9992 disp=0 p=3 ts=901
+  ACCEPTED seq=915 ts=901 id=534 MSFT SELL STOP px=9992 qty=90
+R ADD MSFT id=535 SELL POST_ONLY px=10014 qty=72 trig=0 disp=0 p=2 ts=902
+  ACCEPTED seq=916 ts=902 id=535 MSFT SELL POST_ONLY px=10014 qty=72
+  RESTED seq=917 ts=902 id=535 MSFT SELL px=10014 qty=72
+R ADD AAPL id=536 SELL IOC px=10001 qty=5 trig=0 disp=0 p=3 ts=903
+  ACCEPTED seq=883 ts=903 id=536 AAPL SELL IOC px=10001 qty=5
+  TRADE seq=884 ts=903 match=69 AAPL buy=318 sell=536 px=10001 qty=5
+  PARTIAL seq=885 ts=903 id=318 filled=5 left=1 px=10001
+  FILLED seq=886 ts=903 id=536 filled=5 px=10001
+R CANCEL AAPL id=313 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=904
+  REJECTED seq=887 ts=904 id=313 reason=5
+R CANCEL MSFT id=296 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=905
+  REJECTED seq=918 ts=905 id=296 reason=5
+R ADD AAPL id=537 SELL LIMIT px=10014 qty=3 trig=0 disp=0 p=7 ts=906
+  ACCEPTED seq=888 ts=906 id=537 AAPL SELL LIMIT px=10014 qty=3
+  RESTED seq=889 ts=906 id=537 AAPL SELL px=10014 qty=3
+R ADD MSFT id=538 SELL LIMIT px=10006 qty=79 trig=0 disp=0 p=2 ts=907
+  ACCEPTED seq=919 ts=907 id=538 MSFT SELL LIMIT px=10006 qty=79
+  RESTED seq=920 ts=907 id=538 MSFT SELL px=10006 qty=79
+R ADD MSFT id=539 SELL LIMIT px=9994 qty=77 trig=0 disp=0 p=7 ts=908
+  ACCEPTED seq=921 ts=908 id=539 MSFT SELL LIMIT px=9994 qty=77
+  TRADE seq=922 ts=908 match=82 MSFT buy=419 sell=539 px=9994 qty=9
+  FILLED seq=923 ts=908 id=419 filled=9 px=9994
+  TRADE seq=924 ts=908 match=83 MSFT buy=361 sell=539 px=9994 qty=9
+  FILLED seq=925 ts=908 id=361 filled=9 px=9994
+  TRADE seq=926 ts=908 match=84 MSFT buy=469 sell=539 px=9994 qty=44
+  FILLED seq=927 ts=908 id=469 filled=44 px=9994
+  TRADE seq=928 ts=908 match=85 MSFT buy=449 sell=529 px=9993 qty=1
+  FILLED seq=929 ts=908 id=449 filled=1 px=9993
+  TRADE seq=930 ts=908 match=86 MSFT buy=464 sell=529 px=9993 qty=65
+  PARTIAL seq=931 ts=908 id=464 filled=65 left=4 px=9993
+  FILLED seq=932 ts=908 id=529 filled=66 px=9993
+  PARTIAL seq=933 ts=908 id=539 filled=62 left=15 px=9994
+  RESTED seq=934 ts=908 id=539 MSFT SELL px=9994 qty=15
+R MODIFY AAPL id=484 SELL LIMIT px=10010 qty=100 trig=0 disp=0 p=0 ts=909
+  CANCELED seq=890 ts=909 id=484 qty=3
+  ACCEPTED seq=891 ts=909 id=484 AAPL SELL LIMIT px=10010 qty=100
+  RESTED seq=892 ts=909 id=484 AAPL SELL px=10010 qty=100
+R CANCEL AAPL id=488 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=910
+  REJECTED seq=893 ts=910 id=488 reason=5
+R ADD AAPL id=540 SELL LIMIT px=10001 qty=69 trig=0 disp=0 p=3 ts=911
+  ACCEPTED seq=894 ts=911 id=540 AAPL SELL LIMIT px=10001 qty=69
+  TRADE seq=895 ts=911 match=70 AAPL buy=318 sell=540 px=10001 qty=1
+  FILLED seq=896 ts=911 id=318 filled=1 px=10001
+  PARTIAL seq=897 ts=911 id=540 filled=1 left=68 px=10001
+  RESTED seq=898 ts=911 id=540 AAPL SELL px=10001 qty=68
+R CANCEL MSFT id=278 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=912
+  REJECTED seq=935 ts=912 id=278 reason=5
+R ADD MSFT id=541 SELL LIMIT px=9997 qty=79 trig=0 disp=0 p=4 ts=913
+  ACCEPTED seq=936 ts=913 id=541 MSFT SELL LIMIT px=9997 qty=79
+  RESTED seq=937 ts=913 id=541 MSFT SELL px=9997 qty=79
+R CANCEL AAPL id=257 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=914
+  REJECTED seq=899 ts=914 id=257 reason=5
+R ADD MSFT id=542 SELL LIMIT px=9994 qty=50 trig=0 disp=0 p=1 ts=915
+  ACCEPTED seq=938 ts=915 id=542 MSFT SELL LIMIT px=9994 qty=50
+  RESTED seq=939 ts=915 id=542 MSFT SELL px=9994 qty=50
+R CANCEL MSFT id=461 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=916
+  REJECTED seq=940 ts=916 id=461 reason=5
+R CANCEL MSFT id=481 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=917
+  CANCELED seq=941 ts=917 id=481 qty=85
+R ADD MSFT id=543 BUY STOP px=0 qty=52 trig=10001 disp=0 p=4 ts=918
+  ACCEPTED seq=942 ts=918 id=543 MSFT BUY STOP px=10001 qty=52
+R ADD AAPL id=544 BUY STOP px=0 qty=11 trig=10011 disp=0 p=4 ts=919
+  ACCEPTED seq=900 ts=919 id=544 AAPL BUY STOP px=10011 qty=11
+R MODIFY MSFT id=432 SELL LIMIT px=10017 qty=34 trig=0 disp=0 p=0 ts=920
+  REJECTED seq=943 ts=920 id=432 reason=5
+R ADD MSFT id=545 BUY LIMIT px=9997 qty=100 trig=0 disp=0 p=5 ts=921
+  ACCEPTED seq=944 ts=921 id=545 MSFT BUY LIMIT px=9997 qty=100
+  TRADE seq=945 ts=921 match=87 MSFT buy=545 sell=539 px=9994 qty=15
+  FILLED seq=946 ts=921 id=539 filled=15 px=9994
+  TRADE seq=947 ts=921 match=88 MSFT buy=545 sell=542 px=9994 qty=50
+  FILLED seq=948 ts=921 id=542 filled=50 px=9994
+  TRADE seq=949 ts=921 match=89 MSFT buy=545 sell=541 px=9997 qty=35
+  PARTIAL seq=950 ts=921 id=541 filled=35 left=44 px=9997
+  FILLED seq=951 ts=921 id=545 filled=100 px=9997
+R ADD AAPL id=546 SELL LIMIT px=10016 qty=29 trig=0 disp=0 p=8 ts=922
+  ACCEPTED seq=901 ts=922 id=546 AAPL SELL LIMIT px=10016 qty=29
+  RESTED seq=902 ts=922 id=546 AAPL SELL px=10016 qty=29
+R MODIFY MSFT id=520 BUY LIMIT px=9993 qty=19 trig=0 disp=0 p=0 ts=923
+  CANCELED seq=952 ts=923 id=520 qty=29
+  ACCEPTED seq=953 ts=923 id=520 MSFT BUY ICEBERG px=9993 qty=19
+  RESTED seq=954 ts=923 id=520 MSFT BUY px=9993 qty=19
+R ADD MSFT id=547 SELL STOP px=0 qty=15 trig=9989 disp=0 p=4 ts=924
+  ACCEPTED seq=955 ts=924 id=547 MSFT SELL STOP px=9989 qty=15
+R ADD MSFT id=548 BUY LIMIT px=9979 qty=5 trig=0 disp=0 p=3 ts=925
+  ACCEPTED seq=956 ts=925 id=548 MSFT BUY LIMIT px=9979 qty=5
+  RESTED seq=957 ts=925 id=548 MSFT BUY px=9979 qty=5
+R MODIFY AAPL id=238 BUY LIMIT px=9982 qty=72 trig=0 disp=0 p=0 ts=926
+  REJECTED seq=903 ts=926 id=238 reason=5
+R ADD AAPL id=549 BUY LIMIT px=9996 qty=26 trig=0 disp=0 p=4 ts=927
+  ACCEPTED seq=904 ts=927 id=549 AAPL BUY LIMIT px=9996 qty=26
+  RESTED seq=905 ts=927 id=549 AAPL BUY px=9996 qty=26
+R CANCEL AAPL id=275 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=928
+  CANCELED seq=906 ts=928 id=275 qty=61
+R CANCEL AAPL id=164 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=929
+  CANCELED seq=907 ts=929 id=164 qty=13
+R ADD AAPL id=550 SELL GTC px=10017 qty=90 trig=0 disp=0 p=8 ts=930
+  ACCEPTED seq=908 ts=930 id=550 AAPL SELL GTC px=10017 qty=90
+  RESTED seq=909 ts=930 id=550 AAPL SELL px=10017 qty=90
+R ADD MSFT id=551 SELL LIMIT px=10008 qty=31 trig=0 disp=0 p=7 ts=931
+  ACCEPTED seq=958 ts=931 id=551 MSFT SELL LIMIT px=10008 qty=31
+  RESTED seq=959 ts=931 id=551 MSFT SELL px=10008 qty=31
+R CANCEL MSFT id=459 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=932
+  REJECTED seq=960 ts=932 id=459 reason=5
+R ADD MSFT id=552 BUY LIMIT px=9985 qty=99 trig=0 disp=0 p=7 ts=933
+  ACCEPTED seq=961 ts=933 id=552 MSFT BUY LIMIT px=9985 qty=99
+  RESTED seq=962 ts=933 id=552 MSFT BUY px=9985 qty=99
+R MODIFY AAPL id=406 BUY LIMIT px=10001 qty=46 trig=0 disp=0 p=0 ts=934
+  REJECTED seq=910 ts=934 id=406 reason=5
+R MODIFY AAPL id=487 BUY LIMIT px=9981 qty=28 trig=0 disp=0 p=0 ts=935
+  REJECTED seq=911 ts=935 id=487 reason=9
+R ADD AAPL id=553 SELL ICEBERG px=10004 qty=59 trig=0 disp=51 p=3 ts=936
+  ACCEPTED seq=912 ts=936 id=553 AAPL SELL ICEBERG px=10004 qty=59
+  RESTED seq=913 ts=936 id=553 AAPL SELL px=10004 qty=51
+R ADD AAPL id=554 SELL IOC px=10008 qty=63 trig=0 disp=0 p=7 ts=937
+  ACCEPTED seq=914 ts=937 id=554 AAPL SELL IOC px=10008 qty=63
+  CANCELED seq=915 ts=937 id=554 qty=63
+R ADD MSFT id=555 SELL STOP_LIMIT px=10008 qty=65 trig=9994 disp=0 p=4 ts=938
+  ACCEPTED seq=963 ts=938 id=555 MSFT SELL STOP_LIMIT px=10008 qty=65
+R ADD MSFT id=556 BUY LIMIT px=9991 qty=2 trig=0 disp=0 p=5 ts=939
+  ACCEPTED seq=964 ts=939 id=556 MSFT BUY LIMIT px=9991 qty=2
+  RESTED seq=965 ts=939 id=556 MSFT BUY px=9991 qty=2
+R ADD MSFT id=557 SELL POST_ONLY px=10008 qty=99 trig=0 disp=0 p=7 ts=940
+  ACCEPTED seq=966 ts=940 id=557 MSFT SELL POST_ONLY px=10008 qty=99
+  RESTED seq=967 ts=940 id=557 MSFT SELL px=10008 qty=99
+R ADD MSFT id=558 BUY GTC px=9992 qty=96 trig=0 disp=0 p=1 ts=941
+  ACCEPTED seq=968 ts=941 id=558 MSFT BUY GTC px=9992 qty=96
+  RESTED seq=969 ts=941 id=558 MSFT BUY px=9992 qty=96
+R ADD AAPL id=559 SELL FOK px=10013 qty=22 trig=0 disp=0 p=2 ts=942
+  REJECTED seq=916 ts=942 id=559 reason=7
+R CANCEL MSFT id=263 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=943
+  REJECTED seq=970 ts=943 id=263 reason=5
+R ADD MSFT id=560 BUY LIMIT px=10003 qty=41 trig=0 disp=0 p=3 ts=944
+  ACCEPTED seq=971 ts=944 id=560 MSFT BUY LIMIT px=10003 qty=41
+  TRADE seq=972 ts=944 match=90 MSFT buy=560 sell=541 px=9997 qty=41
+  PARTIAL seq=973 ts=944 id=541 filled=41 left=3 px=9997
+  FILLED seq=974 ts=944 id=560 filled=41 px=9997
+R ADD AAPL id=561 BUY GTC px=10000 qty=21 trig=0 disp=0 p=3 ts=945
+  ACCEPTED seq=917 ts=945 id=561 AAPL BUY GTC px=10000 qty=21
+  RESTED seq=918 ts=945 id=561 AAPL BUY px=10000 qty=21
+R MODIFY MSFT id=83 BUY LIMIT px=9979 qty=96 trig=0 disp=0 p=0 ts=946
+  CANCELED seq=975 ts=946 id=83 qty=29
+  ACCEPTED seq=976 ts=946 id=83 MSFT BUY POST_ONLY px=9979 qty=96
+  RESTED seq=977 ts=946 id=83 MSFT BUY px=9979 qty=96
+R ADD MSFT id=562 SELL ICEBERG px=10008 qty=46 trig=0 disp=35 p=2 ts=947
+  ACCEPTED seq=978 ts=947 id=562 MSFT SELL ICEBERG px=10008 qty=46
+  RESTED seq=979 ts=947 id=562 MSFT SELL px=10008 qty=35
+R ADD MSFT id=563 SELL LIMIT px=10007 qty=27 trig=0 disp=0 p=7 ts=948
+  ACCEPTED seq=980 ts=948 id=563 MSFT SELL LIMIT px=10007 qty=27
+  RESTED seq=981 ts=948 id=563 MSFT SELL px=10007 qty=27
+R ADD MSFT id=564 SELL POST_ONLY px=10006 qty=37 trig=0 disp=0 p=6 ts=949
+  ACCEPTED seq=982 ts=949 id=564 MSFT SELL POST_ONLY px=10006 qty=37
+  RESTED seq=983 ts=949 id=564 MSFT SELL px=10006 qty=37
+R ADD MSFT id=565 SELL LIMIT px=10010 qty=27 trig=0 disp=0 p=1 ts=950
+  ACCEPTED seq=984 ts=950 id=565 MSFT SELL LIMIT px=10010 qty=27
+  RESTED seq=985 ts=950 id=565 MSFT SELL px=10010 qty=27
+R ADD MSFT id=566 BUY STOP px=0 qty=31 trig=10002 disp=0 p=1 ts=951
+  ACCEPTED seq=986 ts=951 id=566 MSFT BUY STOP px=10002 qty=31
+R MODIFY AAPL id=371 BUY LIMIT px=10003 qty=74 trig=0 disp=0 p=0 ts=952
+  REJECTED seq=919 ts=952 id=371 reason=5
+R CANCEL MSFT id=433 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=953
+  CANCELED seq=987 ts=953 id=433 qty=41
+R ADD AAPL id=567 SELL IOC px=10002 qty=15 trig=0 disp=0 p=8 ts=954
+  ACCEPTED seq=920 ts=954 id=567 AAPL SELL IOC px=10002 qty=15
+  CANCELED seq=921 ts=954 id=567 qty=15
+R ADD AAPL id=568 SELL LIMIT px=10000 qty=29 trig=0 disp=0 p=4 ts=955
+  ACCEPTED seq=922 ts=955 id=568 AAPL SELL LIMIT px=10000 qty=29
+  TRADE seq=923 ts=955 match=71 AAPL buy=561 sell=568 px=10000 qty=21
+  FILLED seq=924 ts=955 id=561 filled=21 px=10000
+  PARTIAL seq=925 ts=955 id=568 filled=21 left=8 px=10000
+  RESTED seq=926 ts=955 id=568 AAPL SELL px=10000 qty=8
+R CANCEL MSFT id=563 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=956
+  CANCELED seq=988 ts=956 id=563 qty=27
+R CANCEL AAPL id=559 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=957
+  REJECTED seq=927 ts=957 id=559 reason=5
+R MODIFY AAPL id=374 BUY LIMIT px=9987 qty=96 trig=0 disp=0 p=0 ts=958
+  CANCELED seq=928 ts=958 id=374 qty=22
+  ACCEPTED seq=929 ts=958 id=374 AAPL BUY POST_ONLY px=9987 qty=96
+  RESTED seq=930 ts=958 id=374 AAPL BUY px=9987 qty=96
+R ADD AAPL id=569 SELL LIMIT px=10011 qty=81 trig=0 disp=0 p=2 ts=959
+  ACCEPTED seq=931 ts=959 id=569 AAPL SELL LIMIT px=10011 qty=81
+  RESTED seq=932 ts=959 id=569 AAPL SELL px=10011 qty=81
+R ADD AAPL id=570 SELL LIMIT px=10000 qty=99 trig=0 disp=0 p=4 ts=960
+  ACCEPTED seq=933 ts=960 id=570 AAPL SELL LIMIT px=10000 qty=99
+  RESTED seq=934 ts=960 id=570 AAPL SELL px=10000 qty=99
+R ADD AAPL id=571 SELL IOC px=10020 qty=27 trig=0 disp=0 p=4 ts=961
+  ACCEPTED seq=935 ts=961 id=571 AAPL SELL IOC px=10020 qty=27
+  CANCELED seq=936 ts=961 id=571 qty=27
+R ADD MSFT id=572 BUY LIMIT px=10000 qty=12 trig=0 disp=0 p=4 ts=962
+  ACCEPTED seq=989 ts=962 id=572 MSFT BUY LIMIT px=10000 qty=12
+  TRADE seq=990 ts=962 match=91 MSFT buy=572 sell=541 px=9997 qty=3
+  FILLED seq=991 ts=962 id=541 filled=3 px=9997
+  TRADE seq=992 ts=962 match=92 MSFT buy=572 sell=281 px=9999 qty=9
+  PARTIAL seq=993 ts=962 id=281 filled=9 left=2 px=9999
+  FILLED seq=994 ts=962 id=572 filled=12 px=9999
+R ADD AAPL id=573 BUY STOP_LIMIT px=10006 qty=77 trig=10006 disp=0 p=7 ts=963
+  ACCEPTED seq=937 ts=963 id=573 AAPL BUY STOP_LIMIT px=10006 qty=77
+R ADD MSFT id=574 BUY LIMIT px=9992 qty=18 trig=0 disp=0 p=4 ts=964
+  ACCEPTED seq=995 ts=964 id=574 MSFT BUY LIMIT px=9992 qty=18
+  RESTED seq=996 ts=964 id=574 MSFT BUY px=9992 qty=18
+R CANCEL AAPL id=553 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=965
+  CANCELED seq=938 ts=965 id=553 qty=59
+R ADD MSFT id=575 SELL LIMIT px=10007 qty=34 trig=0 disp=0 p=8 ts=966
+  ACCEPTED seq=997 ts=966 id=575 MSFT SELL LIMIT px=10007 qty=34
+  RESTED seq=998 ts=966 id=575 MSFT SELL px=10007 qty=34
+R CANCEL MSFT id=566 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=967
+  CANCELED seq=999 ts=967 id=566 qty=31
+R ADD AAPL id=576 BUY IOC px=10002 qty=70 trig=0 disp=0 p=6 ts=968
+  ACCEPTED seq=939 ts=968 id=576 AAPL BUY IOC px=10002 qty=70
+  TRADE seq=940 ts=968 match=72 AAPL buy=576 sell=568 px=10000 qty=8
+  FILLED seq=941 ts=968 id=568 filled=8 px=10000
+  TRADE seq=942 ts=968 match=73 AAPL buy=576 sell=570 px=10000 qty=62
+  PARTIAL seq=943 ts=968 id=570 filled=62 left=37 px=10000
+  FILLED seq=944 ts=968 id=576 filled=70 px=10000
+R ADD AAPL id=577 BUY LIMIT px=9997 qty=29 trig=0 disp=0 p=2 ts=969
+  ACCEPTED seq=945 ts=969 id=577 AAPL BUY LIMIT px=9997 qty=29
+  RESTED seq=946 ts=969 id=577 AAPL BUY px=9997 qty=29
+R ADD AAPL id=578 BUY MARKET px=0 qty=63 trig=0 disp=0 p=4 ts=970
+  ACCEPTED seq=947 ts=970 id=578 AAPL BUY MARKET px=0 qty=63
+  TRADE seq=948 ts=970 match=74 AAPL buy=578 sell=570 px=10000 qty=37
+  FILLED seq=949 ts=970 id=570 filled=37 px=10000
+  TRADE seq=950 ts=970 match=75 AAPL buy=578 sell=540 px=10001 qty=26
+  PARTIAL seq=951 ts=970 id=540 filled=26 left=42 px=10001
+  FILLED seq=952 ts=970 id=578 filled=63 px=10001
+R ADD AAPL id=579 BUY LIMIT px=10007 qty=30 trig=0 disp=0 p=8 ts=971
+  ACCEPTED seq=953 ts=971 id=579 AAPL BUY LIMIT px=10007 qty=30
+  TRADE seq=954 ts=971 match=76 AAPL buy=579 sell=540 px=10001 qty=30
+  PARTIAL seq=955 ts=971 id=540 filled=30 left=12 px=10001
+  FILLED seq=956 ts=971 id=579 filled=30 px=10001
+R MODIFY MSFT id=160 BUY LIMIT px=9993 qty=28 trig=0 disp=0 p=0 ts=972
+  CANCELED seq=1000 ts=972 id=160 qty=97
+  ACCEPTED seq=1001 ts=972 id=160 MSFT BUY LIMIT px=9993 qty=28
+  RESTED seq=1002 ts=972 id=160 MSFT BUY px=9993 qty=28
+R ADD MSFT id=580 SELL IOC px=10001 qty=43 trig=0 disp=0 p=1 ts=973
+  ACCEPTED seq=1003 ts=973 id=580 MSFT SELL IOC px=10001 qty=43
+  CANCELED seq=1004 ts=973 id=580 qty=43
+R ADD MSFT id=581 SELL LIMIT px=10007 qty=33 trig=0 disp=0 p=7 ts=974
+  ACCEPTED seq=1005 ts=974 id=581 MSFT SELL LIMIT px=10007 qty=33
+  RESTED seq=1006 ts=974 id=581 MSFT SELL px=10007 qty=33
+R ADD AAPL id=582 SELL GTC px=9999 qty=63 trig=0 disp=0 p=8 ts=975
+  ACCEPTED seq=957 ts=975 id=582 AAPL SELL GTC px=9999 qty=63
+  TRADE seq=958 ts=975 match=77 AAPL buy=512 sell=582 px=9999 qty=63
+  PARTIAL seq=959 ts=975 id=512 filled=63 left=22 px=9999
+  FILLED seq=960 ts=975 id=582 filled=63 px=9999
+R MODIFY MSFT id=377 SELL LIMIT px=10013 qty=68 trig=0 disp=0 p=0 ts=976
+  CANCELED seq=1007 ts=976 id=377 qty=83
+  ACCEPTED seq=1008 ts=976 id=377 MSFT SELL LIMIT px=10013 qty=68
+  RESTED seq=1009 ts=976 id=377 MSFT SELL px=10013 qty=68
+R ADD MSFT id=583 BUY IOC px=9990 qty=92 trig=0 disp=0 p=3 ts=977
+  ACCEPTED seq=1010 ts=977 id=583 MSFT BUY IOC px=9990 qty=92
+  CANCELED seq=1011 ts=977 id=583 qty=92
+R ADD AAPL id=584 BUY ICEBERG px=9996 qty=23 trig=0 disp=16 p=6 ts=978
+  ACCEPTED seq=961 ts=978 id=584 AAPL BUY ICEBERG px=9996 qty=23
+  RESTED seq=962 ts=978 id=584 AAPL BUY px=9996 qty=16
+R ADD AAPL id=585 SELL LIMIT px=10013 qty=23 trig=0 disp=0 p=6 ts=979
+  ACCEPTED seq=963 ts=979 id=585 AAPL SELL LIMIT px=10013 qty=23
+  RESTED seq=964 ts=979 id=585 AAPL SELL px=10013 qty=23
+R MODIFY AAPL id=330 BUY LIMIT px=9987 qty=37 trig=0 disp=0 p=0 ts=980
+  REDUCED seq=965 ts=980 id=330 qty=37
+R CANCEL AAPL id=370 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=981
+  REJECTED seq=966 ts=981 id=370 reason=5
+R CANCEL AAPL id=103 BUY LIMIT px=0 qty=0 trig=0 disp=0 p=0 ts=982
+  REJECTED seq=967 ts=982 id=103 reason=5
+R ADD AAPL id=586 BUY MARKET px=0 qty=6 trig=0 disp=0 p=7 ts=983
+  ACCEPTED seq=968 ts=983 id=586 AAPL BUY MARKET px=0 qty=6
+  TRADE seq=969 ts=983 match=78 AAPL buy=586 sell=540 px=10001 qty=6
+  PARTIAL seq=970 ts=983 id=540 filled=6 left=6 px=10001
+  FILLED seq=971 ts=983 id=586 filled=6 px=10001
+R ADD MSFT id=587 SELL LIMIT px=10011 qty=34 trig=0 disp=0 p=4 ts=984
+  ACCEPTED seq=1012 ts=984 id=587 MSFT SELL LIMIT px=10011 qty=34
+  RESTED seq=1013 ts=984 id=587 MSFT SELL px=10011 qty=34
+R ADD AAPL id=588 BUY IOC px=9998 qty=8 trig=0 disp=0 p=1 ts=985
+  ACCEPTED seq=972 ts=985 id=588 AAPL BUY IOC px=9998 qty=8
+  CANCELED seq=973 ts=985 id=588 qty=8
+R MODIFY AAPL id=402 BUY LIMIT px=9984 qty=47 trig=0 disp=0 p=0 ts=986
+  REJECTED seq=974 ts=986 id=402 reason=5
+R ADD MSFT id=589 SELL LIMIT px=10016 qty=89 trig=0 disp=0 p=7 ts=987
+  ACCEPTED seq=1014 ts=987 id=589 MSFT SELL LIMIT px=10016 qty=89
+  RESTED seq=1015 ts=987 id=589 MSFT SELL px=10016 qty=89
+R ADD AAPL id=590 BUY IOC px=9994 qty=41 trig=0 disp=0 p=6 ts=988
+  ACCEPTED seq=975 ts=988 id=590 AAPL BUY IOC px=9994 qty=41
+  CANCELED seq=976 ts=988 id=590 qty=41
+R ADD AAPL id=591 BUY LIMIT px=9984 qty=13 trig=0 disp=0 p=5 ts=989
+  ACCEPTED seq=977 ts=989 id=591 AAPL BUY LIMIT px=9984 qty=13
+  RESTED seq=978 ts=989 id=591 AAPL BUY px=9984 qty=13
+R MODIFY AAPL id=588 BUY LIMIT px=9984 qty=33 trig=0 disp=0 p=0 ts=990
+  REJECTED seq=979 ts=990 id=588 reason=5
+R ADD MSFT id=592 SELL LIMIT px=9993 qty=99 trig=0 disp=0 p=8 ts=991
+  ACCEPTED seq=1016 ts=991 id=592 MSFT SELL LIMIT px=9993 qty=99
+  TRADE seq=1017 ts=991 match=93 MSFT buy=464 sell=592 px=9993 qty=4
+  FILLED seq=1018 ts=991 id=464 filled=4 px=9993
+  TRADE seq=1019 ts=991 match=94 MSFT buy=520 sell=592 px=9993 qty=19
+  FILLED seq=1020 ts=991 id=520 filled=19 px=9993
+  TRADE seq=1021 ts=991 match=95 MSFT buy=160 sell=592 px=9993 qty=28
+  FILLED seq=1022 ts=991 id=160 filled=28 px=9993
+  RESTED seq=1023 ts=991 id=555 MSFT SELL px=10008 qty=65
+  PARTIAL seq=1024 ts=991 id=592 filled=51 left=48 px=9993
+  RESTED seq=1025 ts=991 id=592 MSFT SELL px=9993 qty=48
+R ADD AAPL id=593 SELL LIMIT px=10022 qty=31 trig=0 disp=0 p=4 ts=992
+  ACCEPTED seq=980 ts=992 id=593 AAPL SELL LIMIT px=10022 qty=31
+  RESTED seq=981 ts=992 id=593 AAPL SELL px=10022 qty=31
+R ADD AAPL id=594 BUY STOP px=0 qty=11 trig=10007 disp=0 p=6 ts=993
+  ACCEPTED seq=982 ts=993 id=594 AAPL BUY STOP px=10007 qty=11
+R ADD AAPL id=595 SELL LIMIT px=10005 qty=78 trig=0 disp=0 p=7 ts=994
+  ACCEPTED seq=983 ts=994 id=595 AAPL SELL LIMIT px=10005 qty=78
+  RESTED seq=984 ts=994 id=595 AAPL SELL px=10005 qty=78
+R ADD AAPL id=596 BUY POST_ONLY px=9984 qty=70 trig=0 disp=0 p=3 ts=995
+  ACCEPTED seq=985 ts=995 id=596 AAPL BUY POST_ONLY px=9984 qty=70
+  RESTED seq=986 ts=995 id=596 AAPL BUY px=9984 qty=70
+R ADD AAPL id=597 SELL LIMIT px=10011 qty=94 trig=0 disp=0 p=4 ts=996
+  ACCEPTED seq=987 ts=996 id=597 AAPL SELL LIMIT px=10011 qty=94
+  RESTED seq=988 ts=996 id=597 AAPL SELL px=10011 qty=94
+R ADD AAPL id=598 BUY MARKET px=0 qty=7 trig=0 disp=0 p=7 ts=997
+  ACCEPTED seq=989 ts=997 id=598 AAPL BUY MARKET px=0 qty=7
+  TRADE seq=990 ts=997 match=79 AAPL buy=598 sell=540 px=10001 qty=6
+  FILLED seq=991 ts=997 id=540 filled=6 px=10001
+  TRADE seq=992 ts=997 match=80 AAPL buy=598 sell=367 px=10002 qty=1
+  PARTIAL seq=993 ts=997 id=367 filled=1 left=12 px=10002
+  TRADE seq=994 ts=997 match=81 AAPL buy=466 sell=367 px=10002 qty=12
+  FILLED seq=995 ts=997 id=367 filled=12 px=10002
+  TRADE seq=996 ts=997 match=82 AAPL buy=466 sell=387 px=10004 qty=17
+  PARTIAL seq=997 ts=997 id=387 filled=17 left=11 px=10004
+  TRADE seq=998 ts=997 match=83 AAPL buy=508 sell=387 px=10004 qty=2
+  PARTIAL seq=999 ts=997 id=387 filled=2 left=9 px=10004
+  FILLED seq=1000 ts=997 id=508 filled=2 px=10004
+  FILLED seq=1001 ts=997 id=466 filled=29 px=10004
+  FILLED seq=1002 ts=997 id=598 filled=7 px=10002
+R ADD AAPL id=599 SELL FOK px=10013 qty=100 trig=0 disp=0 p=2 ts=998
+  REJECTED seq=1003 ts=998 id=599 reason=7
+R ADD AAPL id=600 BUY LIMIT px=9994 qty=73 trig=0 disp=0 p=5 ts=999
+  ACCEPTED seq=1004 ts=999 id=600 AAPL BUY LIMIT px=9994 qty=73
+  RESTED seq=1005 ts=999 id=600 AAPL BUY px=9994 qty=73
+R ADD MSFT id=601 SELL STOP px=0 qty=34 trig=9997 disp=0 p=5 ts=1000
+  ACCEPTED seq=1026 ts=1000 id=601 MSFT SELL STOP px=9997 qty=34

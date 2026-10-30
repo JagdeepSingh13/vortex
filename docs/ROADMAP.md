@@ -30,11 +30,10 @@ One milestone at a time, one branch per milestone (`mN-short-name`). A milestone
 - **Acceptance:** `make test` passes on a clean clone: every valid example in `schemas/examples/` passes, every invalid example fails for exactly its stated reason, and `symbols.yaml` converts exactly to engine units.
 
 ## M2 — Engine test suite and benchmark harness
-- Replace the hand-rolled CHECK macro with a test framework (ADR: GoogleTest vs Catch2 vs keep custom).
-- Unit tests for the order book (every order type) and the SPSC queue, including a multi-threaded queue test.
-- Engine stamps wall-clock `event_time_ns` (UTC epoch) on trades; the steady clock stays for latency measurement.
-- `make bench` writes a dated file to `benchmarks/results/` with machine and conditions.
-- **Acceptance:** `make test` runs all suites; one benchmark result file committed with real measurements.
+- GoogleTest (ADR 0008) with a deliberately small suite (ADR 0011): golden replay test for matching behaviour, multi-threaded SPSC queue test; ASan/UBSan and TSan builds in `make test-all`.
+- Engine stamps wall-clock `event_time_ns` (UTC epoch) once per request; the logical clock stays for deterministic matching (ADR 0009).
+- `make bench` writes a dated file to `benchmarks/results/` with machine and conditions (ADR 0010).
+- **Acceptance:** `make test-all` passes on a clean clone; one benchmark result file committed with real measurements.
 
 ## M3 — Local Kafka (KRaft)
 - `infra/docker/docker-compose.yml` with a single-broker Kafka in KRaft mode, pinned image.

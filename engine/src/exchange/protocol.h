@@ -85,6 +85,8 @@ namespace exchange::protocol {
         // PARTIALLY_FILLED: what is still open
         core::Quantity leaves_qty;
         core::SequenceNumber sequence_number;
+        // UTC ns since epoch, read once when the engine handled the request
+        core::Timestamp event_time_ns;
     };
 
     // ---------------- exchange -> everyone (public market data) ----------------
@@ -98,6 +100,7 @@ namespace exchange::protocol {
         std::uint8_t ask_count;
         std::array<core::PriceLevelView, BOOK_DEPTH> bids;
         std::array<core::PriceLevelView, BOOK_DEPTH> asks;
+        core::Timestamp event_time_ns;
     };
 
     // anonymous: who traded is private, that it traded is public
@@ -107,6 +110,7 @@ namespace exchange::protocol {
         core::MatchId match_id;
         core::Price price;
         core::Quantity qty;
+        core::Timestamp event_time_ns;
     };
 
     // ---------------- one envelope for everything going to a client ----------------
