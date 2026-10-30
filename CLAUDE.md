@@ -10,7 +10,7 @@ This project exists for learning and for interviews. Jagdeep must understand and
 - For any significant design choice, present 2-3 options with trade-offs and let him decide. Record the decision as an ADR in `docs/decisions/` using `docs/decisions/0000-template.md`.
 - At the end of each step, explain in plain language what changed and why, and name any concept worth studying further.
 - For C++ hot-path code (ring buffers, the Kafka publisher, matching logic), ask whether he wants to write it himself with you reviewing before you write it.
-- When a milestone is done, append an entry to `docs/INTERVIEW_NOTES.md` (format is in that file).
+- When a milestone is done, append an entry to `docs/INTERVIEW_NOTES.md` (format is in that file), and add or update a guide in `docs/learn/` for any new concept it introduced (plain language, diagrams, "check yourself" questions).
 - Never invent numbers. Only report latency, throughput or volume figures you actually measured, together with the machine and conditions.
 - If a request conflicts with the hard rules below, say so and ask before proceeding.
 

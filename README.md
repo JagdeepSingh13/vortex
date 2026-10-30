@@ -11,6 +11,7 @@ Kafka "trades" -> Spark Structured Streaming -> Iceberg bronze/silver -> dbt gol
 - Design: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 - Plan: [docs/ROADMAP.md](docs/ROADMAP.md) (plain-language version: [docs/MILESTONES.md](docs/MILESTONES.md))
 - Decisions: [docs/decisions/](docs/decisions/)
+- Learning guides: [docs/learn/](docs/learn/) (how each part works, in plain language)
 
 ## Quick start
 
