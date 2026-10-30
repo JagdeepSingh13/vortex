@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/JagdeepSingh13/vortex/schemas/trade.v1.json",
+  "title": "trade.v1",
+  "description": "One execution on the Kafka topic 'trades' (key = symbol), produced by the engine. Unique key: (engine_run_id, match_id).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "engine_run_id", "match_id", "symbol", "price_ticks", "qty_lots",
+    "buy_order_id", "sell_order_id", "aggressor_side", "sequence_number", "event_time_ns"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "engine_run_id": {
+      "description": "Random 64-bit id chosen at engine startup, as 16 lowercase hex chars. Distinguishes runs because match_id restarts at 1 (ADR 0005).",
+      "type": "string",
+      "pattern": "^[0-9a-f]{16}$"
+    },
+    "match_id": {
+      "description": "Engine match id, increasing within one run.",
+      "$ref": "#/$defs/safe_positive_int"
+    },
+    "symbol": {
+      "description": "1-8 chars (engine Symbol is char[8]); must exist in config/symbols.yaml.",
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9.]{0,7}$"
+    },
+    "price_ticks": { "$ref": "#/$defs/safe_positive_int" },
+    "qty_lots": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 4294967295
+    },
+    "buy_order_id": { "$ref": "#/$defs/safe_positive_int" },
+    "sell_order_id": { "$ref": "#/$defs/safe_positive_int" },
+    "aggressor_side": {
+      "description": "Side of the incoming order that crossed the spread (ADR 0006).",
+      "enum": ["BUY", "SELL"]
+    },
+    "sequence_number": {
+      "description": "Engine event sequence, increasing within one run.",
+      "$ref": "#/$defs/safe_positive_int"
+    },
+    "event_time_ns": {
+      "description": "Set by the engine: UTC ns since the Unix epoch, from 2001-09-09 (1e18). A monotonic-clock value (small number) is rejected. Exceeds 2^53: JavaScript consumers must use BigInt or string.",
+      "type": "integer",
+      "minimum": 1000000000000000000,
+      "maximum": 9223372036854775807
+    }
+  },
+  "$defs": {
+    "safe_positive_int": {
+      "description": "Positive and at most 2^53 - 1, so double-based JSON parsers read it exactly.",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991
+    }
+  }
+}

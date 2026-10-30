@@ -1,0 +1,12 @@
+{
+  "reason": "action must be ADD, CANCEL or MODIFY",
+  "expected_error": "enum",
+  "message": {
+    "schema_version": 1,
+    "order_id": 1001,
+    "symbol": "AAPL",
+    "action": "REPLACE",
+    "participant_id": 7,
+    "client_time_ns": 1793430000123456789
+  }
+}

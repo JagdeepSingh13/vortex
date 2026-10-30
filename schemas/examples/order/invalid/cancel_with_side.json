@@ -1,0 +1,13 @@
+{
+  "reason": "CANCEL carries only the order id",
+  "expected_error": "propertyNames",
+  "message": {
+    "schema_version": 1,
+    "order_id": 1001,
+    "symbol": "AAPL",
+    "action": "CANCEL",
+    "participant_id": 7,
+    "client_time_ns": 1793430000123456789,
+    "side": "BUY"
+  }
+}
