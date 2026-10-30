@@ -15,7 +15,7 @@ The milestones build that pipeline from left to right, one piece at a time.
 ### M0 — Repository bootstrap ✅
 Set up the empty project: folders, the existing C++ engine imported, a one-command build (`make engine`, `make test`) and the docs. Nothing new is built; this is the workbench.
 
-### M1 — Event contracts and symbol config
+### M1 — Event contracts and symbol config ✅
 Decide exactly what an "order" message and a "trade" message look like: fields, types, integers only. Create `config/symbols.yaml` listing each symbol with its tick size (smallest price step) and lot size (smallest quantity step). Every other part speaks this language, so it is agreed first.
 
 ### M2 — Engine tests and benchmark
