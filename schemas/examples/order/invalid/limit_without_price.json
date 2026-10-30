@@ -1,0 +1,15 @@
+{
+  "reason": "LIMIT needs price_ticks",
+  "expected_error": "required",
+  "message": {
+    "schema_version": 1,
+    "order_id": 1001,
+    "symbol": "AAPL",
+    "action": "ADD",
+    "participant_id": 7,
+    "client_time_ns": 1793430000123456789,
+    "side": "BUY",
+    "order_type": "LIMIT",
+    "qty_lots": 100
+  }
+}

@@ -1,0 +1,26 @@
+# Tradable symbols and their units. Single source of truth for every component.
+#
+# Events carry prices as integer ticks and quantities as integer lots (ADR 0004):
+#   price in currency = price_ticks * tick_size
+#   quantity in shares = qty_lots * lot_size
+#   engine internal price = price_ticks * tick_size * engine_price_scale
+#
+# Decimal values are strings so no tool ever parses them as binary floats.
+
+version: 1
+
+# the engine's fixed-point scale (core::PRICE_SCALE): internal price = currency * 10000
+engine_price_scale: 10000
+
+symbols:
+  - symbol: AAPL
+    currency: USD
+    tick_size: "0.01"
+    lot_size: 1
+    price_decimals: 2
+
+  - symbol: MSFT
+    currency: USD
+    tick_size: "0.01"
+    lot_size: 1
+    price_decimals: 2

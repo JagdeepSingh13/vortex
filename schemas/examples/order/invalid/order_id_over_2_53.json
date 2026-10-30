@@ -1,0 +1,16 @@
+{
+  "reason": "ids must stay exact in double-based parsers",
+  "expected_error": "maximum",
+  "message": {
+    "schema_version": 1,
+    "order_id": 9007199254740992,
+    "symbol": "AAPL",
+    "action": "ADD",
+    "participant_id": 7,
+    "client_time_ns": 1793430000123456789,
+    "side": "BUY",
+    "order_type": "LIMIT",
+    "qty_lots": 100,
+    "price_ticks": 18990
+  }
+}

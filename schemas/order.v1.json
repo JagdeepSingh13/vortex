@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/JagdeepSingh13/vortex/schemas/order.v1.json",
+  "title": "order.v1",
+  "description": "A request on the Kafka topic 'orders' (key = symbol). Prices are integer ticks and quantities integer lots of the symbol in config/symbols.yaml. Field rules per action and order_type mirror OrderBook::validate_new_order in the engine.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "order_id", "symbol", "action", "participant_id", "client_time_ns"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "order_id": {
+      "description": "Unique within an engine run. For CANCEL and MODIFY: the id of the order to change.",
+      "$ref": "#/$defs/safe_positive_int"
+    },
+    "symbol": { "$ref": "#/$defs/symbol" },
+    "action": { "enum": ["ADD", "CANCEL", "MODIFY"] },
+    "participant_id": { "$ref": "#/$defs/safe_positive_int" },
+    "client_time_ns": {
+      "description": "Producer wall clock, UTC ns since the Unix epoch. Informational only; event time is set by the engine.",
+      "$ref": "#/$defs/epoch_ns"
+    },
+    "side": { "enum": ["BUY", "SELL"] },
+    "order_type": {
+      "enum": ["LIMIT", "MARKET", "IOC", "FOK", "GTC", "STOP", "STOP_LIMIT", "ICEBERG", "POST_ONLY"]
+    },
+    "price_ticks": { "$ref": "#/$defs/safe_positive_int" },
+    "qty_lots": {
+      "description": "Engine quantity is uint32.",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 4294967295
+    },
+    "trigger_price_ticks": {
+      "description": "STOP and STOP_LIMIT only: price that activates the order.",
+      "$ref": "#/$defs/safe_positive_int"
+    },
+    "display_qty_lots": {
+      "description": "ICEBERG only: visible quantity per slice, must not exceed qty_lots (checked by the engine).",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 4294967295
+    }
+  },
+
+  "allOf": [
+    {
+      "if": { "properties": { "action": { "const": "ADD" } } },
+      "then": {
+        "required": ["side", "order_type", "qty_lots"],
+        "allOf": [
+          {
+            "if": { "properties": { "order_type": { "enum": ["MARKET", "STOP"] } } },
+            "then": { "not": { "required": ["price_ticks"] } },
+            "else": { "required": ["price_ticks"] }
+          },
+          {
+            "if": { "properties": { "order_type": { "enum": ["STOP", "STOP_LIMIT"] } } },
+            "then": { "required": ["trigger_price_ticks"] },
+            "else": { "not": { "required": ["trigger_price_ticks"] } }
+          },
+          {
+            "if": { "properties": { "order_type": { "const": "ICEBERG" } } },
+            "then": { "required": ["display_qty_lots"] },
+            "else": { "not": { "required": ["display_qty_lots"] } }
+          }
+        ]
+      }
+    },
+    {
+      "if": { "properties": { "action": { "const": "CANCEL" } } },
+      "then": {
+        "propertyNames": {
+          "enum": ["schema_version", "order_id", "symbol", "action", "participant_id", "client_time_ns"]
+        }
+      }
+    },
+    {
+      "if": { "properties": { "action": { "const": "MODIFY" } } },
+      "then": {
+        "required": ["price_ticks", "qty_lots"],
+        "propertyNames": {
+          "enum": ["schema_version", "order_id", "symbol", "action", "participant_id", "client_time_ns", "price_ticks", "qty_lots"]
+        }
+      }
+    }
+  ],
+
+  "$defs": {
+    "symbol": {
+      "description": "1-8 chars (engine Symbol is char[8]); must exist in config/symbols.yaml.",
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9.]{0,7}$"
+    },
+    "safe_positive_int": {
+      "description": "Positive and at most 2^53 - 1, so JavaScript and other double-based JSON parsers read it exactly.",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991
+    },
+    "epoch_ns": {
+      "description": "UTC ns since the Unix epoch, from 2001-09-09 (1e18). Exceeds 2^53: consumers in JavaScript must parse it as BigInt or string.",
+      "type": "integer",
+      "minimum": 1000000000000000000,
+      "maximum": 9223372036854775807
+    }
+  }
+}

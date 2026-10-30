@@ -1,0 +1,17 @@
+{
+  "reason": "run id is 16 lowercase hex chars",
+  "expected_error": "pattern",
+  "message": {
+    "schema_version": 1,
+    "engine_run_id": "9F3C2A71B4E08D56",
+    "match_id": 42,
+    "symbol": "AAPL",
+    "price_ticks": 18990,
+    "qty_lots": 100,
+    "buy_order_id": 1001,
+    "sell_order_id": 877,
+    "aggressor_side": "BUY",
+    "sequence_number": 310,
+    "event_time_ns": 1793430000123508789
+  }
+}

@@ -1,0 +1,14 @@
+# Exact pins for the python-tools image (contract tests).
+# Direct dependencies: pytest, jsonschema, PyYAML. The rest are their dependencies,
+# frozen from `pip freeze` so a rebuild installs the same set.
+pytest==8.3.4
+jsonschema==4.23.0
+PyYAML==6.0.2
+attrs==26.1.0
+iniconfig==2.3.1
+jsonschema-specifications==2025.9.1
+packaging==26.3
+pluggy==1.7.0
+referencing==0.37.0
+rpds-py==2026.9.1
+typing_extensions==4.16.0

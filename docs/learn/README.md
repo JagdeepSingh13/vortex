@@ -10,6 +10,7 @@ Read in this order:
 | 2 | [Make, CMake and Ninja](02-make-cmake-ninja.md) | What happens when you type `make engine`, why builds are incremental, Release vs Debug, warnings |
 | 3 | [Running the engine](03-running-the-engine.md) | `run-sim` vs `run-exchange`, the threads and queues inside, how to read the dashboard, Ctrl+C |
 | 4 | [Git subtree and history](04-git-subtree-and-history.md) | How the old engine repo became `engine/` with its history, subtree vs submodule |
+| 5 | [Event contracts](05-event-contracts.md) | Ticks and lots, JSON Schema line by line, the float and 2^53 traps, trade identity and dedup |
 
 Also see:
 - [MILESTONES.md](../MILESTONES.md) — what each milestone (M0–M11) is for
