@@ -40,7 +40,9 @@ if(VORTEX_WERROR)
 endif()
 
 if(VORTEX_SANITIZE)
-    target_compile_options(cpp_exchange INTERFACE -fsanitize=${VORTEX_SANITIZE} -fno-omit-frame-pointer)
+    # -fno-sanitize-recover: any finding fails the test instead of just printing
+    target_compile_options(cpp_exchange INTERFACE
+        -fsanitize=${VORTEX_SANITIZE} -fno-sanitize-recover=all -fno-omit-frame-pointer)
     target_link_options(cpp_exchange INTERFACE -fsanitize=${VORTEX_SANITIZE})
 endif()
 
