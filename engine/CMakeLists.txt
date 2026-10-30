@@ -30,6 +30,20 @@ target_compile_options(
         -fno-exceptions
 )
 
+# ---- build options ----
+# VORTEX_SANITIZE: "address,undefined" or "thread" (separate build dirs, see Makefile)
+set(VORTEX_SANITIZE "" CACHE STRING "Sanitizers to enable, e.g. address,undefined or thread")
+option(VORTEX_WERROR "Treat warnings as errors" OFF)
+
+if(VORTEX_WERROR)
+    target_compile_options(cpp_exchange INTERFACE -Werror)
+endif()
+
+if(VORTEX_SANITIZE)
+    target_compile_options(cpp_exchange INTERFACE -fsanitize=${VORTEX_SANITIZE} -fno-omit-frame-pointer)
+    target_link_options(cpp_exchange INTERFACE -fsanitize=${VORTEX_SANITIZE})
+endif()
+
 # sockets: Winsock on Windows, nothing extra on Linux/macOS
 add_library(cpp_exchange_net INTERFACE)
 target_link_libraries(cpp_exchange_net INTERFACE cpp_exchange Threads::Threads)
@@ -114,22 +128,27 @@ set_target_properties(
 
 # ---- tests ----
 enable_testing()
+find_package(GTest 1.14 REQUIRED)
+include(GoogleTest)
 
 add_executable(
-    engine_smoke_test
-    tests/engine_smoke_test.cpp
+    engine_tests
+    tests/order_book_basics_test.cpp
 )
 
 target_link_libraries(
-    engine_smoke_test
+    engine_tests
     PRIVATE
         cpp_exchange
+        GTest::gtest_main
+        Threads::Threads
 )
 
 set_target_properties(
-    engine_smoke_test
+    engine_tests
     PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tests"
 )
 
-add_test(NAME engine_smoke_test COMMAND engine_smoke_test)
+# one ctest entry per TEST(); discovered when ctest runs, not at build time
+gtest_discover_tests(engine_tests DISCOVERY_MODE PRE_TEST)
