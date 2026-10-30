@@ -1,0 +1,35 @@
+# secrets
+.env
+
+# C++ build output
+build/
+engine/build/
+compile_commands.json
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Java
+target/
+*.class
+
+# dbt
+dbt/target/
+dbt/dbt_packages/
+dbt/logs/
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+
+# IDE / OS
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
