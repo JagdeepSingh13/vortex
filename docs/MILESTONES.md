@@ -1,0 +1,73 @@
+# Milestones in plain language
+
+The project is split into 12 milestones (M0–M11). Each one is small enough to finish, test and explain on its own, gets its own git branch, and ends with an entry in [INTERVIEW_NOTES.md](INTERVIEW_NOTES.md). The exact acceptance criteria live in [ROADMAP.md](ROADMAP.md); this file explains what each step is for.
+
+## The big picture
+
+```
+orders come in -> engine matches them -> trades go out -> trades are stored -> trades become analytics
+```
+
+The milestones build that pipeline from left to right, one piece at a time.
+
+## Foundation
+
+### M0 — Repository bootstrap ✅
+Set up the empty project: folders, the existing C++ engine imported, a one-command build (`make engine`, `make test`) and the docs. Nothing new is built; this is the workbench.
+
+### M1 — Event contracts and symbol config
+Decide exactly what an "order" message and a "trade" message look like: fields, types, integers only. Create `config/symbols.yaml` listing each symbol with its tick size (smallest price step) and lot size (smallest quantity step). Every other part speaks this language, so it is agreed first.
+
+### M2 — Engine tests and benchmark
+Make the C++ engine trustworthy before connecting it to anything:
+- proper unit tests for the order book and the lock-free queue (including a multi-threaded test)
+- trades carry real wall-clock time (today the engine uses a monotonic timer not tied to the calendar)
+- a benchmark that measures real latency and throughput numbers to quote in interviews
+
+## Getting data moving
+
+### M3 — Local Kafka
+Run Kafka on the laptop with Docker and create two topics (message channels): `orders` and `trades`. Kafka is the pipe connecting every part of the system.
+
+### M4 — Order simulator
+A Python script that pretends to be many traders, sending fake but valid orders into `orders`, so the system has steady input.
+
+### M5 — Engine Kafka I/O
+Connect the engine to Kafka: read orders from `orders`, match them, publish trades to `trades`. The hardest C++ milestone: the matching thread must stay fast, so it hands trades through a lock-free queue to a separate thread that talks to Kafka.
+
+After M5 there is a **live, running exchange**.
+
+## Storing the data (the lakehouse)
+
+### M6 — Bronze tables
+A Spark streaming job copies every trade from Kafka into an Iceberg table, exactly as received ("bronze" = raw). Tests prove no trades are lost or duplicated, even when the job crashes and restarts.
+
+### M7 — Silver tables
+Clean up bronze: remove duplicates, fix types, organise by symbol and day ("silver" = clean and trustworthy). Handles events that arrive late.
+
+## Serving and analysing
+
+### M8 — Order API and live prices
+A new Spring Boot service that accepts orders over HTTP (into Kafka), keeps the latest price per symbol in Redis, and returns live prices instantly.
+
+### M9 — dbt gold models and Airflow
+- **dbt** turns silver data into business tables: 1-minute candles (open, high, low, close, volume), VWAP, daily stats. The first place prices become decimals.
+- **Airflow** runs this on a schedule, checks data quality and cleans up old Iceberg files.
+
+## Cloud and finishing
+
+### M10 — AWS with Terraform
+Move the storage layer to real AWS S3, with infrastructure written as Terraform code. Nothing that costs money is created without explicit approval and a cost estimate first.
+
+### M11 — Dashboard, CI and polish
+Charts over the gold tables, GitHub Actions running tests on every push, and the final README, architecture diagram and demo script.
+
+## What each stage lets you say in an interview
+
+| After | Claim |
+|---|---|
+| M2 | "I built a tested, benchmarked C++ matching engine." |
+| M5 | "It runs as a live exchange over Kafka." |
+| M7 | "Trades land in an Iceberg lakehouse with no loss or duplicates." |
+| M9 | "Analytics are built with dbt and orchestrated with Airflow." |
+| M11 | "The whole platform runs end to end, partly on AWS, with CI." |

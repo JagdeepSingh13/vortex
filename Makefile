@@ -12,7 +12,13 @@ export MSYS_NO_PATHCONV := 1
 
 DOCKER_RUN := docker run --rm -v "$(CURDIR):/src" -w /src $(ENGINE_IMAGE)
 
-.PHONY: help engine-image engine test clean
+# interactive runs: -it for keyboard input and Ctrl+C, --init so signals reach the program
+ENGINE_CONTAINER := vortex-exchange
+ENGINE_PORT := 9000
+DOCKER_RUN_IT := docker run --rm -it --init -v "$(CURDIR):/src" -w /src
+DOCKER_EXEC_IT := docker exec -it $(ENGINE_CONTAINER)
+
+.PHONY: help engine-image engine test clean run-sim run-exchange run-bots run-trader
 
 help: ## list targets
 	@grep -E '^[a-z-]+:.*## ' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  %-14s %s\n", $$1, $$2}'
@@ -25,6 +31,18 @@ engine: engine-image ## build the engine in Release mode
 
 test: engine ## run all unit tests
 	$(DOCKER_RUN) ctest --test-dir $(ENGINE_BUILD_DIR) --output-on-failure
+
+run-sim: engine ## engine + bots in one process with a live dashboard (Ctrl+C to stop)
+	$(DOCKER_RUN_IT) $(ENGINE_IMAGE) $(ENGINE_BUILD_DIR)/tools/simulation
+
+run-exchange: engine ## exchange server on port 9000 with dashboard (Ctrl+C to stop)
+	$(DOCKER_RUN_IT) --name $(ENGINE_CONTAINER) -p $(ENGINE_PORT):$(ENGINE_PORT) $(ENGINE_IMAGE) $(ENGINE_BUILD_DIR)/src/exchange $(ENGINE_PORT)
+
+run-bots: ## market maker + noise trader bots (needs run-exchange in another terminal)
+	$(DOCKER_EXEC_IT) $(ENGINE_BUILD_DIR)/tools/liquidity_bot 127.0.0.1 $(ENGINE_PORT)
+
+run-trader: ## interactive trader terminal (needs run-exchange in another terminal)
+	$(DOCKER_EXEC_IT) $(ENGINE_BUILD_DIR)/tools/trader_terminal 127.0.0.1 $(ENGINE_PORT)
 
 clean: ## remove build output
 	rm -rf build

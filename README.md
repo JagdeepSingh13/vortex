@@ -9,7 +9,7 @@ Kafka "trades" -> Spark Structured Streaming -> Iceberg bronze/silver -> dbt gol
 ```
 
 - Design: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
-- Plan: [docs/ROADMAP.md](docs/ROADMAP.md)
+- Plan: [docs/ROADMAP.md](docs/ROADMAP.md) (plain-language version: [docs/MILESTONES.md](docs/MILESTONES.md))
 - Decisions: [docs/decisions/](docs/decisions/)
 
 ## Quick start
@@ -19,6 +19,7 @@ Requirements: Docker (Desktop or Engine), GNU Make, Git. The engine builds insid
 ```bash
 make engine   # build the engine (Release) in the build container
 make test     # run unit tests
+make run-sim  # run the engine with simulated traders and a live dashboard
 ```
 
 Run `make help` to list all targets.
