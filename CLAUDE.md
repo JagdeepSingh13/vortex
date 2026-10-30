@@ -16,7 +16,7 @@ This project exists for learning and for interviews. Jagdeep must understand and
 
 ## Current status
 
-- Milestone: M2 (engine test suite and benchmark harness). M0 done 2026-10-30, M1 done 2026-10-31. Update this line whenever a milestone completes.
+- Milestone: M3 (local Kafka). M0 done 2026-10-30, M1 and M2 done 2026-10-31. Update this line whenever a milestone completes.
 
 ## Architecture in one screen
 

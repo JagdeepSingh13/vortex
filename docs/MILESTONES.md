@@ -18,7 +18,7 @@ Set up the empty project: folders, the existing C++ engine imported, a one-comma
 ### M1 — Event contracts and symbol config ✅
 Decide exactly what an "order" message and a "trade" message look like: fields, types, integers only. Create `config/symbols.yaml` listing each symbol with its tick size (smallest price step) and lot size (smallest quantity step). Every other part speaks this language, so it is agreed first.
 
-### M2 — Engine tests and benchmark
+### M2 — Engine tests and benchmark ✅
 Make the C++ engine trustworthy before connecting it to anything:
 - a benchmark that measures real latency and throughput numbers to quote in interviews
 - a golden replay test that proves matching behaviour never changes by accident, plus a multi-threaded test for the lock-free queue
