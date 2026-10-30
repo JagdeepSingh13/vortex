@@ -15,6 +15,7 @@
 
 #include <x86intrin.h>
 
+#include "core/clock.h"
 #include "matching/matching_engine.h"
 #include "support/order_stream.h"
 
@@ -70,6 +71,21 @@ namespace {
             sample = ticks() - start;
         }
         std::ranges::sort(samples);
+        return samples[samples.size() / 2];
+    }
+
+    // cost of one wall-clock read: what ExchangeCore pays per request for event_time_ns
+    template <typename Clock>
+    std::uint64_t clock_read_ticks(Clock read) {
+        std::vector<std::uint64_t> samples(100'000);
+        std::uint64_t sink = 0;
+        for (auto& sample : samples) {
+            const std::uint64_t start = ticks();
+            sink += read();
+            sample = ticks() - start;
+        }
+        std::ranges::sort(samples);
+        if (sink == 0) std::puts("(clock returned zero)");
         return samples[samples.size() / 2];
     }
 
@@ -171,6 +187,8 @@ int main(int argc, char** argv) {
     std::printf("calibrating timer...\n");
     const double ticks_per_ns = calibrate_tsc();
     const std::uint64_t overhead = timer_overhead_ticks();
+    const std::uint64_t wall_clock_cost = clock_read_ticks([] { return core::wall_clock_ns(); });
+    const std::uint64_t steady_clock_cost = clock_read_ticks([] { return core::now_ns(); });
 
     // ---- latency run ----
     std::printf("latency run: %zu warm-up + %zu measured requests\n", warmup, measured);
@@ -259,6 +277,15 @@ int main(int argc, char** argv) {
         report << std::format("| {} | {} | {:.0f} | {:.0f} | {:.0f} | {:.0f} | {:.0f} | {:.0f} |\n",
             KIND_NAMES[kind], p.count, p.p50, p.p90, p.p99, p.p999, p.max, p.mean);
     }
+
+    report << "\n## Clock reads (median, includes timer overhead)\n\n";
+    report << "| Clock | ns |\n|---|---:|\n";
+    report << std::format("| `wall_clock_ns()`: system_clock, UTC, read once per request for event_time_ns | {:.0f} |\n",
+        static_cast<double>(wall_clock_cost) / ticks_per_ns);
+    report << std::format("| `now_ns()`: steady_clock | {:.0f} |\n",
+        static_cast<double>(steady_clock_cost) / ticks_per_ns);
+    report << std::format("| two back-to-back `rdtscp` (timer overhead) | {:.0f} |\n",
+        static_cast<double>(overhead) / ticks_per_ns);
 
     report << "\n## Throughput\n\n";
     report << std::format("{:.2f} million requests/second (single thread, no per-request timers)\n\n", throughput / 1e6);
