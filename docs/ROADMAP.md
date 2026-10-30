@@ -1,0 +1,81 @@
+# Roadmap
+
+One milestone at a time, one branch per milestone (`mN-short-name`). A milestone is done when every acceptance criterion below passes on a clean clone. Status: **draft, written in M0, revise as we learn**.
+
+| # | Milestone | Branch |
+|---|-----------|--------|
+| M0 | Repository bootstrap | `m0-bootstrap` |
+| M1 | Event contracts and symbol config | `m1-contracts` |
+| M2 | Engine test suite and benchmark harness | `m2-engine-tests` |
+| M3 | Local Kafka (KRaft) | `m3-local-kafka` |
+| M4 | Order simulator | `m4-simulator` |
+| M5 | Engine Kafka I/O (orders in, trades out) | `m5-engine-kafka` |
+| M6 | Bronze ingestion into Iceberg | `m6-bronze` |
+| M7 | Silver tables | `m7-silver` |
+| M8 | Order API and live prices (Spring Boot + Redis) | `m8-api` |
+| M9 | dbt gold models and Airflow | `m9-gold` |
+| M10 | AWS via Terraform | `m10-aws` |
+| M11 | Dashboard, CI and presentation polish | `m11-polish` |
+
+## M0 — Repository bootstrap
+- Folder layout from `CLAUDE.md`, `.gitignore`, `.env.example`, README.
+- `cpp_exchange` imported into `engine/` with its history (ADR 0001).
+- Engine builds in a pinned Linux container (ADR 0002); toolchain versions recorded (ADR 0003).
+- **Acceptance:** on a clean clone, `make engine && make test` succeeds and `engine_smoke_test` passes.
+
+## M1 — Event contracts and symbol config
+- `schemas/order.v1.json` and `schemas/trade.v1.json` (JSON Schema), matching `docs/ARCHITECTURE.md`.
+- `config/symbols.yaml`: symbol, tick size, lot size, price scale.
+- Decide how the engine's internal `PRICE_SCALE` relates to per-symbol ticks (ADR).
+- **Acceptance:** example events in `schemas/examples/` validate against the schemas in a test.
+
+## M2 — Engine test suite and benchmark harness
+- Replace the hand-rolled CHECK macro with a test framework (ADR: GoogleTest vs Catch2 vs keep custom).
+- Unit tests for the order book (every order type) and the SPSC queue, including a multi-threaded queue test.
+- Engine stamps wall-clock `event_time_ns` (UTC epoch) on trades; the steady clock stays for latency measurement.
+- `make bench` writes a dated file to `benchmarks/results/` with machine and conditions.
+- **Acceptance:** `make test` runs all suites; one benchmark result file committed with real measurements.
+
+## M3 — Local Kafka (KRaft)
+- `infra/docker/docker-compose.yml` with a single-broker Kafka in KRaft mode, pinned image.
+- `make up`, `make down`, `make topics` (`orders`, `trades`, partitions keyed by symbol).
+- **Acceptance:** topics exist after `make up && make topics`; a console producer/consumer round-trip works.
+
+## M4 — Order simulator
+- Python simulator (`simulator/`) producing valid `order.v1` events keyed by symbol; configurable rate and symbols.
+- `make sim`.
+- **Acceptance:** produced messages validate against `order.v1`; key equals symbol.
+
+## M5 — Engine Kafka I/O
+- Engine consumes `orders`, publishes `trades` via librdkafka.
+- Matching thread hands trades to a publisher thread through a lock-free SPSC queue; no allocation, locks, logging or I/O on the matching thread.
+- **Acceptance:** with the simulator running, every trade on `trades` validates against `trade.v1`; matching results equal the in-process run for the same input (test).
+
+## M6 — Bronze ingestion into Iceberg
+- MinIO (S3-compatible) + Iceberg REST catalog in docker-compose.
+- PySpark Structured Streaming job `trades` → `bronze.trades`, with `ingest_time_ns` separate from `event_time_ns`.
+- `make stream-bronze`.
+- **Acceptance:** reconciliation test (trades produced = bronze rows); restart the job and confirm no duplicates.
+
+## M7 — Silver tables
+- `silver.trades`: deduplicated on `trade_id`, typed, partitioned by symbol and day.
+- **Acceptance:** dedup test; deliberately late events land in the correct partition.
+
+## M8 — Order API and live prices
+- New Spring Boot service in `api/`: POST orders to Kafka `orders`; consume `trades` into Redis last price; GET live prices.
+- **Acceptance:** unit tests for business logic; Testcontainers integration tests for Kafka and Redis.
+
+## M9 — dbt gold models and Airflow
+- dbt models: 1-minute candles (OHLCV), VWAP, per-symbol daily stats; integers converted to decimals here.
+- Airflow DAGs: scheduled dbt runs, data quality checks, Iceberg maintenance (compaction, snapshot expiry).
+- `make dbt`.
+- **Acceptance:** dbt tests (not_null, unique, accepted ranges) pass; late-event candle test passes.
+
+## M10 — AWS via Terraform
+- `infra/terraform/`: S3 bucket(s) and catalog for the lakehouse; the rest stays local unless we decide otherwise (ADR).
+- **Acceptance:** `terraform plan` clean. `apply` only with Jagdeep's explicit approval; cost estimate written first.
+
+## M11 — Dashboard, CI and presentation polish
+- Dashboard over gold models; GitHub Actions running `make test`.
+- Final architecture diagram, demo script, measured numbers in README.
+- **Acceptance:** CI green on `main`; demo runs end to end from a clean clone.
