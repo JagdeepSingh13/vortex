@@ -48,3 +48,15 @@ Format:
   - *Your max latency is 4 ms. Is the engine slow?* No: max values are OS and VM preemption (Docker inside WSL2 under Windows); p99.9 is 8 µs. Production would isolate cores and run on bare metal.
   - *How would you make it faster without breaking it?* Profile, change one data structure at a time, and require the golden replay test to pass unchanged plus a before/after benchmark.
 - Study further: rdtsc/rdtscp and invariant TSC, coordinated omission, CPU caches, vDSO clock_gettime, golden/snapshot testing, ThreadSanitizer.
+
+## M3 — Local Kafka (2026-10-31)
+- What I built: a single-node Kafka 4.3 cluster in KRaft mode (no ZooKeeper) with `orders` and `trades` topics keyed by symbol, one-command start/stop, a round-trip check that proves per-symbol ordering, CLI shortcuts, and a repeatable Kafka benchmark.
+- Why it is designed this way: official `apache/kafka` image pinned by digest, 3 partitions, separate internal and external listeners, CLI first with an opt-in UI to save memory on a 3.7 GB VM ([ADR 0012](decisions/0012-local-kafka-single-node-kraft.md)).
+- Trade-off I can defend: replication factor 1 and a single controller, so no fault tolerance; acceptable locally, production needs 3 brokers and RF 3.
+- Numbers (Ryzen 5 5500U, Docker on WSL2, Kafka perf tools inside the broker container, real 138–248-byte order JSON, acks=all, 3 runs each): producer ~80k msg/s with defaults, ~235k msg/s with linger.ms=10 + 64 KB batches + lz4 (worst tuned run beat best default run); p50 1 ms / p99 13 ms at a paced 20k msg/s; consumer ~303k msg/s. Source: `benchmarks/results/2026-10-31-kafka-98ba5d3.md`.
+- Likely questions:
+  - *How do you keep orders for one symbol in sequence?* The message key is the symbol; Kafka hashes the key to pick the partition, and order is guaranteed within a partition.
+  - *What problem did you find with 3 partitions?* Both symbols hash to the same partition, a hot partition; ordering is fine but there is no parallelism until more symbols exist.
+  - *Why is batching so much faster?* Each broker request has fixed overhead; batching and compressing many small messages per request amortises it, at the cost of a few ms of latency.
+  - *Where is the bottleneck end to end?* Kafka: ~1 ms and ~10^5 msg/s versus the engine's ~0.35 µs and ~2×10^6 requests/s on the same laptop.
+- Study further: Kafka log design, consumer group rebalancing, Raft, producer batching and idempotence, partitioning strategies.

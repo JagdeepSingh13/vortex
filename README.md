@@ -23,4 +23,13 @@ make test     # run unit tests
 make run-sim  # run the engine with simulated traders and a live dashboard
 ```
 
+Local infrastructure (Kafka):
+
+```bash
+make up && make topics   # start Kafka (KRaft, single node) and create orders/trades
+make kafka-check         # round-trip check
+make kafka-tail TOPIC=orders
+make down
+```
+
 Run `make help` to list all targets.

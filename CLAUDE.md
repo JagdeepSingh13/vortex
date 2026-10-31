@@ -72,8 +72,11 @@ docs/            Architecture, roadmap, ADRs, interview notes
 Make targets are the single entry point. Create each target when a milestone first needs it and keep this list accurate.
 
 - `make help`: list available targets
-- `make up` / `make down`: start or stop local infrastructure
+- `make up` / `make down`: start or stop local infrastructure (`make reset` also deletes data; `make up-ui` adds Kafka UI on :8080)
 - `make topics`: create Kafka topics
+- `make kafka-check`: Kafka round trip on a temporary topic
+- `make kafka-topics` / `kafka-tail` / `kafka-send` / `kafka-groups` / `kafka-offsets`: Kafka CLI shortcuts (`TOPIC=`, `FROM_START=1`)
+- `make kafka-perf`: Kafka producer/consumer benchmark, dated file in `benchmarks/results/`
 - `make engine`: build the engine in Release mode
 - `make test`: engine tests and contract tests (`make test-engine`, `make test-schemas` run each part)
 - `make test-all`: `make test` plus the slow sanitizer builds (`make test-asan`, `make test-tsan`)
