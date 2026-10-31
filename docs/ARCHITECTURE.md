@@ -20,6 +20,15 @@ Airflow: dbt runs, data quality checks, Iceberg maintenance
 | Gold models | `dbt/` | SQL (dbt) | Candles, VWAP, daily stats |
 | Orchestration | `airflow/` | Python | dbt runs, data quality, Iceberg maintenance |
 
+## Hot path and cold path
+
+```
+Kafka "trades" ─▶ Java service (M8): per trade, last price + current 1-min candle in Redis ─▶ API, terminal viewer   (milliseconds, best effort)
+               └▶ Spark (M6) ─▶ bronze ─▶ silver (M7) ─▶ gold candles, VWAP (M9)                                     (seconds to minutes, authoritative)
+```
+
+The engine only matches orders and publishes trades; all market data is derived downstream. Live candles in Redis are computed on every trade; readers decide how often to redraw. Gold is the source of truth and can be rebuilt from bronze; live candles can be checked against it.
+
 ## Engine
 
 ```

@@ -12,8 +12,8 @@ One milestone at a time, one branch per milestone (`mN-short-name`). A milestone
 | M4 | Order simulator | `m4-simulator` |
 | M5 | Engine Kafka I/O (orders in, trades out) | `m5-engine-kafka` |
 | M6 | Bronze ingestion into Iceberg | `m6-bronze` |
+| M8 | Order API, live prices and live candles (Spring Boot + Redis), **done before M7** | `m8-api` |
 | M7 | Silver tables | `m7-silver` |
-| M8 | Order API and live prices (Spring Boot + Redis) | `m8-api` |
 | M9 | dbt gold models and Airflow | `m9-gold` |
 | M10 | AWS via Terraform | `m10-aws` |
 | M11 | Dashboard, CI and presentation polish | `m11-polish` |
@@ -72,13 +72,16 @@ Findings so far (no code changed):
 - `make stream-bronze`, `make bronze-check`, `make bronze-restart-test`, `make bronze-bench`.
 - **Acceptance:** on a clean clone, bronze reconciles exactly with Kafka (`make bronze-check`); the job killed with SIGKILL twice mid-stream still reconciles (`make bronze-restart-test`); one bronze benchmark result committed.
 
-## M7 — Silver tables
-- `silver.trades`: deduplicated on `trade_id`, typed, partitioned by symbol and day.
-- **Acceptance:** dedup test; deliberately late events land in the correct partition.
+## M8 — Order API, live prices and live candles
+Done **before M7** (decided 2026-10-31): it does not depend on silver, and it makes the system visible sooner. Numbers are kept so earlier references stay valid.
+- New Spring Boot service in `api/`: POST orders to Kafka `orders`; consume `trades` and keep, in Redis, the last price and the current 1-minute candle (OHLCV) per symbol, updated on every trade. GET live prices and recent candles.
+- The **hot path** for live market data; the lakehouse (bronze → silver → gold) stays the **cold path**, authoritative and rebuildable. The engine only matches: no prices or candles are computed in it.
+- A terminal candle viewer (Java, reads Redis), redraw interval configurable (default 1 s).
+- **Acceptance:** unit tests for business logic; Testcontainers integration tests for Kafka and Redis; live candles visible in the terminal while the simulator runs.
 
-## M8 — Order API and live prices
-- New Spring Boot service in `api/`: POST orders to Kafka `orders`; consume `trades` into Redis last price; GET live prices.
-- **Acceptance:** unit tests for business logic; Testcontainers integration tests for Kafka and Redis.
+## M7 — Silver tables
+- `silver.trades`: deduplicated on (`engine_run_id`, `symbol`, `match_id`), typed, partitioned by symbol and day.
+- **Acceptance:** dedup test; deliberately late events land in the correct partition.
 
 ## M9 — dbt gold models and Airflow
 - dbt models: 1-minute candles (OHLCV), VWAP, per-symbol daily stats; integers converted to decimals here.
