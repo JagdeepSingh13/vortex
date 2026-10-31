@@ -5,7 +5,7 @@ SHELL := bash
 
 ENGINE_IMAGE := vortex/engine-build:m2
 ENGINE_BUILD_DIR := build/engine-release
-PYTHON_IMAGE := vortex/python-tools:m1
+PYTHON_IMAGE := vortex/python-tools:m4
 
 # Git Bash on Windows rewrites paths like /src into C:/Program Files/Git/src
 # before they reach docker.exe; this turns that off.
@@ -39,6 +39,14 @@ TOPIC_PARTITIONS := 3
 TOPIC_RETENTION_MS := 604800000
 TOPIC ?= orders
 
+# order simulator (ADR 0013): joins the compose network to reach kafka:29092
+KAFKA_NETWORK := vortex_default
+RATE ?= 1000
+DURATION ?= 0
+COUNT ?= 0
+SEED ?= 42
+SIM_RUN = docker run --rm --network $(KAFKA_NETWORK) -e PYTHONPATH=/src/simulator 	-e COMMIT=$(shell git rev-parse --short HEAD) -e "BENCH_ENV=$(BENCH_ENV)" -v "$(CURDIR):/src" -w /src
+
 # sanitizer builds: optimised but with debug info, only the test binary
 SANITIZER_FLAGS := -DCMAKE_BUILD_TYPE=RelWithDebInfo
 SANITIZER_ENV := -e ASAN_OPTIONS=halt_on_error=1:detect_leaks=1 \
@@ -51,6 +59,7 @@ define sanitizer_test
 	docker run --rm $(SANITIZER_ENV) -v "$(CURDIR):/src" -w /src $(ENGINE_IMAGE) ctest --test-dir $(1) --output-on-failure
 endef
 
+.PHONY: sim sim-bench test-sim
 .PHONY: up up-ui down reset topics kafka-topics kafka-tail kafka-send kafka-groups kafka-offsets kafka-check kafka-perf
 .PHONY: help engine-image engine bench python-image test test-all test-engine test-asan test-tsan test-schemas clean run-sim run-exchange run-bots run-trader
 
@@ -71,7 +80,7 @@ bench: engine ## run the engine benchmark and write a dated result to benchmarks
 python-image: ## build the pinned Python image used for contract tests
 	docker build -t $(PYTHON_IMAGE) -f infra/docker/python-tools.Dockerfile infra/docker
 
-test: test-engine test-schemas ## run all tests (engine + contracts)
+test: test-engine test-schemas test-sim ## run all tests (engine, contracts, simulator)
 
 test-all: test test-asan test-tsan ## everything, plus the slow sanitizer builds
 
@@ -86,6 +95,9 @@ test-tsan: engine-image ## engine tests under ThreadSanitizer (data races)
 
 test-schemas: python-image ## validate schemas, examples and config/symbols.yaml
 	docker run --rm -v "$(CURDIR):/src" -w /src $(PYTHON_IMAGE) python -m pytest schemas/tests -q -p no:cacheprovider
+
+test-sim: python-image ## simulator produces only valid order.v1 messages
+	docker run --rm -v "$(CURDIR):/src" -w /src $(PYTHON_IMAGE) python -m pytest simulator/tests -q -p no:cacheprovider
 
 run-sim: engine ## engine + bots in one process with a live dashboard (Ctrl+C to stop)
 	$(DOCKER_RUN_IT) $(ENGINE_IMAGE) $(ENGINE_BUILD_DIR)/tools/simulation
@@ -142,3 +154,11 @@ kafka-check: ## round trip: send example orders, read them back, check keys keep
 
 kafka-perf: ## Kafka producer/consumer benchmark, writes benchmarks/results/<date>-kafka-<commit>.md
 	bash infra/kafka/perf.sh benchmarks/results/$(shell date -u +%F)-kafka-$(shell git rev-parse --short HEAD).md
+
+# ---------------- order simulator ----------------
+
+sim: python-image ## send simulated orders to Kafka (RATE=1000/s, DURATION=s, COUNT=n, SEED=42; Ctrl+C stops)
+	$(SIM_RUN) -it --init $(PYTHON_IMAGE) python -m vortex_sim 		--rate $(RATE) --duration $(DURATION) --count $(COUNT) --seed $(SEED)
+
+sim-bench: python-image ## max simulator send rate, 500k orders, writes benchmarks/results/<date>-sim-<commit>.md
+	$(SIM_RUN) $(PYTHON_IMAGE) python -m vortex_sim --rate 0 --count 500000 --seed $(SEED) 		--report benchmarks/results/$(shell date -u +%F)-sim-$(shell git rev-parse --short HEAD).md
