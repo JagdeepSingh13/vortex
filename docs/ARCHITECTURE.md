@@ -86,7 +86,7 @@ CANCEL carries only the always-required fields. MODIFY carries those plus `price
 |-------|------|-------|
 | `schema_version` | const `1` | |
 | `engine_run_id` | string `^[0-9a-f]{16}$` | random per engine start (ADR 0005) |
-| `match_id` | safe int | restarts each run; unique key = (`engine_run_id`, `match_id`) |
+| `match_id` | safe int | counted per symbol, restarts each run; unique key = (`engine_run_id`, `symbol`, `match_id`) |
 | `symbol` | string | as above |
 | `price_ticks` | safe int | |
 | `qty_lots` | 1..2^32-1 | |
@@ -101,7 +101,7 @@ All fields are required.
 ## Lakehouse tables (proposed)
 
 - `bronze.trades`: every field of `trade.v1` as received, plus `kafka_partition`, `kafka_offset`, `ingest_time_ns`. Append-only.
-- `silver.trades`: deduplicated on (`engine_run_id`, `match_id`), partitioned by `symbol` and `days(event_time)`. Integers only.
+- `silver.trades`: deduplicated on (`engine_run_id`, `symbol`, `match_id`), partitioned by `symbol` and `days(event_time)`. Integers only.
 - `gold.*` (dbt): `candles_1m`, `vwap`, `daily_symbol_stats`. Decimal prices derived from `config/symbols.yaml`.
 
 ## Schema change log
@@ -109,3 +109,4 @@ All fields are required.
 - 2026-10-31 — `order.v1` and `trade.v1` created (M1).
 - 2026-10-31 — `order.v1` amended in place, no version bump (M4, ADR 0013): `order_id` is unique **per participant** (was: per engine run) and limited to 2^40 − 1; `participant_id` limited to 2^24 − 1, matching the engine's 24/40-bit order id packing. Shape unchanged. Normally a schema change needs a version bump; this exception was approved by Jagdeep because no producer or consumer of `order.v1` existed yet.
 - 2026-10-31 — `trade.v1` amended in place, no version bump (M5, ADR 0014): new required `buy_participant_id` and `sell_participant_id`; `buy_order_id`/`sell_order_id` limited to 2^40 − 1. Needed because order ids are unique only per participant since the M4 change. Approved by Jagdeep for the same reason: nothing produced or consumed `trade.v1` yet.
+- 2026-10-31 — `trade.v1` description corrected (M5): the unique key is (`engine_run_id`, `symbol`, `match_id`), not (`engine_run_id`, `match_id`). `match_id` is counted per symbol's order book, so different symbols reuse the same numbers within a run. Found while writing the trade checker; no field or validation rule changed (ADR 0005 updated).

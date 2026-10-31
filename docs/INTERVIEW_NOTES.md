@@ -33,7 +33,7 @@ Format:
 - Likely questions:
   - *Why integers for prices?* Binary floats cannot represent most decimals exactly (0.1 + 0.2 ≠ 0.3); two equal prices might not compare equal.
   - *Your validator rejects 18990.0. Isn't that a valid JSON integer?* By the JSON Schema spec it is; I made the validator strict because a float on the wire means a producer is computing prices in floating point.
-  - *How do you guarantee no duplicate trades downstream?* Delivery is at-least-once, so processing is idempotent on the unique key (engine_run_id, match_id).
+  - *How do you guarantee no duplicate trades downstream?* Delivery is at-least-once, so processing is idempotent on the unique key (engine_run_id, symbol, match_id). (First written as (engine_run_id, match_id), which was wrong: match ids are per symbol. Caught in M5.)
   - *Why are some ids capped at 2^53?* JavaScript and many JSON parsers use doubles; above 2^53 integers silently lose digits. Nanosecond timestamps exceed it, so consumers must read them as BigInt or strings.
 - Study further: IEEE 754, fixed-point arithmetic, JSON Schema conditionals, idempotency and delivery semantics, schema evolution.
 
