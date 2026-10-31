@@ -35,7 +35,7 @@ Run Kafka on the laptop with Docker and create two topics (message channels): `o
 ### M4 — Order simulator ✅
 A Python script that pretends to be many traders, sending fake but valid orders into `orders`, so the system has steady input.
 
-### M5 — Engine Kafka I/O
+### M5 — Engine Kafka I/O ✅
 Connect the engine to Kafka: read orders from `orders`, match them, publish trades to `trades`. The hardest C++ milestone: the matching thread must stay fast, so it hands trades through a lock-free queue to a separate thread that talks to Kafka.
 
 After M5 there is a **live, running exchange**.

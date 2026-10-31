@@ -16,7 +16,7 @@ This project exists for learning and for interviews. Jagdeep must understand and
 
 ## Current status
 
-- Milestone: M5 (engine Kafka I/O). M0 done 2026-10-30, M1–M4 done 2026-10-31. M2.5 (engine optimisation) deferred: avoid engine code changes beyond what a milestone strictly needs. Update this line whenever a milestone completes.
+- Milestone: M6 (bronze ingestion into Iceberg). M0 done 2026-10-30, M1–M5 done 2026-10-31. M2.5 (engine optimisation) deferred: avoid engine code changes beyond what a milestone strictly needs. Update this line whenever a milestone completes.
 
 ## Architecture in one screen
 
