@@ -3,7 +3,7 @@
 
 SHELL := bash
 
-ENGINE_IMAGE := vortex/engine-build:m2
+ENGINE_IMAGE := vortex/engine-build:m5
 ENGINE_BUILD_DIR := build/engine-release
 PYTHON_IMAGE := vortex/python-tools:m4
 
