@@ -66,10 +66,10 @@ Integer ranges:
 | Field | Type | Required | Notes |
 |-------|------|----------|-------|
 | `schema_version` | const `1` | always | |
-| `order_id` | safe int | always | unique within an engine run; for CANCEL/MODIFY the order to change |
+| `order_id` | 1..2^40-1 | always | unique per participant; for CANCEL/MODIFY the order to change |
 | `symbol` | string `^[A-Z][A-Z0-9.]{0,7}$` | always | must exist in `config/symbols.yaml` |
 | `action` | `ADD` / `CANCEL` / `MODIFY` | always | |
-| `participant_id` | safe int | always | |
+| `participant_id` | 1..2^24-1 | always | the engine identifies an order by (`participant_id`, `order_id`) |
 | `client_time_ns` | epoch ns | always | producer clock, informational |
 | `side` | `BUY` / `SELL` | ADD | |
 | `order_type` | `LIMIT` `MARKET` `IOC` `FOK` `GTC` `STOP` `STOP_LIMIT` `ICEBERG` `POST_ONLY` | ADD | |
@@ -106,3 +106,4 @@ All fields are required.
 ## Schema change log
 
 - 2026-10-31 — `order.v1` and `trade.v1` created (M1).
+- 2026-10-31 — `order.v1` amended in place, no version bump (M4, ADR 0013): `order_id` is unique **per participant** (was: per engine run) and limited to 2^40 − 1; `participant_id` limited to 2^24 − 1, matching the engine's 24/40-bit order id packing. Shape unchanged. Normally a schema change needs a version bump; this exception was approved by Jagdeep because no producer or consumer of `order.v1` existed yet.

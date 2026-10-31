@@ -9,12 +9,19 @@
   "properties": {
     "schema_version": { "const": 1 },
     "order_id": {
-      "description": "Unique within an engine run. For CANCEL and MODIFY: the id of the order to change.",
-      "$ref": "#/$defs/safe_positive_int"
+      "description": "Chosen by the producer, unique per participant_id (the engine identifies an order by the pair). For CANCEL and MODIFY: the id of the order to change. At most 2^40 - 1: the engine packs participant (24 bits) and order id (40 bits) into one 64-bit id.",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1099511627775
     },
     "symbol": { "$ref": "#/$defs/symbol" },
     "action": { "enum": ["ADD", "CANCEL", "MODIFY"] },
-    "participant_id": { "$ref": "#/$defs/safe_positive_int" },
+    "participant_id": {
+      "description": "Who sent the order. At most 2^24 - 1 (engine packs it into 24 bits).",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 16777215
+    },
     "client_time_ns": {
       "description": "Producer wall clock, UTC ns since the Unix epoch. Informational only; event time is set by the engine.",
       "$ref": "#/$defs/epoch_ns"
