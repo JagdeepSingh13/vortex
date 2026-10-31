@@ -43,6 +43,11 @@ def make_producer(bootstrap):
     return Producer({
         "bootstrap.servers": bootstrap,
         "client.id": "vortex-sim",
+        # librdkafka's default partitioner hashes keys with CRC32, the Java client with
+        # murmur2, so the same symbol would land on different partitions depending on who
+        # sent it and per-symbol ordering would break across producers. murmur2_random
+        # matches the Java client (and the Kafka CLI tools). Every producer must use it.
+        "partitioner": "murmur2_random",
         # a send counts only once the broker has written it
         "acks": "all",
         # retries cannot duplicate or reorder messages within a partition
