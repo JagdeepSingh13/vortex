@@ -128,6 +128,38 @@ set_target_properties(
         RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tools"
 )
 
+# ---- Kafka service: orders in, trades out (ADR 0014) ----
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(RDKAFKA REQUIRED IMPORTED_TARGET rdkafka=2.3.0)
+find_package(simdjson 3.6 REQUIRED)
+find_package(yaml-cpp 0.8 REQUIRED)
+
+add_executable(
+    vortex_engine
+    src/kafka_main.cpp
+    src/kafka/symbol_config.cpp
+)
+
+target_link_libraries(
+    vortex_engine
+    PRIVATE
+        cpp_exchange
+        PkgConfig::RDKAFKA
+        simdjson::simdjson
+        yaml-cpp::yaml-cpp
+        Threads::Threads
+)
+
+# yaml-cpp reports errors by throwing; only this file is built with exceptions and it
+# catches everything, so no exception reaches the -fno-exceptions engine code
+set_source_files_properties(src/kafka/symbol_config.cpp PROPERTIES COMPILE_OPTIONS -fexceptions)
+
+set_target_properties(
+    vortex_engine
+    PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/src"
+)
+
 # ---- benchmark ----
 add_executable(
     latency_bench

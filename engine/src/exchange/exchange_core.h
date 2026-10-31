@@ -196,6 +196,12 @@ namespace exchange::gateway {
         // and one public side (the anonymous print everyone sees)
         template <typename Sink>
         void publish_trade(const matching::Trade& trade, Sink& sink) {
+            // sinks that want the complete trade (both orders, aggressor side, match and
+            // sequence numbers) provide trade(); the Kafka publisher builds trade.v1 from it
+            if constexpr (requires { sink.trade(trade, request_time_ns_); }) {
+                sink.trade(trade, request_time_ns_);
+            }
+
             protocol::ExecutionReport fill{};
             fill.type = protocol::ExecType::FILL;
             fill.symbol = trade.symbol;
