@@ -29,7 +29,13 @@ wait_for_log() {  # $1 container, $2 text: fail instead of waiting forever
 json() { python3 -c "import sys,json; print(json.load(sys.stdin)['$1'])" 2>/dev/null || python -c "import sys,json; print(json.load(sys.stdin)['$1'])"; }
 
 $COMPOSE --profile api up -d api >/dev/null 2>&1
-wait_for_log vortex-api "partitions assigned"
+# a restarted container keeps its old logs, so wait for the HTTP API rather than a log line
+deadline=$((SECONDS + 180))
+until curl -sf "$API/stats" >/dev/null; do
+    if [ $SECONDS -ge $deadline ]; then echo "FAIL: $API never answered"; exit 1; fi
+    sleep 2
+done
+sleep 5  # let the consumer join the group and get its partitions
 
 rows=""
 for rate in $RATES; do
