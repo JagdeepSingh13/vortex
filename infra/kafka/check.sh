@@ -19,8 +19,16 @@ BOOTSTRAP="--bootstrap-server localhost:9092"
 TOPIC="vortex-check"
 EXAMPLES=schemas/examples/order/valid
 
+GROUP="vortex-check"
+
 work=$(mktemp -d)
-trap 'rm -rf "$work"; $KAFKA/kafka-topics.sh $BOOTSTRAP --delete --if-exists --topic $TOPIC >/dev/null 2>&1 || true' EXIT
+cleanup() {
+    rm -rf "$work"
+    $KAFKA/kafka-topics.sh $BOOTSTRAP --delete --if-exists --topic $TOPIC >/dev/null 2>&1 || true
+    # every consumer joins a group; delete ours so `make kafka-groups` stays clean
+    $KAFKA/kafka-consumer-groups.sh $BOOTSTRAP --delete --group $GROUP >/dev/null 2>&1 || true
+}
+trap cleanup EXIT
 
 # a clean topic every run, so old messages cannot make the check pass
 $KAFKA/kafka-topics.sh $BOOTSTRAP --delete --if-exists --topic $TOPIC >/dev/null 2>&1 || true
@@ -40,7 +48,7 @@ $KAFKA/kafka-console-producer.sh $BOOTSTRAP --topic $TOPIC \
     --reader-property parse.key=true --reader-property 'key.separator=|' < "$work/sent"
 
 # read back: "Partition:N<TAB>KEY<TAB>VALUE"
-$KAFKA/kafka-console-consumer.sh $BOOTSTRAP --topic $TOPIC --from-beginning \
+$KAFKA/kafka-console-consumer.sh $BOOTSTRAP --topic $TOPIC --group $GROUP --from-beginning \
     --max-messages "$count" --timeout-ms 20000 \
     --formatter-property print.partition=true --formatter-property print.key=true \
     2>/dev/null | tr -d '\r' > "$work/received" || true

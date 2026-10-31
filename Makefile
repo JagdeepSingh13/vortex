@@ -107,7 +107,7 @@ clean: ## remove build output
 up: ## start local infrastructure (Kafka) and wait until healthy
 	$(COMPOSE) up -d --wait kafka
 
-up-ui: ## start infrastructure plus Kafka UI on http://localhost:8080
+up-ui: ## start infrastructure plus Kafka UI on http://localhost:8080 (UI needs ~25 s to start)
 	$(COMPOSE) --profile ui up -d --wait
 
 down: ## stop local infrastructure (data is kept)
