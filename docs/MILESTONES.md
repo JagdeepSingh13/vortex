@@ -32,7 +32,7 @@ Find out where the engine spends its time (profiling), then make the slowest par
 ### M3 — Local Kafka ✅
 Run Kafka on the laptop with Docker and create two topics (message channels): `orders` and `trades`. Kafka is the pipe connecting every part of the system.
 
-### M4 — Order simulator
+### M4 — Order simulator ✅
 A Python script that pretends to be many traders, sending fake but valid orders into `orders`, so the system has steady input.
 
 ### M5 — Engine Kafka I/O
