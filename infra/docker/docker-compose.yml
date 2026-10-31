@@ -1,0 +1,74 @@
+# Local infrastructure. Started with `make up`, stopped with `make down` (ADR 0012).
+# Services are added by the milestone that first needs them.
+name: vortex
+
+services:
+
+  # single Kafka node in KRaft mode: one process is both broker and controller,
+  # no ZooKeeper (Kafka 4.x removed it entirely)
+  kafka:
+    image: apache/kafka:4.3.1@sha256:77e3df9054047a88b520d0cc46e16696d3b22022e1d580aeccd2632df6532837
+    container_name: vortex-kafka
+    ports:
+      - "9092:9092"   # EXTERNAL listener, for programs on the host (localhost:9092)
+    environment:
+      # fixed id so the data volume stays valid across restarts (kafka-storage.sh random-uuid)
+      CLUSTER_ID: fU3YqNjuR_iI-nvHIchbRQ
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+
+      # three listeners on three ports:
+      #   INTERNAL  kafka:29092     other containers on the compose network (engine, Spark)
+      #   EXTERNAL  localhost:9092  programs on the host
+      #   CONTROLLER kafka:9093     KRaft controller traffic, never used by clients
+      # "advertised" is the address the broker tells clients to reconnect to, so it
+      # must be reachable from where that client runs
+      KAFKA_LISTENERS: INTERNAL://:29092,EXTERNAL://:9092,CONTROLLER://:9093
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:29092,EXTERNAL://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+
+      # one broker, so every internal topic can only have one replica
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_SHARE_COORDINATOR_STATE_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_SHARE_COORDINATOR_STATE_TOPIC_MIN_ISR: 1
+
+      # topics are created on purpose by `make topics`, never by a typo in a client
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
+      # consumers in a new group start right away instead of waiting 3 s for others
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+
+      KAFKA_LOG_DIRS: /var/lib/kafka/data
+      # the WSL2 VM has ~3.7 GB; a fixed 512 MB heap leaves room for Spark later
+      KAFKA_HEAP_OPTS: -Xms512m -Xmx512m
+    volumes:
+      - kafka-data:/var/lib/kafka/data
+    healthcheck:
+      # cheap TCP check (no JVM start): is the client port accepting connections?
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/9092"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+      start_period: 10s
+
+  # optional web UI: only starts with `make up-ui` (compose profile "ui")
+  kafka-ui:
+    image: kafbat/kafka-ui:v1.5.0@sha256:7cda86a33344160309fdb65146332e4da65db81a945614f2fe32e210803f6fd1
+    container_name: vortex-kafka-ui
+    profiles: ["ui"]
+    depends_on:
+      kafka:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: vortex
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+      JAVA_OPTS: -Xmx256m
+
+volumes:
+  kafka-data:
