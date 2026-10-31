@@ -67,10 +67,10 @@ Findings so far (no code changed):
 - **Acceptance:** on a clean clone, `make up && make topics`, `make engine-run` and `make sim` produce trades that `make trades-check` accepts; `make test-all` passes; one end-to-end benchmark result committed.
 
 ## M6 — Bronze ingestion into Iceberg
-- MinIO (S3-compatible) + Iceberg REST catalog in docker-compose.
-- PySpark Structured Streaming job `trades` → `bronze.trades`, with `ingest_time_ns` separate from `event_time_ns`.
-- `make stream-bronze`.
-- **Acceptance:** reconciliation test (trades produced = bronze rows); restart the job and confirm no duplicates.
+- SeaweedFS (MinIO stopped publishing images) + Iceberg REST catalog in docker-compose; Spark 4.1.3 + Iceberg 1.12.0 image with SHA-256-pinned jars (ADR 0016).
+- PySpark Structured Streaming job `trades` → `vortex.bronze.trades`: parsed columns + raw message + Kafka metadata, `ingest_time_ns` separate from `event_time_ns`.
+- `make stream-bronze`, `make bronze-check`, `make bronze-restart-test`, `make bronze-bench`.
+- **Acceptance:** on a clean clone, bronze reconciles exactly with Kafka (`make bronze-check`); the job killed with SIGKILL twice mid-stream still reconciles (`make bronze-restart-test`); one bronze benchmark result committed.
 
 ## M7 — Silver tables
 - `silver.trades`: deduplicated on `trade_id`, typed, partitioned by symbol and day.

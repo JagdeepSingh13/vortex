@@ -104,11 +104,13 @@ CANCEL carries only the always-required fields. MODIFY carries those plus `price
 
 All fields are required.
 
-## Lakehouse tables (proposed)
+## Lakehouse tables
 
-- `bronze.trades`: every field of `trade.v1` as received, plus `kafka_partition`, `kafka_offset`, `ingest_time_ns`. Append-only.
-- `silver.trades`: deduplicated on (`engine_run_id`, `symbol`, `match_id`), partitioned by `symbol` and `days(event_time)`. Integers only.
-- `gold.*` (dbt): `candles_1m`, `vwap`, `daily_symbol_stats`. Decimal prices derived from `config/symbols.yaml`.
+Storage: SeaweedFS (S3 API) bucket `warehouse`; catalog: Iceberg REST (`vortex` in Spark); format: Iceberg v2, Parquet + zstd (ADR 0016).
+
+- `vortex.bronze.trades` (M6, built): every `trade.v1` field as a typed column (64-bit integers), plus `raw_value` (the message as received), `kafka_partition`, `kafka_offset`, `kafka_timestamp`, `parse_ok`, `ingest_time_ns` (start of the writing micro-batch) and `event_ts` (event time at µs, for partitioning). Partitioned by `days(event_ts)`. Append-only, written exactly once per Kafka offset by a Spark Structured Streaming job (10 s trigger, checkpointed). `(kafka_partition, kafka_offset)` is unique.
+- `silver.trades` (M7, proposed): deduplicated on (`engine_run_id`, `symbol`, `match_id`), partitioned by `symbol` and `days(event_time)`. Integers only.
+- `gold.*` (M9, proposed, dbt): `candles_1m`, `vwap`, `daily_symbol_stats`. Decimal prices derived from `config/symbols.yaml`.
 
 ## Schema change log
 

@@ -85,3 +85,15 @@ Format:
   - *What contract bug did you find?* The documented trade key (run, match_id) was not unique, because match ids are per symbol; silver dedup would have deleted real trades. The key is (run, symbol, match_id).
   - *What limits throughput?* On this laptop, the Python load generator, not the engine.
 - Study further: librdkafka internals and delivery callbacks, simdjson on-demand parsing, backpressure, the observer effect and coordinated omission, event sourcing for recovery.
+
+## M6 — Bronze ingestion into Iceberg (2026-10-31)
+- What I built: a Spark Structured Streaming job that copies every trade from Kafka into an Iceberg table (bronze) on S3-compatible storage, with a reconciliation check against Kafka offsets, a kill -9 crash test, and a freshness benchmark.
+- Why it is designed this way: Spark 4.1.3 + Iceberg 1.12.0 (matching Spark minor and Scala version, jars pinned by SHA-256), SeaweedFS because MinIO stopped publishing images, the Iceberg REST catalog so other engines can read the tables, and bronze rows that keep both typed integer columns and the raw message ([ADR 0016](decisions/0016-bronze-ingestion-spark-iceberg.md)).
+- Trade-off I can defend: micro-batches give exactly-once and simple recovery at the cost of seconds of latency and small files; the catalog is the reference REST implementation, not production software.
+- Numbers (Ryzen 5 5500U, everything in Docker on WSL2, Spark local[2] with 1 GB, 60 s runs × 2): with a 10 s trigger at 1,000 orders/s, ingest lag p50 5.0 s / p99 9.9 s and batches of 3–4 s; at 3,000 orders/s batches take 10–16 s and the job is saturated (~1,500–2,000 trades/s capacity), where a 2 s trigger made lag worse, not better. Crash test: killed with SIGKILL twice while processing, 364,305 trades reconciled exactly once; all 840,546 trades written during M6 reconcile with 0 duplicates and 0 gaps. Sources: `benchmarks/results/2026-10-31-bronze-59c40ec.md`, `make bronze-restart-test`.
+- Likely questions:
+  - *How do you get exactly-once from at-least-once Kafka?* Spark's checkpoint logs each batch's offsets before running it, and Iceberg's sink stores the batch id in the commit, so a replayed batch is either written for the first time or skipped.
+  - *How did you prove it?* Killed the job with SIGKILL twice while it was processing, then checked every Kafka offset appears exactly once. My first version killed it during startup, which proved nothing; I fixed the test.
+  - *Why didn't a shorter trigger make data fresher?* The job was already busy: batches took longer than either trigger. A shorter trigger only helps with spare capacity.
+  - *What is the bottleneck now?* Bronze ingestion, about 1,500–2,000 trades/s on this laptop, against an engine that produces far more.
+- Study further: Iceberg commit protocol and snapshots, Structured Streaming fault tolerance, Parquet internals, the small-files problem, medallion architecture.
