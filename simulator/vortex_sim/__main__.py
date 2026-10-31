@@ -166,7 +166,7 @@ def write_report(args, base, symbols, total, send_seconds, total_seconds, delive
         f"| Commit | `{os.environ.get('COMMIT', 'unknown')}` |",
         f"| CPU | {cpu} |",
         f"| Environment | {os.environ.get('BENCH_ENV', 'unspecified')} |",
-        f"| Python | {platform.python_version()}, confluent-kafka {client_version()[0]}, librdkafka {libversion()[0]} |",
+        f"| Python | {platform.python_version()}, confluent-kafka {client_version()}, librdkafka {libversion()[0]} |",
         f"| Kafka | `{args.bootstrap}`, topic `{args.topic}` |",
         "| Producer | acks=all, idempotent, linger.ms=5, lz4 |",
         f"| Target rate | {'max' if args.rate == 0 else f'{args.rate:,.0f}/s'} |",
