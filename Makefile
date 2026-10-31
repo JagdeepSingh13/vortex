@@ -67,7 +67,7 @@ define sanitizer_test
 	docker run --rm $(SANITIZER_ENV) -v "$(CURDIR):/src" -w /src $(ENGINE_IMAGE) ctest --test-dir $(1) --output-on-failure
 endef
 
-.PHONY: sim sim-bench test-sim engine-run trades-check e2e-bench stream-bronze bronze-check bronze-restart-test bronze-bench api-build test-api api-run api-bench
+.PHONY: sim sim-bench test-sim engine-run trades-check e2e-bench stream-bronze bronze-check bronze-restart-test bronze-bench api-build test-api api-run api-bench candles
 .PHONY: up up-ui down reset topics kafka-topics kafka-tail kafka-send kafka-groups kafka-offsets kafka-check kafka-perf
 .PHONY: help engine-image engine bench python-image test test-all test-engine test-asan test-tsan test-schemas clean
 
@@ -217,3 +217,11 @@ api-run: api-build up ## run the market data service on http://localhost:8090 (C
 api-bench: engine python-image api-build up ## trade -> Redis latency at several rates, writes benchmarks/results/<date>-api-<commit>.md
 	ENGINE_IMAGE=$(ENGINE_IMAGE) PYTHON_IMAGE=$(PYTHON_IMAGE) bash api/bench.sh \
 		benchmarks/results/$(shell date -u +%F)-api-$(shell git rev-parse --short HEAD).md
+
+SYMBOL ?= AAPL
+REFRESH ?= 1
+candles: ## live 1-minute candles in the terminal (SYMBOL=AAPL, REFRESH=1 s; needs make api-run)
+	docker run --rm $(TTY_FLAGS) --init --network $(KAFKA_NETWORK) -v "$(CURDIR)/api/target:/app:ro" \
+		eclipse-temurin:25.0.3_9-jre-alpine@sha256:28db6fdf60e38945e43d840c0333aeaec66c15943070104f7586fd3c9d1665b0 \
+		java -cp /app/vortex-api.jar -Dloader.main=dev.vortex.api.viewer.CandleViewer \
+		org.springframework.boot.loader.launch.PropertiesLauncher $(SYMBOL) $(REFRESH) http://api:8090
