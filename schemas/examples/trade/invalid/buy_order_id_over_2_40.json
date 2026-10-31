@@ -1,0 +1,19 @@
+{
+  "reason": "order ids are at most 2^40 - 1, as in order.v1",
+  "expected_error": "maximum",
+  "message": {
+    "schema_version": 1,
+    "engine_run_id": "9f3c2a71b4e08d56",
+    "match_id": 42,
+    "symbol": "AAPL",
+    "price_ticks": 18990,
+    "qty_lots": 100,
+    "buy_participant_id": 7,
+    "buy_order_id": 1099511627776,
+    "sell_participant_id": 12,
+    "sell_order_id": 877,
+    "aggressor_side": "BUY",
+    "sequence_number": 310,
+    "event_time_ns": 1793430000123508789
+  }
+}

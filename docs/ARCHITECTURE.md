@@ -90,7 +90,8 @@ CANCEL carries only the always-required fields. MODIFY carries those plus `price
 | `symbol` | string | as above |
 | `price_ticks` | safe int | |
 | `qty_lots` | 1..2^32-1 | |
-| `buy_order_id`, `sell_order_id` | safe int | |
+| `buy_participant_id`, `sell_participant_id` | 1..2^24-1 | who bought and who sold |
+| `buy_order_id`, `sell_order_id` | 1..2^40-1 | the producers' order ids; (participant, order id) identifies an order |
 | `aggressor_side` | `BUY` / `SELL` | side of the incoming order (ADR 0006) |
 | `sequence_number` | safe int | engine event sequence, increasing within a run |
 | `event_time_ns` | epoch ns | set by the engine |
@@ -107,3 +108,4 @@ All fields are required.
 
 - 2026-10-31 — `order.v1` and `trade.v1` created (M1).
 - 2026-10-31 — `order.v1` amended in place, no version bump (M4, ADR 0013): `order_id` is unique **per participant** (was: per engine run) and limited to 2^40 − 1; `participant_id` limited to 2^24 − 1, matching the engine's 24/40-bit order id packing. Shape unchanged. Normally a schema change needs a version bump; this exception was approved by Jagdeep because no producer or consumer of `order.v1` existed yet.
+- 2026-10-31 — `trade.v1` amended in place, no version bump (M5, ADR 0014): new required `buy_participant_id` and `sell_participant_id`; `buy_order_id`/`sell_order_id` limited to 2^40 − 1. Needed because order ids are unique only per participant since the M4 change. Approved by Jagdeep for the same reason: nothing produced or consumed `trade.v1` yet.
