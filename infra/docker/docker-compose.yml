@@ -70,5 +70,66 @@ services:
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
       JAVA_OPTS: -Xmx256m
 
+  # S3-compatible object store for Iceberg data files (ADR 0016). One process runs
+  # SeaweedFS's master, volume server, filer and S3 gateway. MinIO stopped publishing images.
+  seaweedfs:
+    image: chrislusf/seaweedfs:4.48@sha256:4e61d15fd35994cb1e43e1e553dff106794841fd9a99ade2fc8c8bfce4d7872d
+    container_name: vortex-seaweedfs
+    ports:
+      - "8333:8333"   # S3 API, for tools on the host
+    environment:
+      S3_ACCESS_KEY: ${S3_ACCESS_KEY:?set S3_ACCESS_KEY in .env (copy .env.example)}
+      S3_SECRET_KEY: ${S3_SECRET_KEY:?set S3_SECRET_KEY in .env (copy .env.example)}
+    # the S3 identity file is written from .env at start, so no key is ever stored in git
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        cat > /etc/seaweedfs/s3.json <<EOF
+        {"identities": [{"name": "vortex",
+          "credentials": [{"accessKey": "$${S3_ACCESS_KEY}", "secretKey": "$${S3_SECRET_KEY}"}],
+          "actions": ["Admin", "Read", "List", "Tagging", "Write"]}]}
+        EOF
+        exec weed server -dir=/data -ip.bind=0.0.0.0 -master.volumeSizeLimitMB=1024 -volume.max=0 \
+          -s3 -s3.port=8333 -s3.config=/etc/seaweedfs/s3.json
+    volumes:
+      - seaweedfs-data:/data
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:9333/cluster/status"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+      start_period: 5s
+
+  # Iceberg REST catalog: maps table names to their current metadata file (ADR 0016).
+  # The reference implementation; its own pointers live in SQLite on a volume.
+  iceberg-rest:
+    image: apache/iceberg-rest-fixture:1.10.1@sha256:f7d679d30ac9c640bdeb2c015dff533cd3c8f1c7d491ebcb5d436f9a42db1d6f
+    container_name: vortex-iceberg-rest
+    depends_on:
+      seaweedfs:
+        condition: service_healthy
+    ports:
+      - "8181:8181"
+    environment:
+      CATALOG_URI: jdbc:sqlite:/tmp/iceberg_catalog.db
+      CATALOG_WAREHOUSE: s3://warehouse/
+      CATALOG_IO__IMPL: org.apache.iceberg.aws.s3.S3FileIO
+      CATALOG_S3_ENDPOINT: http://seaweedfs:8333
+      CATALOG_S3_PATH__STYLE__ACCESS: "true"
+      CATALOG_S3_ACCESS__KEY__ID: ${S3_ACCESS_KEY}
+      CATALOG_S3_SECRET__ACCESS__KEY: ${S3_SECRET_KEY}
+      AWS_REGION: us-east-1
+      JAVA_TOOL_OPTIONS: -Xmx256m
+    volumes:
+      - iceberg-catalog:/tmp
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/8181"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+      start_period: 10s
+
 volumes:
   kafka-data:
+  seaweedfs-data:
+  iceberg-catalog:

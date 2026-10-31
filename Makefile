@@ -22,8 +22,11 @@ BENCH_CPU ?= 2
 BENCH_COMMIT := $(shell git rev-parse --short HEAD)$(shell git diff --quiet HEAD -- engine || echo -dirty)
 BENCH_FILE = benchmarks/results/$(shell date -u +%F)-$(BENCH_COMMIT).md
 
-# local infrastructure (ADR 0012)
-COMPOSE := docker compose -f infra/docker/docker-compose.yml
+# local infrastructure (ADR 0012, 0016). Credentials come from .env (gitignored);
+# `make up` creates it from .env.example on a fresh clone.
+COMPOSE := docker compose --env-file .env -f infra/docker/docker-compose.yml
+INFRA_SERVICES := kafka seaweedfs iceberg-rest
+WAREHOUSE_BUCKET := warehouse
 # -T: no terminal, for scripted commands; interactive ones (tail, send) keep the terminal
 KAFKA_BIN := $(COMPOSE) exec -T kafka /opt/kafka/bin
 KAFKA_BIN_IT := $(COMPOSE) exec kafka /opt/kafka/bin
@@ -101,16 +104,23 @@ clean: ## remove build output
 
 # ---------------- local infrastructure ----------------
 
-up: ## start local infrastructure (Kafka) and wait until healthy
-	$(COMPOSE) up -d --wait kafka
+.env:
+	cp .env.example .env
+	@echo "created .env from .env.example (local credentials; gitignored)"
 
-up-ui: ## start infrastructure plus Kafka UI on http://localhost:8080 (UI needs ~25 s to start)
+up: .env ## start local infrastructure (Kafka, SeaweedFS, Iceberg catalog) and wait until healthy
+	$(COMPOSE) up -d --wait $(INFRA_SERVICES)
+	@# Iceberg never creates buckets; making it again is harmless
+	@$(COMPOSE) exec -T seaweedfs sh -c "echo 's3.bucket.create -name $(WAREHOUSE_BUCKET)' | weed shell -master=localhost:9333" \
+		>/dev/null 2>&1 || true
+
+up-ui: up ## start infrastructure plus Kafka UI on http://localhost:8080 (UI needs ~25 s to start)
 	$(COMPOSE) --profile ui up -d --wait
 
-down: ## stop local infrastructure (data is kept)
+down: .env ## stop local infrastructure (data is kept)
 	$(COMPOSE) --profile ui down
 
-reset: ## stop local infrastructure and delete its data
+reset: .env ## stop local infrastructure and delete its data
 	$(COMPOSE) --profile ui down -v
 
 topics: ## create the Kafka topics (safe to run again)
