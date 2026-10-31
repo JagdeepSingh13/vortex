@@ -62,7 +62,7 @@ define sanitizer_test
 	docker run --rm $(SANITIZER_ENV) -v "$(CURDIR):/src" -w /src $(ENGINE_IMAGE) ctest --test-dir $(1) --output-on-failure
 endef
 
-.PHONY: sim sim-bench test-sim
+.PHONY: sim sim-bench test-sim engine-run trades-check e2e-bench
 .PHONY: up up-ui down reset topics kafka-topics kafka-tail kafka-send kafka-groups kafka-offsets kafka-check kafka-perf
 .PHONY: help engine-image engine bench python-image test test-all test-engine test-asan test-tsan test-schemas clean run-sim run-exchange run-bots run-trader
 
@@ -167,3 +167,16 @@ sim: python-image ## send simulated orders to Kafka (RATE=1000/s, DURATION=s, CO
 sim-bench: python-image ## max simulator send rate, 500k orders, writes benchmarks/results/<date>-sim-<commit>.md
 	$(SIM_RUN) $(PYTHON_IMAGE) python -m vortex_sim --rate 0 --count 500000 --seed $(SEED) \
 		--report benchmarks/results/$(shell date -u +%F)-sim-$(shell git rev-parse --short HEAD).md
+
+# ---------------- engine on Kafka ----------------
+
+engine-run: engine ## run the engine on Kafka: orders in, trades out (Ctrl+C stops it cleanly)
+	docker run --rm $(TTY_FLAGS) --init --name vortex-engine --network $(KAFKA_NETWORK) \
+		-v "$(CURDIR):/src" -w /src $(ENGINE_IMAGE) $(ENGINE_BUILD_DIR)/src/vortex_engine
+
+trades-check: python-image ## validate trades on Kafka for DURATION s (default 30): schema, unique keys, order, latency
+	$(SIM_RUN) $(PYTHON_IMAGE) python -m vortex_sim.trades_check --duration $(if $(filter 0,$(DURATION)),30,$(DURATION))
+
+e2e-bench: engine python-image ## simulator -> engine -> Kafka latency at several rates, writes benchmarks/results/<date>-e2e-<commit>.md
+	ENGINE_IMAGE=$(ENGINE_IMAGE) PYTHON_IMAGE=$(PYTHON_IMAGE) bash infra/e2e/bench.sh \
+		benchmarks/results/$(shell date -u +%F)-e2e-$(shell git rev-parse --short HEAD).md
