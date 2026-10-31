@@ -16,7 +16,7 @@ This project exists for learning and for interviews. Jagdeep must understand and
 
 ## Current status
 
-- Milestone: M8 (Order API, live prices and live candles; done before M7, decided 2026-10-31). M0 done 2026-10-30, M1–M6 done 2026-10-31. M2.5 (engine optimisation) deferred: avoid engine code changes beyond what a milestone strictly needs. Update this line whenever a milestone completes.
+- Milestone: M7 (silver tables). M0 done 2026-10-30, M1–M6 done 2026-10-31, M8 (live prices and candles, done before M7) done 2026-11-01. M2.5 (engine optimisation) deferred: avoid engine code changes beyond what a milestone strictly needs. Update this line whenever a milestone completes.
 
 ## Architecture in one screen
 
