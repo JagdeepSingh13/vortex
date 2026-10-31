@@ -17,6 +17,7 @@ Read in this order:
 | 9 | [The order simulator](09-order-simulator.md) | Modelling makers and noise traders, idempotent producers, async produce, open-loop pacing, the CRC32 vs murmur2 partitioner bug |
 | 10 | [The engine on Kafka](10-engine-on-kafka.md) | Three threads and two lock-free queues, backpressure, ordered shutdown, unit conversion at the edge, simdjson/librdkafka/yaml-cpp, the observer effect in measurement |
 | 11 | [Bronze: the lakehouse](11-bronze-lakehouse.md) | Lakehouse and medallion layers, Parquet, Iceberg commits and snapshots, the REST catalog, exactly-once with checkpoints, reconciliation, the crash test, freshness vs small files |
+| 12 | [Live market data](12-live-market-data.md) | Hot path vs cold path, Spring Boot + Kafka batch listener, Redis keys and hash tags, atomic Lua scripts, idempotency, pipelining and connection pools: a measured performance story |
 
 Also see:
 - [MILESTONES.md](../MILESTONES.md) — what each milestone (M0–M11) is for

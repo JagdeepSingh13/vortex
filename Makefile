@@ -25,7 +25,7 @@ BENCH_FILE = benchmarks/results/$(shell date -u +%F)-$(BENCH_COMMIT).md
 # local infrastructure (ADR 0012, 0016). Credentials come from .env (gitignored);
 # `make up` creates it from .env.example on a fresh clone.
 COMPOSE := docker compose --env-file .env -f infra/docker/docker-compose.yml
-INFRA_SERVICES := kafka seaweedfs iceberg-rest
+INFRA_SERVICES := kafka seaweedfs iceberg-rest redis
 WAREHOUSE_BUCKET := warehouse
 # -T: no terminal, for scripted commands; interactive ones (tail, send) keep the terminal
 KAFKA_BIN := $(COMPOSE) exec -T kafka /opt/kafka/bin
@@ -47,6 +47,14 @@ TTY_FLAGS := $(shell [ -t 0 ] && echo -it)
 SIM_RUN = docker run --rm --network $(KAFKA_NETWORK) -e PYTHONPATH=/src/simulator \
 	-e COMMIT=$(shell git rev-parse --short HEAD) -e "BENCH_ENV=$(BENCH_ENV)" -v "$(CURDIR):/src" -w /src
 
+# Java service (ADR 0017): built and tested in a pinned Maven + JDK 25 container. The Maven cache
+# lives in a volume. Tests start Kafka and Redis with Testcontainers through the host's Docker
+# socket and reach them via host.docker.internal.
+MAVEN_IMAGE := maven:3.9.12-eclipse-temurin-25@sha256:4f82a03a7d6679281952d628131299b1be88d7030a49c6a2b7d2ba2642e44e3e
+MVN := docker run --rm -v "$(CURDIR):/src" -v vortex-m2:/root/.m2 -w /src/api \
+	-v /var/run/docker.sock:/var/run/docker.sock -e TESTCONTAINERS_HOST_OVERRIDE=host.docker.internal \
+	$(MAVEN_IMAGE) mvn -B -q
+
 # sanitizer builds: optimised but with debug info, only the test binary
 SANITIZER_FLAGS := -DCMAKE_BUILD_TYPE=RelWithDebInfo
 SANITIZER_ENV := -e ASAN_OPTIONS=halt_on_error=1:detect_leaks=1 \
@@ -59,7 +67,7 @@ define sanitizer_test
 	docker run --rm $(SANITIZER_ENV) -v "$(CURDIR):/src" -w /src $(ENGINE_IMAGE) ctest --test-dir $(1) --output-on-failure
 endef
 
-.PHONY: sim sim-bench test-sim engine-run trades-check e2e-bench stream-bronze bronze-check bronze-restart-test bronze-bench
+.PHONY: sim sim-bench test-sim engine-run trades-check e2e-bench stream-bronze bronze-check bronze-restart-test bronze-bench api-build test-api api-run api-bench candles
 .PHONY: up up-ui down reset topics kafka-topics kafka-tail kafka-send kafka-groups kafka-offsets kafka-check kafka-perf
 .PHONY: help engine-image engine bench python-image test test-all test-engine test-asan test-tsan test-schemas clean
 
@@ -118,11 +126,11 @@ up-ui: up ## start infrastructure plus Kafka UI on http://localhost:8080 (UI nee
 	$(COMPOSE) --profile ui up -d --wait
 
 down: .env ## stop local infrastructure (data is kept)
-	$(COMPOSE) --profile ui --profile stream down
+	$(COMPOSE) --profile ui --profile stream --profile api down
 
 reset: .env ## stop local infrastructure and delete its data (Kafka, tables and the stream checkpoint together)
 	@# every profile, or volumes of profile-only services (the bronze checkpoint) would survive
-	$(COMPOSE) --profile ui --profile stream down -v
+	$(COMPOSE) --profile ui --profile stream --profile api down -v
 
 topics: ## create the Kafka topics (safe to run again)
 	@for topic in $(TOPICS); do 		$(KAFKA_BIN)/kafka-topics.sh $(BOOTSTRAP) --create --if-not-exists --topic $$topic 			--partitions $(TOPIC_PARTITIONS) --replication-factor 1 			--config retention.ms=$(TOPIC_RETENTION_MS); 	done
@@ -192,3 +200,28 @@ bronze-restart-test: engine python-image up ## kill -9 the bronze job twice mid-
 bronze-bench: engine python-image up ## bronze ingest lag and files per trigger interval and rate, writes benchmarks/results/<date>-bronze-<commit>.md
 	ENGINE_IMAGE=$(ENGINE_IMAGE) PYTHON_IMAGE=$(PYTHON_IMAGE) bash streaming/bench.sh \
 		benchmarks/results/$(shell date -u +%F)-bronze-$(shell git rev-parse --short HEAD).md
+
+# ---------------- live market data API (Java) ----------------
+
+api-build: .env ## build the Java market data service (jar in api/target/)
+	@# a running service holds the jar open; on Windows that makes Maven fail to replace it
+	@$(COMPOSE) --profile api stop api >/dev/null 2>&1 || true
+	$(MVN) package -DskipTests
+
+test-api: ## Java unit + Testcontainers integration tests (Kafka, Redis)
+	$(MVN) verify
+
+api-run: api-build up ## run the market data service on http://localhost:8090 (Ctrl+C stops)
+	$(COMPOSE) --profile api up api
+
+api-bench: engine python-image api-build up ## trade -> Redis latency at several rates, writes benchmarks/results/<date>-api-<commit>.md
+	ENGINE_IMAGE=$(ENGINE_IMAGE) PYTHON_IMAGE=$(PYTHON_IMAGE) bash api/bench.sh \
+		benchmarks/results/$(shell date -u +%F)-api-$(shell git rev-parse --short HEAD).md
+
+SYMBOL ?= AAPL
+REFRESH ?= 1
+candles: ## live 1-minute candles in the terminal (SYMBOL=AAPL, REFRESH=1 s; needs make api-run)
+	docker run --rm $(TTY_FLAGS) --init --network $(KAFKA_NETWORK) -v "$(CURDIR)/api/target:/app:ro" \
+		eclipse-temurin:25.0.3_9-jre-alpine@sha256:28db6fdf60e38945e43d840c0333aeaec66c15943070104f7586fd3c9d1665b0 \
+		java -cp /app/vortex-api.jar -Dloader.main=dev.vortex.api.viewer.CandleViewer \
+		org.springframework.boot.loader.launch.PropertiesLauncher $(SYMBOL) $(REFRESH) http://api:8090

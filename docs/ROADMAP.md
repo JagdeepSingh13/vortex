@@ -74,10 +74,10 @@ Findings so far (no code changed):
 
 ## M8 — Order API, live prices and live candles
 Done **before M7** (decided 2026-10-31): it does not depend on silver, and it makes the system visible sooner. Numbers are kept so earlier references stay valid.
-- New Spring Boot service in `api/`: POST orders to Kafka `orders`; consume `trades` and keep, in Redis, the last price and the current 1-minute candle (OHLCV) per symbol, updated on every trade. GET live prices and recent candles.
+- New Spring Boot service in `api/` (market data only; order entry moved to M11): consume `trades` and keep, in Redis, the last price and the current 1-minute candle (OHLCV) per symbol, updated on every trade by an atomic Lua script, pipelined per Kafka batch. GET live prices and recent candles (ADR 0017).
 - The **hot path** for live market data; the lakehouse (bronze → silver → gold) stays the **cold path**, authoritative and rebuildable. The engine only matches: no prices or candles are computed in it.
 - A terminal candle viewer (Java, reads Redis), redraw interval configurable (default 1 s).
-- **Acceptance:** unit tests for business logic; Testcontainers integration tests for Kafka and Redis; live candles visible in the terminal while the simulator runs.
+- **Acceptance:** unit tests for business logic; Testcontainers integration tests for Kafka and Redis; on a clean clone, live candles visible in the terminal (`make candles`) while the engine and simulator run; one latency benchmark result committed.
 
 ## M7 — Silver tables
 - `silver.trades`: deduplicated on (`engine_run_id`, `symbol`, `match_id`), typed, partitioned by symbol and day.
@@ -94,6 +94,7 @@ Done **before M7** (decided 2026-10-31): it does not depend on silver, and it ma
 - **Acceptance:** `terraform plan` clean. `apply` only with Jagdeep's explicit approval; cost estimate written first.
 
 ## M11 — Dashboard, CI and presentation polish
+- Order entry API (`POST /orders` → `order.v1` on Kafka, order ids per participant), moved here from M8.
 - Dashboard over gold models; GitHub Actions running `make test`.
 - Final architecture diagram, demo script, measured numbers in README.
 - **Acceptance:** CI green on `main`; demo runs end to end from a clean clone.

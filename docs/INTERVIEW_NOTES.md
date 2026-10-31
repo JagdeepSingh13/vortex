@@ -97,3 +97,19 @@ Format:
   - *Why didn't a shorter trigger make data fresher?* The job was already busy: batches took longer than either trigger. A shorter trigger only helps with spare capacity.
   - *What is the bottleneck now?* Bronze ingestion, about 1,500–2,000 trades/s on this laptop, against an engine that produces far more.
 - Study further: Iceberg commit protocol and snapshots, Structured Streaming fault tolerance, Parquet internals, the small-files problem, medallion architecture.
+
+## M8 — Live prices and candles: Java, Kafka, Redis (2026-10-31)
+- What I built: a Spring Boot 4 service on Java 25 that consumes the `trades` topic and keeps, in Redis 8, the last price and live 1-minute OHLCV candles per symbol, updated on every trade. It serves them over HTTP, and a terminal viewer (`make candles`) draws the candles live with ANSI escape codes. Tests use real Kafka and Redis via Testcontainers.
+- Why it is designed this way: the engine only matches, so market data is derived downstream. This is the hot path (milliseconds, best effort) next to the lakehouse's cold path (minutes, authoritative). Each trade runs one Lua script in Redis: atomic, idempotent per engine run and match id, one round trip. A Kafka batch is sent as one pipeline over pooled connections ([ADR 0017](decisions/0017-live-market-data-java-redis.md)).
+- Trade-off I can defend: Redis holds only 24 h of candles with no persistence, so after a Redis loss the live view restarts empty and history comes from the lakehouse. A late trade updates its own (past) minute, but the authoritative candles are gold.
+- Numbers (Ryzen 5 5500U, everything in Docker on WSL2, 60 s × 2 runs per rate after a 60 s JVM warm-up, engine event time → trade in Redis): it kept up at 2,000 and 5,000 orders/s (~950 and ~2,400 trades/s) with 0 duplicates. p50 was 11–12 ms and 13–21 ms; p99 was 59–117 ms and 109–699 ms, varying between identical runs on this laptop. The performance work, measured at each step at 2,000 orders/s:
+  - First version: 6.8 ms per Redis call, so it fell 20+ s behind.
+  - Script loaded once: 2.1 ms per call.
+  - Pipeline with a connection pool: ~3–4 ms per batch of 4–9 trades.
+  - Source: `benchmarks/results/2026-10-31-api-ab02ecf.md`.
+- Likely questions:
+  - *Why not compute candles in the engine?* It would add work to the matching thread; the engine's job is to match. Any consumer can derive candles from trades.
+  - *How did you find the slowness?* I compared what my code measured (6.8 ms per call) with Redis's own benchmark (0.15 ms round trip), so the cost was on the client side. One cause was Spring re-checking the script resource on every call, in a synchronized block. Redis's `INFO stats` showed the other: one `HELLO` handshake per batch, meaning a new connection for every pipeline, fixed by pooling.
+  - *What if the service reads trades twice after a restart?* The Lua script remembers the last applied match id per symbol and engine run and skips anything older. Kafka is at least once, but the result counts each trade once.
+  - *Why were your first benchmark tails seconds long?* The JVM was measured 10 s after a restart, before JIT warm-up. Separately, the Docker VM froze once, and the Kafka broker timed out talking to itself. I fixed the harness (an unmeasured warm-up run) and documented the stall instead of rerunning until the numbers looked good.
+- Study further: Redis Lua scripting and EVALSHA, pipelining, Redis Cluster hash tags, Lettuce connection handling, Kafka batch listeners and commit modes, JIT warm-up and benchmarking JVMs (JMH), lambda vs kappa architecture.

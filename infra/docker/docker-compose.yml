@@ -129,6 +129,44 @@ services:
       retries: 30
       start_period: 10s
 
+  # live market data, the hot path (ADR 0017): last price and current candles per symbol,
+  # written by the api service on every trade. In memory only: everything here can be rebuilt
+  # from Kafka, and the lakehouse keeps the authoritative history.
+  redis:
+    image: redis:8.8.2-alpine@sha256:f4ded511357f7c60551133fbceb0d07874a2240bfe3d1baaa49769a70ff83465
+    container_name: vortex-redis
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--save", "", "--appendonly", "no",
+              "--maxmemory", "128mb", "--maxmemory-policy", "volatile-lru"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+
+  # live market data service (M8, ADR 0017): Kafka trades -> Redis -> HTTP on :8090.
+  # Only with `make api-run` (profile "api"); runs the jar built by `make api-build`.
+  api:
+    image: eclipse-temurin:25.0.3_9-jre-alpine@sha256:28db6fdf60e38945e43d840c0333aeaec66c15943070104f7586fd3c9d1665b0
+    container_name: vortex-api
+    profiles: ["api"]
+    depends_on:
+      kafka:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - "8090:8090"
+    environment:
+      KAFKA_BOOTSTRAP: kafka:29092
+      REDIS_HOST: redis
+      SYMBOLS_FILE: /config/symbols.yaml
+    command: ["java", "-Xmx256m", "-jar", "/app/vortex-api.jar"]
+    volumes:
+      - ../../api/target:/app:ro
+      - ../../config:/config:ro
+
   # streaming job: Kafka "trades" -> Iceberg vortex.bronze.trades (ADR 0016). Only with
   # `make stream-bronze` (profile "stream"). Its checkpoint volume must be deleted together with
   # the table (make reset does both), or the two would disagree about what was already written.
