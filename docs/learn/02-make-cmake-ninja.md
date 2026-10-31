@@ -1,5 +1,9 @@
 # 2. Make, CMake and Ninja
 
+> **Note (M5):** this guide was written in M0–M2 and uses `make run-sim`, `make run-exchange` and the
+> TCP bots/terminal as examples. Those were removed in M5 ([ADR 0015](../decisions/0015-remove-tcp-gateway-and-bots.md));
+> the concepts are unchanged. Today the engine runs on Kafka: `make engine-run` with `make sim` (guides 9 and 10).
+
 Three build tools with three different jobs. They are easy to confuse because two of them have "make" in the name.
 
 | Tool | Job | Where it is configured |

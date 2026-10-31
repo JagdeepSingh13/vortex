@@ -1,5 +1,9 @@
 # 3. Running the engine
 
+> **Note (M5):** this guide was written in M0–M2 and uses `make run-sim`, `make run-exchange` and the
+> TCP bots/terminal as examples. Those were removed in M5 ([ADR 0015](../decisions/0015-remove-tcp-gateway-and-bots.md));
+> the concepts are unchanged. Today the engine runs on Kafka: `make engine-run` with `make sim` (guides 9 and 10).
+
 The engine can run in two modes. Both start in a Linux container (see [guide 1](01-docker-build-container.md)).
 
 | | `make run-sim` | `make run-exchange` + `run-bots` / `run-trader` |

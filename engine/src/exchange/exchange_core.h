@@ -20,7 +20,7 @@
 // a sink needs two functions:
 //   void send(core::ParticipantId to, const protocol::ServerMessage&)
 //   void broadcast(const protocol::ServerMessage&)
-// so the same core works with the in-process runner, a test, or a TCP gateway.
+// so the same core works with the Kafka service (kafka_main.cpp) or a test.
 
 namespace exchange::gateway {
 
