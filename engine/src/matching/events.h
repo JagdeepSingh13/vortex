@@ -114,6 +114,8 @@ namespace exchange::matching {
         OrderId sell_order_id;
         Price price;
         Quantity qty;
+        // side of the incoming order that crossed the spread (trade.v1, ADR 0006)
+        Side aggressor_side;
     };
 
     struct Event {
