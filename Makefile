@@ -45,7 +45,10 @@ RATE ?= 1000
 DURATION ?= 0
 COUNT ?= 0
 SEED ?= 42
-SIM_RUN = docker run --rm --network $(KAFKA_NETWORK) -e PYTHONPATH=/src/simulator 	-e COMMIT=$(shell git rev-parse --short HEAD) -e "BENCH_ENV=$(BENCH_ENV)" -v "$(CURDIR):/src" -w /src
+# -it only when there is a terminal (Ctrl+C works interactively; scripts and CI have none)
+TTY_FLAGS := $(shell [ -t 0 ] && echo -it)
+SIM_RUN = docker run --rm --network $(KAFKA_NETWORK) -e PYTHONPATH=/src/simulator \
+	-e COMMIT=$(shell git rev-parse --short HEAD) -e "BENCH_ENV=$(BENCH_ENV)" -v "$(CURDIR):/src" -w /src
 
 # sanitizer builds: optimised but with debug info, only the test binary
 SANITIZER_FLAGS := -DCMAKE_BUILD_TYPE=RelWithDebInfo
@@ -158,7 +161,9 @@ kafka-perf: ## Kafka producer/consumer benchmark, writes benchmarks/results/<dat
 # ---------------- order simulator ----------------
 
 sim: python-image ## send simulated orders to Kafka (RATE=1000/s, DURATION=s, COUNT=n, SEED=42; Ctrl+C stops)
-	$(SIM_RUN) -it --init $(PYTHON_IMAGE) python -m vortex_sim 		--rate $(RATE) --duration $(DURATION) --count $(COUNT) --seed $(SEED)
+	$(SIM_RUN) $(TTY_FLAGS) --init $(PYTHON_IMAGE) python -m vortex_sim \
+		--rate $(RATE) --duration $(DURATION) --count $(COUNT) --seed $(SEED)
 
 sim-bench: python-image ## max simulator send rate, 500k orders, writes benchmarks/results/<date>-sim-<commit>.md
-	$(SIM_RUN) $(PYTHON_IMAGE) python -m vortex_sim --rate 0 --count 500000 --seed $(SEED) 		--report benchmarks/results/$(shell date -u +%F)-sim-$(shell git rev-parse --short HEAD).md
+	$(SIM_RUN) $(PYTHON_IMAGE) python -m vortex_sim --rate 0 --count 500000 --seed $(SEED) \
+		--report benchmarks/results/$(shell date -u +%F)-sim-$(shell git rev-parse --short HEAD).md
