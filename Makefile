@@ -22,8 +22,11 @@ BENCH_CPU ?= 2
 BENCH_COMMIT := $(shell git rev-parse --short HEAD)$(shell git diff --quiet HEAD -- engine || echo -dirty)
 BENCH_FILE = benchmarks/results/$(shell date -u +%F)-$(BENCH_COMMIT).md
 
-# local infrastructure (ADR 0012)
-COMPOSE := docker compose -f infra/docker/docker-compose.yml
+# local infrastructure (ADR 0012, 0016). Credentials come from .env (gitignored);
+# `make up` creates it from .env.example on a fresh clone.
+COMPOSE := docker compose --env-file .env -f infra/docker/docker-compose.yml
+INFRA_SERVICES := kafka seaweedfs iceberg-rest
+WAREHOUSE_BUCKET := warehouse
 # -T: no terminal, for scripted commands; interactive ones (tail, send) keep the terminal
 KAFKA_BIN := $(COMPOSE) exec -T kafka /opt/kafka/bin
 KAFKA_BIN_IT := $(COMPOSE) exec kafka /opt/kafka/bin
@@ -56,7 +59,7 @@ define sanitizer_test
 	docker run --rm $(SANITIZER_ENV) -v "$(CURDIR):/src" -w /src $(ENGINE_IMAGE) ctest --test-dir $(1) --output-on-failure
 endef
 
-.PHONY: sim sim-bench test-sim engine-run trades-check e2e-bench
+.PHONY: sim sim-bench test-sim engine-run trades-check e2e-bench stream-bronze bronze-check bronze-restart-test bronze-bench
 .PHONY: up up-ui down reset topics kafka-topics kafka-tail kafka-send kafka-groups kafka-offsets kafka-check kafka-perf
 .PHONY: help engine-image engine bench python-image test test-all test-engine test-asan test-tsan test-schemas clean
 
@@ -101,17 +104,25 @@ clean: ## remove build output
 
 # ---------------- local infrastructure ----------------
 
-up: ## start local infrastructure (Kafka) and wait until healthy
-	$(COMPOSE) up -d --wait kafka
+.env:
+	cp .env.example .env
+	@echo "created .env from .env.example (local credentials; gitignored)"
 
-up-ui: ## start infrastructure plus Kafka UI on http://localhost:8080 (UI needs ~25 s to start)
+up: .env ## start local infrastructure (Kafka, SeaweedFS, Iceberg catalog) and wait until healthy
+	$(COMPOSE) up -d --wait $(INFRA_SERVICES)
+	@# Iceberg never creates buckets; making it again is harmless
+	@$(COMPOSE) exec -T seaweedfs sh -c "echo 's3.bucket.create -name $(WAREHOUSE_BUCKET)' | weed shell -master=localhost:9333" \
+		>/dev/null 2>&1 || true
+
+up-ui: up ## start infrastructure plus Kafka UI on http://localhost:8080 (UI needs ~25 s to start)
 	$(COMPOSE) --profile ui up -d --wait
 
-down: ## stop local infrastructure (data is kept)
-	$(COMPOSE) --profile ui down
+down: .env ## stop local infrastructure (data is kept)
+	$(COMPOSE) --profile ui --profile stream down
 
-reset: ## stop local infrastructure and delete its data
-	$(COMPOSE) --profile ui down -v
+reset: .env ## stop local infrastructure and delete its data (Kafka, tables and the stream checkpoint together)
+	@# every profile, or volumes of profile-only services (the bronze checkpoint) would survive
+	$(COMPOSE) --profile ui --profile stream down -v
 
 topics: ## create the Kafka topics (safe to run again)
 	@for topic in $(TOPICS); do 		$(KAFKA_BIN)/kafka-topics.sh $(BOOTSTRAP) --create --if-not-exists --topic $$topic 			--partitions $(TOPIC_PARTITIONS) --replication-factor 1 			--config retention.ms=$(TOPIC_RETENTION_MS); 	done
@@ -162,3 +173,22 @@ trades-check: python-image ## validate trades on Kafka for DURATION s (default 3
 e2e-bench: engine python-image ## simulator -> engine -> Kafka latency at several rates, writes benchmarks/results/<date>-e2e-<commit>.md
 	ENGINE_IMAGE=$(ENGINE_IMAGE) PYTHON_IMAGE=$(PYTHON_IMAGE) bash infra/e2e/bench.sh \
 		benchmarks/results/$(shell date -u +%F)-e2e-$(shell git rev-parse --short HEAD).md
+
+# ---------------- streaming (lakehouse) ----------------
+
+stream-bronze: up ## stream Kafka trades into Iceberg vortex.bronze.trades (Ctrl+C stops; restarts resume)
+	$(COMPOSE) --profile stream up --build bronze
+
+# one-off Spark jobs in the same image and network as the stream
+SPARK_RUN = $(COMPOSE) --profile stream run --rm --no-deps -T bronze /opt/spark/bin/spark-submit \
+	--master local[2] --driver-memory 768m
+
+bronze-check: up ## reconcile Kafka trades with Iceberg bronze: no loss, no duplicates, no gaps
+	$(SPARK_RUN) /opt/vortex/streaming/bronze_check.py
+
+bronze-restart-test: engine python-image up ## kill -9 the bronze job twice mid-stream, then reconcile (no loss, no duplicates)
+	ENGINE_IMAGE=$(ENGINE_IMAGE) PYTHON_IMAGE=$(PYTHON_IMAGE) bash streaming/restart_test.sh
+
+bronze-bench: engine python-image up ## bronze ingest lag and files per trigger interval and rate, writes benchmarks/results/<date>-bronze-<commit>.md
+	ENGINE_IMAGE=$(ENGINE_IMAGE) PYTHON_IMAGE=$(PYTHON_IMAGE) bash streaming/bench.sh \
+		benchmarks/results/$(shell date -u +%F)-bronze-$(shell git rev-parse --short HEAD).md

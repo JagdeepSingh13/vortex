@@ -25,7 +25,9 @@ OUT=${1:?usage: bench.sh <output.md>}
 ENGINE_IMAGE=${ENGINE_IMAGE:?}
 PYTHON_IMAGE=${PYTHON_IMAGE:?}
 NETWORK=vortex_default
-SRC="$(pwd)"
+# the repository as Docker sees it: on Git Bash, `pwd` can give a path Docker does not
+# translate (e.g. /tmp/... for the Windows temp folder); `pwd -W` gives C:/...
+SRC="$(pwd -W 2>/dev/null || pwd)"
 LOG=$(mktemp)
 
 cleanup() { docker rm -f vortex-engine >/dev/null 2>&1 || true; rm -f "$LOG"; }

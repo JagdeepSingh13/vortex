@@ -50,7 +50,7 @@ docs/            Architecture, roadmap, ADRs, interview notes
 
 - C++20 with CMake for the engine, built in a pinned Linux container (`infra/docker/engine-build.Dockerfile`); librdkafka for Kafka.
 - Java 25 (LTS), Spring Boot (current stable release), Spring for Apache Kafka, Redis.
-- Python 3.12 for the simulator and PySpark jobs; dbt for gold models.
+- Python 3.12 for the simulator and tools; dbt for gold models. Known deviation: PySpark jobs run on the Spark image's Python 3.10 (decided 2026-10-31, ADR 0016); revisit when the streaming jobs grow more Python logic.
 - Kafka in KRaft mode (no ZooKeeper). Iceberg tables on S3-compatible storage. Airflow for orchestration.
 - Local first: everything runs with docker-compose on a laptop. AWS only from M10, via Terraform.
 - Pin exact versions everywhere (images, Maven, pip, CMake dependencies). Check compatibility before pinning: the Iceberg Spark runtime artifact must match the Spark minor version and Scala version.
@@ -87,7 +87,10 @@ Make targets are the single entry point. Create each target when a milestone fir
 - `make bench`: run the engine benchmark and write a dated file to `benchmarks/results/` (`BENCH_REQUESTS`, `BENCH_CPU` override defaults)
 - `make sim`: run the order simulator (`RATE=`, `DURATION=`, `COUNT=`, `SEED=`); `make sim-bench` measures its max send rate
 - `make test-sim`: simulator produces only valid order.v1 messages (part of `make test`)
-- `make stream-bronze`: start the bronze ingestion job
+- `make stream-bronze`: start the bronze ingestion job (Kafka trades -> Iceberg `vortex.bronze.trades`; restarts resume from the checkpoint)
+- `make bronze-check`: reconcile Kafka with bronze (no loss, no duplicates, no gaps)
+- `make bronze-restart-test`: kill -9 the bronze job twice mid-stream, then reconcile
+- `make bronze-bench`: bronze ingest lag and files per trigger interval, dated file in `benchmarks/results/`
 - `make dbt`: run and test dbt models
 
 ## Testing expectations
