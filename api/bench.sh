@@ -13,6 +13,7 @@ RATES=${API_BENCH_RATES:-"2000 5000"}
 WARMUP=${API_BENCH_WARMUP:-10}
 DURATION=${API_BENCH_DURATION:-60}
 REPEAT=${API_BENCH_REPEAT:-2}
+JVM_WARMUP=${API_BENCH_JVM_WARMUP:-60}
 OUT=${1:?usage: bench.sh <output.md>}
 COMPOSE="docker compose --env-file .env -f infra/docker/docker-compose.yml"
 # the repository as Docker sees it (Git Bash: pwd -W gives C:/..., which Docker translates)
@@ -37,17 +38,28 @@ until curl -sf "$API/stats" >/dev/null; do
 done
 sleep 5  # let the consumer join the group and get its partitions
 
+start_load() {  # $1 orders/s, $2 seconds: a fresh engine and a simulator
+    docker rm -f vortex-engine vortex-sim >/dev/null 2>&1 || true
+    docker run -d --init --name vortex-engine --network vortex_default -v "$SRC:/src" -w /src \
+        "${ENGINE_IMAGE:?}" build/engine-release/src/vortex_engine >/dev/null
+    wait_for_log vortex-engine "assigned"
+    docker run -d --name vortex-sim --network vortex_default -e PYTHONPATH=/src/simulator \
+        -v "$SRC:/src" -w /src "${PYTHON_IMAGE:?}" \
+        python -m vortex_sim --rate "$1" --duration "$2" >/dev/null
+}
+
+# The api was just (re)started: a fresh JVM is still compiling its hot code for the first minute,
+# and measuring it after only the per-run warm-up gave multi-second tails. One unmeasured run first.
+echo "== JVM warm-up: ${JVM_WARMUP}s, not measured"
+start_load "${RATES%% *}" "$JVM_WARMUP"
+docker wait vortex-sim >/dev/null
+docker rm -f vortex-sim vortex-engine >/dev/null
+
 rows=""
 for rate in $RATES; do
     for run in $(seq 1 "$REPEAT"); do
         echo "== $rate orders/s, run $run"
-        docker rm -f vortex-engine vortex-sim >/dev/null 2>&1 || true
-        docker run -d --init --name vortex-engine --network vortex_default -v "$SRC:/src" -w /src \
-            "${ENGINE_IMAGE:?}" build/engine-release/src/vortex_engine >/dev/null
-        wait_for_log vortex-engine "assigned"
-        docker run -d --name vortex-sim --network vortex_default -e PYTHONPATH=/src/simulator \
-            -v "$SRC:/src" -w /src "${PYTHON_IMAGE:?}" \
-            python -m vortex_sim --rate "$rate" --duration $((WARMUP + DURATION)) >/dev/null
+        start_load "$rate" $((WARMUP + DURATION))
 
         sleep "$WARMUP"
         curl -sf -X POST "$API/stats/reset"
@@ -83,7 +95,7 @@ cat > "$OUT" <<EOF
 | Environment | ${BENCH_ENV:-Docker Desktop (WSL2 VM) on Windows 11} |
 | Path | engine -> Kafka \`trades\` -> api (Spring Boot 4.1.1, Java 25, 3 listener threads, -Xmx256m) -> Redis 8.8.2 |
 | Redis writes | one atomic Lua script per trade, pipelined per Kafka poll batch, pooled connections |
-| Load | simulator, ${WARMUP} s warm-up (not measured) then ${DURATION} s measured, ${REPEAT} runs per rate |
+| Load | after a fresh api start, one unmeasured ${JVM_WARMUP} s JIT warm-up run; then per run: simulator, ${WARMUP} s warm-up (not measured) then ${DURATION} s measured, ${REPEAT} runs per rate |
 
 ## Results
 
