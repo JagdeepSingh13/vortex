@@ -129,7 +129,37 @@ services:
       retries: 30
       start_period: 10s
 
+  # streaming job: Kafka "trades" -> Iceberg vortex.bronze.trades (ADR 0016). Only with
+  # `make stream-bronze` (profile "stream"). Its checkpoint volume must be deleted together with
+  # the table (make reset does both), or the two would disagree about what was already written.
+  bronze:
+    build:
+      context: .
+      dockerfile: spark.Dockerfile
+    image: vortex/spark:m6
+    container_name: vortex-bronze
+    profiles: ["stream"]
+    depends_on:
+      kafka:
+        condition: service_healthy
+      iceberg-rest:
+        condition: service_healthy
+    environment:
+      KAFKA_BOOTSTRAP: kafka:29092
+      ICEBERG_REST_URI: http://iceberg-rest:8181
+      S3_ENDPOINT: http://seaweedfs:8333
+      S3_ACCESS_KEY: ${S3_ACCESS_KEY}
+      S3_SECRET_KEY: ${S3_SECRET_KEY}
+      AWS_REGION: us-east-1
+      CHECKPOINT_DIR: /opt/spark/checkpoints/bronze_trades
+    command: ["/opt/spark/bin/spark-submit", "--master", "local[2]", "--driver-memory", "1g",
+              "/opt/vortex/streaming/bronze_trades.py"]
+    volumes:
+      - ../../streaming:/opt/vortex/streaming:ro
+      - spark-checkpoints:/opt/spark/checkpoints
+
 volumes:
   kafka-data:
   seaweedfs-data:
   iceberg-catalog:
+  spark-checkpoints:

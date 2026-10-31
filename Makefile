@@ -59,7 +59,7 @@ define sanitizer_test
 	docker run --rm $(SANITIZER_ENV) -v "$(CURDIR):/src" -w /src $(ENGINE_IMAGE) ctest --test-dir $(1) --output-on-failure
 endef
 
-.PHONY: sim sim-bench test-sim engine-run trades-check e2e-bench
+.PHONY: sim sim-bench test-sim engine-run trades-check e2e-bench stream-bronze bronze-check
 .PHONY: up up-ui down reset topics kafka-topics kafka-tail kafka-send kafka-groups kafka-offsets kafka-check kafka-perf
 .PHONY: help engine-image engine bench python-image test test-all test-engine test-asan test-tsan test-schemas clean
 
@@ -172,3 +172,15 @@ trades-check: python-image ## validate trades on Kafka for DURATION s (default 3
 e2e-bench: engine python-image ## simulator -> engine -> Kafka latency at several rates, writes benchmarks/results/<date>-e2e-<commit>.md
 	ENGINE_IMAGE=$(ENGINE_IMAGE) PYTHON_IMAGE=$(PYTHON_IMAGE) bash infra/e2e/bench.sh \
 		benchmarks/results/$(shell date -u +%F)-e2e-$(shell git rev-parse --short HEAD).md
+
+# ---------------- streaming (lakehouse) ----------------
+
+stream-bronze: up ## stream Kafka trades into Iceberg vortex.bronze.trades (Ctrl+C stops; restarts resume)
+	$(COMPOSE) --profile stream up --build bronze
+
+# one-off Spark jobs in the same image and network as the stream
+SPARK_RUN = $(COMPOSE) --profile stream run --rm --no-deps -T bronze /opt/spark/bin/spark-submit \
+	--master local[2] --driver-memory 768m
+
+bronze-check: up ## reconcile Kafka trades with Iceberg bronze: no loss, no duplicates, no gaps
+	$(SPARK_RUN) /opt/vortex/streaming/bronze_check.py
