@@ -42,7 +42,7 @@ After M5 there is a **live, running exchange**.
 
 ## Storing the data (the lakehouse)
 
-### M6 — Bronze tables
+### M6 — Bronze tables ✅
 A Spark streaming job copies every trade from Kafka into an Iceberg table, exactly as received ("bronze" = raw). Tests prove no trades are lost or duplicated, even when the job crashes and restarts.
 
 ### M7 — Silver tables
