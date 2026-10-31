@@ -21,6 +21,16 @@ public class IngestStats {
     private final AtomicLong applied = new AtomicLong();
     private final AtomicLong duplicates = new AtomicLong();
     private final AtomicLong rejected = new AtomicLong();
+    // time spent writing to Redis, per batch (one pipeline per Kafka poll batch)
+    private final AtomicLong redisNanos = new AtomicLong();
+    private final AtomicLong redisBatches = new AtomicLong();
+    private final AtomicLong redisTrades = new AtomicLong();
+
+    public void redisBatch(long nanos, int trades) {
+        redisNanos.addAndGet(nanos);
+        redisBatches.incrementAndGet();
+        redisTrades.addAndGet(trades);
+    }
 
     public void applied(long eventTimeNs) {
         applied.incrementAndGet();
@@ -40,13 +50,21 @@ public class IngestStats {
         applied.set(0);
         duplicates.set(0);
         rejected.set(0);
+        redisNanos.set(0);
+        redisBatches.set(0);
+        redisTrades.set(0);
     }
 
     public Snapshot snapshot() {
         int n = (int) Math.min(next.get(), CAPACITY);
         long[] sorted = Arrays.copyOf(latencyMicros, n);
         Arrays.sort(sorted);
-        return new Snapshot(applied.get(), duplicates.get(), rejected.get(), n,
+        long batches = redisBatches.get();
+        long trades = redisTrades.get();
+        return new Snapshot(applied.get(), duplicates.get(), rejected.get(), n, batches,
+                batches == 0 ? 0 : trades / batches,
+                batches == 0 ? 0 : redisNanos.get() / batches / 1_000,
+                trades == 0 ? 0 : redisNanos.get() / trades,
                 at(sorted, 0.50), at(sorted, 0.90), at(sorted, 0.99), at(sorted, 0.999),
                 n == 0 ? 0 : sorted[n - 1]);
     }
@@ -56,6 +74,8 @@ public class IngestStats {
     }
 
     public record Snapshot(long applied, long duplicates, long rejected, int samples,
+                           long redisBatches, long avgBatchSize, long redisMicrosPerBatch,
+                           long redisNanosPerTrade,
                            long p50Micros, long p90Micros, long p99Micros, long p999Micros, long maxMicros) {
     }
 }

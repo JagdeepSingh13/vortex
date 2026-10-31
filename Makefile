@@ -67,7 +67,7 @@ define sanitizer_test
 	docker run --rm $(SANITIZER_ENV) -v "$(CURDIR):/src" -w /src $(ENGINE_IMAGE) ctest --test-dir $(1) --output-on-failure
 endef
 
-.PHONY: sim sim-bench test-sim engine-run trades-check e2e-bench stream-bronze bronze-check bronze-restart-test bronze-bench api-build test-api
+.PHONY: sim sim-bench test-sim engine-run trades-check e2e-bench stream-bronze bronze-check bronze-restart-test bronze-bench api-build test-api api-run api-bench
 .PHONY: up up-ui down reset topics kafka-topics kafka-tail kafka-send kafka-groups kafka-offsets kafka-check kafka-perf
 .PHONY: help engine-image engine bench python-image test test-all test-engine test-asan test-tsan test-schemas clean
 
@@ -203,8 +203,17 @@ bronze-bench: engine python-image up ## bronze ingest lag and files per trigger 
 
 # ---------------- live market data API (Java) ----------------
 
-api-build: ## build the Java market data service (jar in api/target/)
+api-build: .env ## build the Java market data service (jar in api/target/)
+	@# a running service holds the jar open; on Windows that makes Maven fail to replace it
+	@$(COMPOSE) --profile api stop api >/dev/null 2>&1 || true
 	$(MVN) package -DskipTests
 
 test-api: ## Java unit + Testcontainers integration tests (Kafka, Redis)
 	$(MVN) verify
+
+api-run: api-build up ## run the market data service on http://localhost:8090 (Ctrl+C stops)
+	$(COMPOSE) --profile api up api
+
+api-bench: engine python-image api-build up ## trade -> Redis latency at several rates, writes benchmarks/results/<date>-api-<commit>.md
+	ENGINE_IMAGE=$(ENGINE_IMAGE) PYTHON_IMAGE=$(PYTHON_IMAGE) bash api/bench.sh \
+		benchmarks/results/$(shell date -u +%F)-api-$(shell git rev-parse --short HEAD).md

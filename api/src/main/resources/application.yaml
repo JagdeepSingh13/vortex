@@ -22,6 +22,12 @@ spring:
     redis:
       host: ${REDIS_HOST:redis}
       port: 6379
+      lettuce:
+        # pipelines need a dedicated connection; the pool keeps them open and reuses them
+        pool:
+          enabled: true
+          max-active: 8
+          min-idle: 3
 
 vortex:
   symbols-file: ${SYMBOLS_FILE:config/symbols.yaml}
