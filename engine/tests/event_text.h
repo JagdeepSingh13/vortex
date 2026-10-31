@@ -85,10 +85,10 @@ namespace exchange::testing {
                 p.order_canceled.sequence_number, p.order_canceled.timestamp, p.order_canceled.order_id,
                 p.order_canceled.canceled_qty);
         case EventType::TRADE:
-            return std::format("  TRADE seq={} ts={} match={} {} buy={} sell={} px={} qty={}",
+            return std::format("  TRADE seq={} ts={} match={} {} buy={} sell={} px={} qty={} aggr={}",
                 p.trade.sequence_number, p.trade.timestamp, p.trade.match_id,
                 core::symbol_view(p.trade.symbol), p.trade.buy_order_id, p.trade.sell_order_id,
-                p.trade.price, p.trade.qty);
+                p.trade.price, p.trade.qty, name_of(p.trade.aggressor_side));
         }
         return "  ?";
     }

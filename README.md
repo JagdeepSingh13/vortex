@@ -20,15 +20,16 @@ Requirements: Docker (Desktop or Engine), GNU Make, Git. The engine builds insid
 ```bash
 make engine   # build the engine (Release) in the build container
 make test     # run unit tests
-make run-sim  # run the engine with simulated traders and a live dashboard
 ```
 
 Local infrastructure (Kafka):
 
 ```bash
-make up && make topics   # start Kafka (KRaft, single node) and create orders/trades
-make kafka-check         # round-trip check
-make kafka-tail TOPIC=orders
+make up && make topics       # start Kafka (KRaft, single node) and create orders/trades
+make engine-run              # terminal 1: the matching engine on Kafka
+make sim RATE=2000           # terminal 2: simulated orders in
+make kafka-tail TOPIC=trades # terminal 3: trades out
+make trades-check            # validate live trades
 make down
 ```
 

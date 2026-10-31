@@ -46,86 +46,36 @@ if(VORTEX_SANITIZE)
     target_link_options(cpp_exchange INTERFACE -fsanitize=${VORTEX_SANITIZE})
 endif()
 
-# sockets: Winsock on Windows, nothing extra on Linux/macOS
-add_library(cpp_exchange_net INTERFACE)
-target_link_libraries(cpp_exchange_net INTERFACE cpp_exchange Threads::Threads)
-if(WIN32)
-    target_link_libraries(cpp_exchange_net INTERFACE ws2_32)
-endif()
-
+# ---- Kafka service: orders in, trades out (ADR 0014) ----
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(RDKAFKA REQUIRED IMPORTED_TARGET rdkafka=2.3.0)
+find_package(simdjson 3.6 REQUIRED)
+find_package(yaml-cpp 0.8 REQUIRED)
 
 add_executable(
-    exchange
-    src/exchange_main.cpp
+    vortex_engine
+    src/kafka_main.cpp
+    src/kafka/symbol_config.cpp
 )
 
 target_link_libraries(
-    exchange
-    PRIVATE
-        cpp_exchange_net
-)
-
-set_target_properties(
-    exchange
-    PROPERTIES
-        OUTPUT_NAME "exchange"
-        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/src"
-)
-
-add_executable(
-    trader_terminal
-    tools/trader_terminal.cpp
-)
-
-target_link_libraries(
-    trader_terminal
-    PRIVATE
-        cpp_exchange_net
-)
-
-set_target_properties(
-    trader_terminal
-    PROPERTIES
-        OUTPUT_NAME "trader_terminal"
-        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tools"
-)
-
-
-add_executable(
-    liquidity_bot
-    tools/liquidity_bot.cpp
-)
-
-target_link_libraries(
-    liquidity_bot
-    PRIVATE
-        cpp_exchange_net
-)
-
-set_target_properties(
-    liquidity_bot
-    PROPERTIES
-        OUTPUT_NAME "liquidity_bot"
-        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tools"
-)
-
-# in-process engine + bots, no networking
-add_executable(
-    simulation
-    tools/simulation.cpp
-)
-
-target_link_libraries(
-    simulation
+    vortex_engine
     PRIVATE
         cpp_exchange
+        PkgConfig::RDKAFKA
+        simdjson::simdjson
+        yaml-cpp::yaml-cpp
         Threads::Threads
 )
 
+# yaml-cpp reports errors by throwing; only this file is built with exceptions and it
+# catches everything, so no exception reaches the -fno-exceptions engine code
+set_source_files_properties(src/kafka/symbol_config.cpp PROPERTIES COMPILE_OPTIONS -fexceptions)
+
 set_target_properties(
-    simulation
+    vortex_engine
     PROPERTIES
-        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tools"
+        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/src"
 )
 
 # ---- benchmark ----

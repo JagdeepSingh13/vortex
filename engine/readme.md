@@ -1,8 +1,13 @@
-#### cmake commands
+#### build and run
 
-1. cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -S . -B build
-2. ninja -C build
-3. .\build\src\exchange.exe
+From the repository root (the engine builds in a pinned Linux container, see ADR 0002):
+
+1. `make engine` builds everything in Release mode
+2. `make up && make topics` starts Kafka
+3. `make engine-run` runs the engine as a Kafka service (orders in, trades out)
+
+The original TCP gateway, bots and trader terminal were removed in M5 (ADR 0015);
+they remain in this folder's git history and in the original `cpp_exchange` repository.
 
 #### why not using `new` keyword:
 

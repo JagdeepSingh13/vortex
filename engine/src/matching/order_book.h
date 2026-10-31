@@ -561,6 +561,7 @@ namespace exchange::matching {
                 .sell_order_id = sell_order_id,
                 .price = price,
                 .qty = qty,
+                .aggressor_side = aggressor.side,
                 }));
         }
 

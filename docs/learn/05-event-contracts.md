@@ -171,12 +171,14 @@ The lower bound on time fields (10^18 ns = 2001-09-09) also catches two classic 
 
 Kafka and Spark give **at-least-once** delivery by default: after a crash or retry, the same trade may arrive twice. The fix is **idempotent processing**: give every trade a unique key and drop repeats in silver.
 
-The engine's `match_id` restarts at 1 each run, so on its own it is not unique. `trade.v1` adds `engine_run_id`, a random 64-bit id chosen at startup:
+The engine's `match_id` restarts at 1 each run, and it is counted **per symbol** (one order book per symbol), so on its own it is not unique. `trade.v1` adds `engine_run_id`, a random 64-bit id chosen at startup, and the key also needs the symbol:
 
 ```
-run 9f3c2a71b4e08d56: match 1, 2, 3, ... 5000      ┐ unique key =
-run 1b77e0c2f9a4d310: match 1, 2, 3, ...           ┘ (engine_run_id, match_id)
+run 9f3c2a71b4e08d56: AAPL match 1, 2, 3, ...   MSFT match 1, 2, ...   ┐ unique key =
+run 1b77e0c2f9a4d310: AAPL match 1, 2, 3, ...   MSFT match 1, ...      ┘ (engine_run_id, symbol, match_id)
 ```
+
+**Correction made in M5:** this guide and ADR 0005 first said `(engine_run_id, match_id)`. That is wrong, because AAPL's trade 1 and MSFT's trade 1 have the same `match_id` in the same run. Deduplicating on it would have silently deleted real trades. It was caught while writing the trade checker, which now verifies the corrected key never repeats.
 
 The chance of two runs getting the same random 64-bit id is about 1 in 18 quintillion. Alternatives and trade-offs: [ADR 0005](../decisions/0005-trade-identity-run-id-plus-match-id.md).
 
@@ -234,7 +236,7 @@ Later, the project may move to Avro with a schema registry, which enforces these
 5. Why can't JSON Schema check `display_qty_lots ≤ qty_lots`? Where is it checked instead?
 6. A browser shows a trade's `event_time_ns` ending in `...800` instead of `...789`. What happened?
 7. Why is `engine_run_id` a string and not a number?
-8. What does at-least-once delivery mean, and how does `(engine_run_id, match_id)` help?
+8. What does at-least-once delivery mean, and how does `(engine_run_id, symbol, match_id)` help?
 
 ## Go deeper
 

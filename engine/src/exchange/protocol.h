@@ -8,9 +8,9 @@
 #include "matching/events.h"
 #include "matching/matching_engine.h"
 
-// messages between clients (traders, bots) and the exchange.
+// messages between clients and the exchange core.
 // all fixed size + trivially copyable: they go through SPSC queues today
-// and can be written straight onto a socket later (step 4)
+// (the Kafka service turns them into order.v1 / trade.v1 JSON at its edges)
 
 namespace exchange::protocol {
 

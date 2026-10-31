@@ -63,7 +63,8 @@ Findings so far (no code changed):
 ## M5 — Engine Kafka I/O
 - Engine consumes `orders`, publishes `trades` via librdkafka.
 - Matching thread hands trades to a publisher thread through a lock-free SPSC queue; no allocation, locks, logging or I/O on the matching thread.
-- **Acceptance:** with the simulator running, every trade on `trades` validates against `trade.v1`; matching results equal the in-process run for the same input (test).
+- Three threads (consumer, engine, publisher) over two SPSC queues; librdkafka 2.3.0, simdjson 3.6.4, yaml-cpp 0.8.0; `trade.v1` gains buyer/seller participant ids (amended, approved); aggressor side proven harmless by a full golden-output diff; trade key corrected to (engine_run_id, symbol, match_id); TCP/bots/terminal layer removed (ADR 0014, 0015).
+- **Acceptance:** on a clean clone, `make up && make topics`, `make engine-run` and `make sim` produce trades that `make trades-check` accepts; `make test-all` passes; one end-to-end benchmark result committed.
 
 ## M6 — Bronze ingestion into Iceberg
 - MinIO (S3-compatible) + Iceberg REST catalog in docker-compose.

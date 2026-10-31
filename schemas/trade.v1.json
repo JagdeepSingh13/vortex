@@ -2,12 +2,13 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/JagdeepSingh13/vortex/schemas/trade.v1.json",
   "title": "trade.v1",
-  "description": "One execution on the Kafka topic 'trades' (key = symbol), produced by the engine. Unique key: (engine_run_id, match_id).",
+  "description": "One execution on the Kafka topic 'trades' (key = symbol), produced by the engine. Unique key: (engine_run_id, symbol, match_id); match_id is counted per symbol's order book.",
   "type": "object",
   "additionalProperties": false,
   "required": [
     "schema_version", "engine_run_id", "match_id", "symbol", "price_ticks", "qty_lots",
-    "buy_order_id", "sell_order_id", "aggressor_side", "sequence_number", "event_time_ns"
+    "buy_participant_id", "buy_order_id", "sell_participant_id", "sell_order_id",
+    "aggressor_side", "sequence_number", "event_time_ns"
   ],
   "properties": {
     "schema_version": { "const": 1 },
@@ -17,7 +18,7 @@
       "pattern": "^[0-9a-f]{16}$"
     },
     "match_id": {
-      "description": "Engine match id, increasing within one run.",
+      "description": "Engine match id, counted per symbol (one order book per symbol), increasing within one run.",
       "$ref": "#/$defs/safe_positive_int"
     },
     "symbol": {
@@ -31,8 +32,16 @@
       "minimum": 1,
       "maximum": 4294967295
     },
-    "buy_order_id": { "$ref": "#/$defs/safe_positive_int" },
-    "sell_order_id": { "$ref": "#/$defs/safe_positive_int" },
+    "buy_participant_id": { "$ref": "#/$defs/participant_id" },
+    "buy_order_id": {
+      "description": "The buyer's order_id from order.v1, unique per participant: (buy_participant_id, buy_order_id) identifies the order.",
+      "$ref": "#/$defs/order_id"
+    },
+    "sell_participant_id": { "$ref": "#/$defs/participant_id" },
+    "sell_order_id": {
+      "description": "The seller's order_id from order.v1; (sell_participant_id, sell_order_id) identifies the order.",
+      "$ref": "#/$defs/order_id"
+    },
     "aggressor_side": {
       "description": "Side of the incoming order that crossed the spread (ADR 0006).",
       "enum": ["BUY", "SELL"]
@@ -49,6 +58,18 @@
     }
   },
   "$defs": {
+    "participant_id": {
+      "description": "As in order.v1: 1 to 2^24 - 1.",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 16777215
+    },
+    "order_id": {
+      "description": "As in order.v1: 1 to 2^40 - 1, unique per participant.",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1099511627775
+    },
     "safe_positive_int": {
       "description": "Positive and at most 2^53 - 1, so double-based JSON parsers read it exactly.",
       "type": "integer",

@@ -1,6 +1,6 @@
 # 0005. Trade identity: engine run id plus match id
 
-- Status: accepted
+- Status: accepted, corrected in M5 (see Correction below)
 - Date: 2026-10-31
 - Milestone: M1
 
@@ -23,3 +23,15 @@ Option 1.
 - `trade.v1` has `engine_run_id` (string, `^[0-9a-f]{16}$`) and `match_id`. Silver deduplicates on both.
 - `engine_run_id` is a string, not a number: a 64-bit random value exceeds 2^53 and would be corrupted by JavaScript and other double-based JSON parsers.
 - Useful side effect: every trade records which engine run produced it, which helps debugging.
+
+## Correction (2026-10-31, M5)
+
+The key above is wrong. `match_id` is counted **per order book**, and the engine keeps one book per
+symbol, so within one run AAPL and MSFT both have a trade with `match_id` 1 (visible in the golden
+replay output: `match=1 MSFT`, `match=1 AAPL`). With six symbols, six different trades share every
+match id. Deduplicating silver on (`engine_run_id`, `match_id`) would have **silently deleted real
+trades**.
+
+The unique key is **(`engine_run_id`, `symbol`, `match_id`)**. Found while writing the M5 trade
+checker, which now verifies that this key never repeats. Only descriptions and the dedup key change;
+no field and no validation rule.

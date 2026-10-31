@@ -79,10 +79,11 @@ Make targets are the single entry point. Create each target when a milestone fir
 - `make kafka-topics` / `kafka-tail` / `kafka-send` / `kafka-groups` / `kafka-offsets`: Kafka CLI shortcuts (`TOPIC=`, `FROM_START=1`)
 - `make kafka-perf`: Kafka producer/consumer benchmark, dated file in `benchmarks/results/`
 - `make engine`: build the engine in Release mode
+- `make engine-run`: run the engine on Kafka, orders in and trades out (Ctrl+C stops cleanly and prints latency summaries)
+- `make trades-check`: validate live trades (schema, unique key, per-symbol order, partition)
+- `make e2e-bench`: simulator -> engine -> Kafka latency at several rates, dated file in `benchmarks/results/`
 - `make test`: engine, contract and simulator tests (`make test-engine`, `make test-schemas`, `make test-sim` run each part)
 - `make test-all`: `make test` plus the slow sanitizer builds (`make test-asan`, `make test-tsan`)
-- `make run-sim`: run the engine and bots in one process with a live dashboard
-- `make run-exchange` / `make run-bots` / `make run-trader`: exchange server on port 9000, then bots or an interactive trader in other terminals
 - `make bench`: run the engine benchmark and write a dated file to `benchmarks/results/` (`BENCH_REQUESTS`, `BENCH_CPU` override defaults)
 - `make sim`: run the order simulator (`RATE=`, `DURATION=`, `COUNT=`, `SEED=`); `make sim-bench` measures its max send rate
 - `make test-sim`: simulator produces only valid order.v1 messages (part of `make test`)

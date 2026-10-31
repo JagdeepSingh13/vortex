@@ -20,18 +20,24 @@ Airflow: dbt runs, data quality checks, Iceberg maintenance
 | Gold models | `dbt/` | SQL (dbt) | Candles, VWAP, daily stats |
 | Orchestration | `airflow/` | Python | dbt runs, data quality, Iceberg maintenance |
 
-## Engine internals (as imported from `cpp_exchange`)
+## Engine
+
+```
+Kafka "orders" -> [consumer thread] --SPSC--> [engine thread] --SPSC--> [publisher thread] -> Kafka "trades"
+                   simdjson decode,           ExchangeCore::handle       trade.v1 encode,
+                   ticks -> engine units      MatchingEngine             engine units -> ticks
+```
 
 - `core/`: fixed-width types (`Price` = int64, `Quantity` = uint32, 8-byte `Symbol`), memory pool, SPSC queue, clocks.
-- `matching/`: `MatchingEngine` routes by symbol to an `OrderBook`; books keep price levels with intrusive FIFO lists of pooled `Order`s. Supports LIMIT, MARKET, IOC, FOK, GTC, STOP, STOP_LIMIT, ICEBERG, POST_ONLY; cancel and modify.
-- `exchange/`, `net/`: TCP gateway and binary wire protocol (kept; not on the Kafka path).
-- Events are a tagged union (`Event`) written into a preallocated buffer; no heap allocation on the matching path.
+- `matching/`: `MatchingEngine` routes by symbol to an `OrderBook`; books keep price levels with intrusive FIFO lists of pooled `Order`s. Supports LIMIT, MARKET, IOC, FOK, GTC, STOP, STOP_LIMIT, ICEBERG, POST_ONLY; cancel and modify. Events are a tagged union written into a preallocated buffer; no heap allocation on the matching path.
+- `exchange/`: `ExchangeCore` validates requests, packs (participant, order id) into one 64-bit id, stamps UTC event time once per request (ADR 0009) and hands events to a sink; `protocol.h` holds the request and report structs.
+- `kafka/` + `kafka_main.cpp`: the Kafka service (ADR 0014). Three threads, two SPSC queues, backpressure instead of drops, ordered shutdown. Units are converted only at the edges (ADR 0004). Each start is a new session with a fresh `engine_run_id`, reading `orders` from the end.
+- The TCP gateway, bots and trader terminal from the original `cpp_exchange` were removed in M5 (ADR 0015).
 
-Known gaps to close (tracked in the roadmap):
-- Done in M2: the book keeps a deterministic logical clock; `ExchangeCore` reads UTC wall time once per request and stamps it as `event_time_ns` on every outgoing message (ADR 0009).
-- Prices use a global `PRICE_SCALE = 10'000`; events use per-symbol ticks, so the engine converts at its Kafka edge (ADR 0004) → M5.
-- `match_id` restarts at 1 each run; trades need `engine_run_id` (ADR 0005) → M5.
-- The `Trade` event has no aggressor side; `trade.v1` requires it (ADR 0006) → M5.
+Known gaps:
+- Private execution reports and book updates are not published yet (no topic needs them before the Order API, M8).
+- Resting orders do not survive an engine restart (no replay of `orders`).
+- The level pool aborts if one book needs more than 16,384 price levels (not reached by the simulator).
 
 ## Kafka topics
 
@@ -86,11 +92,12 @@ CANCEL carries only the always-required fields. MODIFY carries those plus `price
 |-------|------|-------|
 | `schema_version` | const `1` | |
 | `engine_run_id` | string `^[0-9a-f]{16}$` | random per engine start (ADR 0005) |
-| `match_id` | safe int | restarts each run; unique key = (`engine_run_id`, `match_id`) |
+| `match_id` | safe int | counted per symbol, restarts each run; unique key = (`engine_run_id`, `symbol`, `match_id`) |
 | `symbol` | string | as above |
 | `price_ticks` | safe int | |
 | `qty_lots` | 1..2^32-1 | |
-| `buy_order_id`, `sell_order_id` | safe int | |
+| `buy_participant_id`, `sell_participant_id` | 1..2^24-1 | who bought and who sold |
+| `buy_order_id`, `sell_order_id` | 1..2^40-1 | the producers' order ids; (participant, order id) identifies an order |
 | `aggressor_side` | `BUY` / `SELL` | side of the incoming order (ADR 0006) |
 | `sequence_number` | safe int | engine event sequence, increasing within a run |
 | `event_time_ns` | epoch ns | set by the engine |
@@ -100,10 +107,12 @@ All fields are required.
 ## Lakehouse tables (proposed)
 
 - `bronze.trades`: every field of `trade.v1` as received, plus `kafka_partition`, `kafka_offset`, `ingest_time_ns`. Append-only.
-- `silver.trades`: deduplicated on (`engine_run_id`, `match_id`), partitioned by `symbol` and `days(event_time)`. Integers only.
+- `silver.trades`: deduplicated on (`engine_run_id`, `symbol`, `match_id`), partitioned by `symbol` and `days(event_time)`. Integers only.
 - `gold.*` (dbt): `candles_1m`, `vwap`, `daily_symbol_stats`. Decimal prices derived from `config/symbols.yaml`.
 
 ## Schema change log
 
 - 2026-10-31 — `order.v1` and `trade.v1` created (M1).
 - 2026-10-31 — `order.v1` amended in place, no version bump (M4, ADR 0013): `order_id` is unique **per participant** (was: per engine run) and limited to 2^40 − 1; `participant_id` limited to 2^24 − 1, matching the engine's 24/40-bit order id packing. Shape unchanged. Normally a schema change needs a version bump; this exception was approved by Jagdeep because no producer or consumer of `order.v1` existed yet.
+- 2026-10-31 — `trade.v1` amended in place, no version bump (M5, ADR 0014): new required `buy_participant_id` and `sell_participant_id`; `buy_order_id`/`sell_order_id` limited to 2^40 − 1. Needed because order ids are unique only per participant since the M4 change. Approved by Jagdeep for the same reason: nothing produced or consumed `trade.v1` yet.
+- 2026-10-31 — `trade.v1` description corrected (M5): the unique key is (`engine_run_id`, `symbol`, `match_id`), not (`engine_run_id`, `match_id`). `match_id` is counted per symbol's order book, so different symbols reuse the same numbers within a run. Found while writing the trade checker; no field or validation rule changed (ADR 0005 updated).
