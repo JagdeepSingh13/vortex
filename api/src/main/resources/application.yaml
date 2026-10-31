@@ -1,0 +1,28 @@
+server:
+  port: 8090   # 8080 is the optional Kafka UI
+
+spring:
+  application:
+    name: vortex-api
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP:kafka:29092}
+    consumer:
+      group-id: vortex-api-market-data
+      # a brand-new group starts with live trades; after that it resumes from its committed
+      # offsets, so a restart neither skips nor (thanks to the match id check) double-counts
+      auto-offset-reset: latest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    listener:
+      # one consumer thread per partition of "trades": each symbol has exactly one writer
+      concurrency: 3
+      # offsets are committed only after the batch's trades are in Redis (at least once)
+      ack-mode: batch
+  data:
+    redis:
+      host: ${REDIS_HOST:redis}
+      port: 6379
+
+vortex:
+  symbols-file: ${SYMBOLS_FILE:config/symbols.yaml}
+  candle-ttl-hours: 24
