@@ -27,7 +27,9 @@ Kafka "trades" ─▶ Java service (M8): per trade, last price + current 1-min c
                └▶ Spark (M6) ─▶ bronze ─▶ silver (M7) ─▶ gold candles, VWAP (M9)                                     (seconds to minutes, authoritative)
 ```
 
-The engine only matches orders and publishes trades; all market data is derived downstream. Live candles in Redis are computed on every trade; readers decide how often to redraw. Gold is the source of truth and can be rebuilt from bronze; live candles can be checked against it.
+The engine only matches orders and publishes trades; all market data is derived downstream.
+
+The hot path (M8, ADR 0017): `api/`, Spring Boot 4.1.1 on Java 25. One listener thread per `trades` partition; each Kafka batch goes to Redis 8 in one pipeline of atomic Lua script calls (duplicate check per engine run and symbol, last price, candle of the trade's event-time minute); candles expire after 24 h. HTTP: `GET /symbols`, `/prices/{symbol}`, `/candles/{symbol}?minutes=N`, `/stats`; prices as integer ticks plus exact decimal strings. `make candles` draws them in the terminal. Live candles in Redis are computed on every trade; readers decide how often to redraw. Gold is the source of truth and can be rebuilt from bronze; live candles can be checked against it.
 
 ## Engine
 

@@ -30,6 +30,8 @@ make engine-run              # terminal 1: the matching engine on Kafka
 make sim RATE=2000           # terminal 2: simulated orders in
 make kafka-tail TOPIC=trades # terminal 3: trades out
 make trades-check            # validate live trades
+make api-run                 # live prices and candles on :8090 (another terminal)
+make candles SYMBOL=AAPL     # live 1-minute candles in the terminal
 make down
 ```
 

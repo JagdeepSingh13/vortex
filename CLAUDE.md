@@ -91,6 +91,10 @@ Make targets are the single entry point. Create each target when a milestone fir
 - `make bronze-check`: reconcile Kafka with bronze (no loss, no duplicates, no gaps)
 - `make bronze-restart-test`: kill -9 the bronze job twice mid-stream, then reconcile
 - `make bronze-bench`: bronze ingest lag and files per trigger interval, dated file in `benchmarks/results/`
+- `make api-build` / `make test-api`: build the Java market data service / run its unit and Testcontainers tests
+- `make api-run`: run the market data service on :8090 (Kafka trades -> Redis prices and 1-min candles)
+- `make candles`: live candles in the terminal (`SYMBOL=`, `REFRESH=` seconds; needs `make api-run`)
+- `make api-bench`: trade -> Redis latency, dated file in `benchmarks/results/`
 - `make dbt`: run and test dbt models
 
 ## Testing expectations
