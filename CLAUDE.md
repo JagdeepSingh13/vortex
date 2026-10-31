@@ -87,7 +87,10 @@ Make targets are the single entry point. Create each target when a milestone fir
 - `make bench`: run the engine benchmark and write a dated file to `benchmarks/results/` (`BENCH_REQUESTS`, `BENCH_CPU` override defaults)
 - `make sim`: run the order simulator (`RATE=`, `DURATION=`, `COUNT=`, `SEED=`); `make sim-bench` measures its max send rate
 - `make test-sim`: simulator produces only valid order.v1 messages (part of `make test`)
-- `make stream-bronze`: start the bronze ingestion job
+- `make stream-bronze`: start the bronze ingestion job (Kafka trades -> Iceberg `vortex.bronze.trades`; restarts resume from the checkpoint)
+- `make bronze-check`: reconcile Kafka with bronze (no loss, no duplicates, no gaps)
+- `make bronze-restart-test`: kill -9 the bronze job twice mid-stream, then reconcile
+- `make bronze-bench`: bronze ingest lag and files per trigger interval, dated file in `benchmarks/results/`
 - `make dbt`: run and test dbt models
 
 ## Testing expectations
