@@ -152,6 +152,7 @@ services:
       S3_SECRET_KEY: ${S3_SECRET_KEY}
       AWS_REGION: us-east-1
       CHECKPOINT_DIR: /opt/spark/checkpoints/bronze_trades
+      BRONZE_TRIGGER_SECONDS: ${BRONZE_TRIGGER_SECONDS:-10}
     command: ["/opt/spark/bin/spark-submit", "--master", "local[2]", "--driver-memory", "1g",
               "/opt/vortex/streaming/bronze_trades.py"]
     volumes:
