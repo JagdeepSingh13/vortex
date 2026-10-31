@@ -60,6 +60,7 @@ docs/            Architecture, roadmap, ADRs, interview notes
 
 - Prices and quantities are integers (ticks and lots) in the engine, in events and in bronze and silver tables. Never floats. Convert to decimals only in gold models or the UI.
 - The Kafka message key is the symbol for both `orders` and `trades`, so per-symbol ordering holds.
+- Every producer must map keys to partitions like the Java client (murmur2). librdkafka clients (Python simulator, C++ engine) set `partitioner=murmur2_random`; its default hashes with CRC32 and would split a symbol across partitions (ADR 0013).
 - Event time is `event_time_ns` (UTC nanoseconds since the Unix epoch), set by the engine. Keep ingestion time in a separate column.
 - Nothing new on the matching thread: no heap allocation, locks, logging or I/O. Anything leaving the engine goes through a lock-free queue to another thread.
 - Do not change matching behaviour without a test proving the old and new behaviour agree.
@@ -78,12 +79,13 @@ Make targets are the single entry point. Create each target when a milestone fir
 - `make kafka-topics` / `kafka-tail` / `kafka-send` / `kafka-groups` / `kafka-offsets`: Kafka CLI shortcuts (`TOPIC=`, `FROM_START=1`)
 - `make kafka-perf`: Kafka producer/consumer benchmark, dated file in `benchmarks/results/`
 - `make engine`: build the engine in Release mode
-- `make test`: engine tests and contract tests (`make test-engine`, `make test-schemas` run each part)
+- `make test`: engine, contract and simulator tests (`make test-engine`, `make test-schemas`, `make test-sim` run each part)
 - `make test-all`: `make test` plus the slow sanitizer builds (`make test-asan`, `make test-tsan`)
 - `make run-sim`: run the engine and bots in one process with a live dashboard
 - `make run-exchange` / `make run-bots` / `make run-trader`: exchange server on port 9000, then bots or an interactive trader in other terminals
 - `make bench`: run the engine benchmark and write a dated file to `benchmarks/results/` (`BENCH_REQUESTS`, `BENCH_CPU` override defaults)
-- `make sim`: run the order simulator
+- `make sim`: run the order simulator (`RATE=`, `DURATION=`, `COUNT=`, `SEED=`); `make sim-bench` measures its max send rate
+- `make test-sim`: simulator produces only valid order.v1 messages (part of `make test`)
 - `make stream-bronze`: start the bronze ingestion job
 - `make dbt`: run and test dbt models
 

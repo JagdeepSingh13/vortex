@@ -40,7 +40,7 @@ Known gaps to close (tracked in the roadmap):
 | `orders` | symbol | `order.v1` JSON | simulator, Order API | engine |
 | `trades` | symbol | `trade.v1` JSON | engine | Redis updater (API), Spark bronze job |
 
-Keying by symbol keeps per-symbol ordering within a partition.
+Keying by symbol keeps per-symbol ordering within a partition. Both topics have 3 partitions (ADR 0012). All producers use Java-compatible murmur2 partitioning (librdkafka: `partitioner=murmur2_random`), so a symbol always lands on the same partition whoever sends it (ADR 0013): AAPL, MSFT → 0; GOOGL, NFLX → 1; AMZN, NVDA → 2.
 
 ## Units
 
