@@ -50,7 +50,7 @@ docs/            Architecture, roadmap, ADRs, interview notes
 
 - C++20 with CMake for the engine, built in a pinned Linux container (`infra/docker/engine-build.Dockerfile`); librdkafka for Kafka.
 - Java 25 (LTS), Spring Boot (current stable release), Spring for Apache Kafka, Redis.
-- Python 3.12 for the simulator and PySpark jobs; dbt for gold models.
+- Python 3.12 for the simulator and tools; dbt for gold models. Known deviation: PySpark jobs run on the Spark image's Python 3.10 (decided 2026-10-31, ADR 0016); revisit when the streaming jobs grow more Python logic.
 - Kafka in KRaft mode (no ZooKeeper). Iceberg tables on S3-compatible storage. Airflow for orchestration.
 - Local first: everything runs with docker-compose on a laptop. AWS only from M10, via Terraform.
 - Pin exact versions everywhere (images, Maven, pip, CMake dependencies). Check compatibility before pinning: the Iceberg Spark runtime artifact must match the Spark minor version and Scala version.

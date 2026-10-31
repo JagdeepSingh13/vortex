@@ -37,7 +37,7 @@ Bronze row shape: **parsed columns + raw message + Kafka metadata**, raw only, o
 
 ## Consequences
 
-- Python in the Spark image is 3.10, not the 3.12 named in `CLAUDE.md`, and 3.10 reaches end of life in October 2026. The job code is a thin PySpark driver; changing it means adding the deadsnakes PPA to the image. Open question for Jagdeep.
+- Python in the Spark image is 3.10, not the 3.12 named in `CLAUDE.md`, and 3.10 reaches end of life in October 2026. The job code is a thin PySpark driver (the work runs in the JVM); changing it means adding the deadsnakes PPA to the image. Jagdeep decided on 2026-10-31 to keep 3.10 for now and revisit when the streaming jobs grow more Python logic.
 - Freshness is bounded by the trigger: a row waits up to one trigger interval for its batch to start, then for the batch to commit. Shorter triggers give fresher data and more, smaller files; compaction belongs to table maintenance (M9).
 - Each micro-batch has a fixed Iceberg commit cost of a few seconds on this machine, and the first batch after a start is slow (JVM and catalog warm-up, 25–30 s measured).
 - Bronze keeps duplicates that exist in Kafka itself (none are expected from an idempotent producer, but bronze does not deduplicate); silver deduplicates on (`engine_run_id`, `symbol`, `match_id`) in M7.
