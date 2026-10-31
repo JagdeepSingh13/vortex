@@ -28,6 +28,17 @@ BENCH_CPU ?= 2
 BENCH_COMMIT := $(shell git rev-parse --short HEAD)$(shell git diff --quiet HEAD -- engine || echo -dirty)
 BENCH_FILE = benchmarks/results/$(shell date -u +%F)-$(BENCH_COMMIT).md
 
+# local infrastructure (ADR 0012)
+COMPOSE := docker compose -f infra/docker/docker-compose.yml
+# -T: no terminal, for scripted commands; interactive ones (tail, send) keep the terminal
+KAFKA_BIN := $(COMPOSE) exec -T kafka /opt/kafka/bin
+KAFKA_BIN_IT := $(COMPOSE) exec kafka /opt/kafka/bin
+BOOTSTRAP := --bootstrap-server localhost:9092
+TOPICS := orders trades
+TOPIC_PARTITIONS := 3
+TOPIC_RETENTION_MS := 604800000
+TOPIC ?= orders
+
 # sanitizer builds: optimised but with debug info, only the test binary
 SANITIZER_FLAGS := -DCMAKE_BUILD_TYPE=RelWithDebInfo
 SANITIZER_ENV := -e ASAN_OPTIONS=halt_on_error=1:detect_leaks=1 \
@@ -40,6 +51,7 @@ define sanitizer_test
 	docker run --rm $(SANITIZER_ENV) -v "$(CURDIR):/src" -w /src $(ENGINE_IMAGE) ctest --test-dir $(1) --output-on-failure
 endef
 
+.PHONY: up up-ui down reset topics kafka-topics kafka-tail kafka-send kafka-groups kafka-offsets kafka-check kafka-perf
 .PHONY: help engine-image engine bench python-image test test-all test-engine test-asan test-tsan test-schemas clean run-sim run-exchange run-bots run-trader
 
 help: ## list targets
@@ -89,3 +101,44 @@ run-trader: ## interactive trader terminal (needs run-exchange in another termin
 
 clean: ## remove build output
 	rm -rf build
+
+# ---------------- local infrastructure ----------------
+
+up: ## start local infrastructure (Kafka) and wait until healthy
+	$(COMPOSE) up -d --wait kafka
+
+up-ui: ## start infrastructure plus Kafka UI on http://localhost:8080 (UI needs ~25 s to start)
+	$(COMPOSE) --profile ui up -d --wait
+
+down: ## stop local infrastructure (data is kept)
+	$(COMPOSE) --profile ui down
+
+reset: ## stop local infrastructure and delete its data
+	$(COMPOSE) --profile ui down -v
+
+topics: ## create the Kafka topics (safe to run again)
+	@for topic in $(TOPICS); do 		$(KAFKA_BIN)/kafka-topics.sh $(BOOTSTRAP) --create --if-not-exists --topic $$topic 			--partitions $(TOPIC_PARTITIONS) --replication-factor 1 			--config retention.ms=$(TOPIC_RETENTION_MS); 	done
+	@$(MAKE) --no-print-directory kafka-topics
+
+# ---------------- Kafka CLI shortcuts ----------------
+
+kafka-topics: ## describe topics: partitions, leader, replicas, config
+	$(KAFKA_BIN)/kafka-topics.sh $(BOOTSTRAP) --describe --topic '$(subst $(eval) ,|,$(TOPICS))'
+
+kafka-tail: ## live messages with key, partition, offset, time (TOPIC=orders, FROM_START=1 for history)
+	$(KAFKA_BIN_IT)/kafka-console-consumer.sh $(BOOTSTRAP) --topic $(TOPIC) $(if $(FROM_START),--from-beginning) 		--formatter-property print.timestamp=true --formatter-property print.partition=true 		--formatter-property print.offset=true --formatter-property print.key=true
+
+kafka-send: ## type messages by hand as KEY|VALUE, e.g. AAPL|{...} (TOPIC=orders)
+	$(KAFKA_BIN_IT)/kafka-console-producer.sh $(BOOTSTRAP) --topic $(TOPIC) 		--reader-property parse.key=true --reader-property 'key.separator=|'
+
+kafka-groups: ## consumer groups: offsets and lag per partition
+	$(KAFKA_BIN)/kafka-consumer-groups.sh $(BOOTSTRAP) --all-groups --describe
+
+kafka-offsets: ## messages written so far: latest offset per partition
+	@for topic in $(TOPICS); do $(KAFKA_BIN)/kafka-get-offsets.sh $(BOOTSTRAP) --topic $$topic; done
+
+kafka-check: ## round trip: send example orders, read them back, check keys keep partitions
+	bash infra/kafka/check.sh
+
+kafka-perf: ## Kafka producer/consumer benchmark, writes benchmarks/results/<date>-kafka-<commit>.md
+	bash infra/kafka/perf.sh benchmarks/results/$(shell date -u +%F)-kafka-$(shell git rev-parse --short HEAD).md

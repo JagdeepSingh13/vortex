@@ -13,6 +13,7 @@ Read in this order:
 | 5 | [Event contracts](05-event-contracts.md) | Ticks and lots, JSON Schema line by line, the float and 2^53 traps, trade identity and dedup |
 | 6 | [Benchmarking and latency](06-benchmarking-and-latency.md) | Percentiles vs averages, TSC timing, warm-up, reading our real results, OS noise, coordinated omission |
 | 7 | [Testing the engine](07-testing-the-engine.md) | Golden replay as the safety net for optimisation, sanitizers, the span lifetime trap |
+| 8 | [Kafka basics](08-kafka-basics.md) | Logs, partitions and keys, consumer groups and lag, KRaft, listeners, our measured throughput and latency |
 
 Also see:
 - [MILESTONES.md](../MILESTONES.md) — what each milestone (M0–M11) is for

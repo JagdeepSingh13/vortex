@@ -51,7 +51,8 @@ Findings so far (no code changed):
 ## M3 — Local Kafka (KRaft)
 - `infra/docker/docker-compose.yml` with a single-broker Kafka in KRaft mode, pinned image.
 - `make up`, `make down`, `make topics` (`orders`, `trades`, partitions keyed by symbol).
-- **Acceptance:** topics exist after `make up && make topics`; a console producer/consumer round-trip works.
+- `make kafka-check` (round trip on a temporary topic, per-key partition check), CLI shortcuts, optional Kafka UI (`make up-ui`), `make kafka-perf` (ADR 0012).
+- **Acceptance:** on a clean clone, `make up && make topics && make kafka-check` passes; one Kafka benchmark result committed.
 
 ## M4 — Order simulator
 - Python simulator (`simulator/`) producing valid `order.v1` events keyed by symbol; configurable rate and symbols.
