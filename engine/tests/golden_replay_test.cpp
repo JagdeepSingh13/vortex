@@ -21,6 +21,10 @@
 //
 // to accept an intended change: VORTEX_UPDATE_GOLDEN=1 make test-engine,
 // then review the diff of tests/golden before committing it.
+//
+// VORTEX_GOLDEN_DUMP=<file> also writes the full 300,000-request text, so a change that
+// only adds a field can be proven harmless: dump before and after, remove the new field
+// from the second dump, and the two must be identical.
 
 #ifndef VORTEX_GOLDEN_DIR
 #error "VORTEX_GOLDEN_DIR must point at engine/tests/golden"
@@ -102,12 +106,20 @@ namespace exchange::testing {
             constexpr std::size_t SMALL = 1'000;
             constexpr std::size_t LARGE = 300'000;
             std::size_t requests_seen = 0;
+            const char* dump_path = std::getenv("VORTEX_GOLDEN_DUMP");
+            std::ofstream dump;
+            if (dump_path != nullptr) {
+                dump.open(dump_path, std::ios::binary);
+            }
             replay(LARGE, [&](const std::string& line, bool is_event) {
                 if (!is_event) {
                     ++requests_seen;
                 }
                 if (requests_seen <= SMALL) {
                     small << line << '\n';
+                }
+                if (dump.is_open()) {
+                    dump << line << '\n';
                 }
                 digest.add(line, is_event);
             });
