@@ -29,7 +29,7 @@ Find out where the engine spends its time (profiling), then make the slowest par
 
 ## Getting data moving
 
-### M3 — Local Kafka
+### M3 — Local Kafka ✅
 Run Kafka on the laptop with Docker and create two topics (message channels): `orders` and `trades`. Kafka is the pipe connecting every part of the system.
 
 ### M4 — Order simulator
