@@ -103,7 +103,7 @@ public final class CandleViewer {
         out.append(BOLD).append(symbol).append(RESET).append("  1-minute candles   last ")
                 .append(colour).append(BOLD).append(last.close()).append(RESET)
                 .append(colour).append(change.signum() >= 0 ? "  +" : "  ").append(change).append(RESET)
-                .append("   this minute: ").append(last.trades()).append(" trades, ").append(last.volumeLots()).append(" lots")
+                .append("   last candle: ").append(last.trades()).append(" trades, ").append(last.volumeLots()).append(" lots")
                 .append(DIM).append("   UTC ").append(now).append(RESET).append("\n\n");
 
         // one text row per price band, from the highest price down
