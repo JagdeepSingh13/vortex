@@ -20,18 +20,24 @@ Airflow: dbt runs, data quality checks, Iceberg maintenance
 | Gold models | `dbt/` | SQL (dbt) | Candles, VWAP, daily stats |
 | Orchestration | `airflow/` | Python | dbt runs, data quality, Iceberg maintenance |
 
-## Engine internals (as imported from `cpp_exchange`)
+## Engine
+
+```
+Kafka "orders" -> [consumer thread] --SPSC--> [engine thread] --SPSC--> [publisher thread] -> Kafka "trades"
+                   simdjson decode,           ExchangeCore::handle       trade.v1 encode,
+                   ticks -> engine units      MatchingEngine             engine units -> ticks
+```
 
 - `core/`: fixed-width types (`Price` = int64, `Quantity` = uint32, 8-byte `Symbol`), memory pool, SPSC queue, clocks.
-- `matching/`: `MatchingEngine` routes by symbol to an `OrderBook`; books keep price levels with intrusive FIFO lists of pooled `Order`s. Supports LIMIT, MARKET, IOC, FOK, GTC, STOP, STOP_LIMIT, ICEBERG, POST_ONLY; cancel and modify.
-- `exchange/`, `net/`: TCP gateway and binary wire protocol (kept; not on the Kafka path).
-- Events are a tagged union (`Event`) written into a preallocated buffer; no heap allocation on the matching path.
+- `matching/`: `MatchingEngine` routes by symbol to an `OrderBook`; books keep price levels with intrusive FIFO lists of pooled `Order`s. Supports LIMIT, MARKET, IOC, FOK, GTC, STOP, STOP_LIMIT, ICEBERG, POST_ONLY; cancel and modify. Events are a tagged union written into a preallocated buffer; no heap allocation on the matching path.
+- `exchange/`: `ExchangeCore` validates requests, packs (participant, order id) into one 64-bit id, stamps UTC event time once per request (ADR 0009) and hands events to a sink; `protocol.h` holds the request and report structs.
+- `kafka/` + `kafka_main.cpp`: the Kafka service (ADR 0014). Three threads, two SPSC queues, backpressure instead of drops, ordered shutdown. Units are converted only at the edges (ADR 0004). Each start is a new session with a fresh `engine_run_id`, reading `orders` from the end.
+- The TCP gateway, bots and trader terminal from the original `cpp_exchange` were removed in M5 (ADR 0015).
 
-Known gaps to close (tracked in the roadmap):
-- Done in M2: the book keeps a deterministic logical clock; `ExchangeCore` reads UTC wall time once per request and stamps it as `event_time_ns` on every outgoing message (ADR 0009).
-- Prices use a global `PRICE_SCALE = 10'000`; events use per-symbol ticks, so the engine converts at its Kafka edge (ADR 0004) → M5.
-- `match_id` restarts at 1 each run; trades need `engine_run_id` (ADR 0005) → M5.
-- The `Trade` event has no aggressor side; `trade.v1` requires it (ADR 0006) → M5.
+Known gaps:
+- Private execution reports and book updates are not published yet (no topic needs them before the Order API, M8).
+- Resting orders do not survive an engine restart (no replay of `orders`).
+- The level pool aborts if one book needs more than 16,384 price levels (not reached by the simulator).
 
 ## Kafka topics
 

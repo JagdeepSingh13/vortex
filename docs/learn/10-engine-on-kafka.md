@@ -120,16 +120,27 @@ Fix 3: latency samples skip orders created in the first 5 seconds of a run (clie
 
 ## Results
 
-See [benchmarks/results/](../../benchmarks/results/) for the `-e2e-` file. The breakdown at 2,000 orders/s in a trial run (µs):
+From [benchmarks/results/2026-10-31-e2e-33a4945.md](../../benchmarks/results/2026-10-31-e2e-33a4945.md): Ryzen 5 5500U, everything in Docker on WSL2, 30 s per run, 2 runs per rate. End to end = order created by the simulator → its trade acknowledged by Kafka, in milliseconds:
 
-| Stage | p50 | p99 |
-|---|---:|---:|
-| order created → engine (simulator batching + Kafka + consumer) | ~6,000 | ~30,000 |
-| matched → publisher picks it up (engine thread + queue) | ~200 | ~3,500 |
-| publisher produce → Kafka acknowledged (batching + broker) | ~7,000 | ~25,000 |
-| **end to end** | **~13,000** | **~38,000–52,000** |
+| Target rate | Actually sent | E2E p50 | E2E p90 | E2E p99 (two runs) |
+|---:|---:|---:|---:|---:|
+| 1,000/s | 1,000/s | 16–24 | 78–155 | 223 / 515 |
+| 5,000/s | 5,000/s | 11.6–12.2 | 15–17 | 42 / 39 |
+| 10,000/s | 10,000/s | 10.9–12.0 | 15–20 | 32 / 266 |
+| 20,000/s | 11,750–17,465/s | 10.5–13.7 | 14–34 | 27 / 104 |
+| 30,000/s | 15,893–17,934/s | 10.6–10.9 | 15–17 | 107 / 298 |
 
-Matching itself takes about 0.35 µs (M2). End to end is ~40,000 times longer, because almost all of it is Kafka: two network hops, two broker writes with `acks=all`, and 5 ms of deliberate batching on each producer. The engine is not the bottleneck.
+Every one of the ~1.36 million trades was checked afterwards (unique key, per-symbol order, partition; the first 20,000 of each run also against the full schema): **zero problems**.
+
+What the numbers say:
+
+- **p50 is about 11 ms and flat** from 5,000 to ~18,000 orders/s. The system is not saturating.
+- **The engine is not the bottleneck.** Matching takes ~0.35 µs (M2), and the engine thread plus its queue add ~0.2 ms. Almost all of the 11 ms is Kafka: two network hops, two broker writes with `acks=all`, and up to 5 ms of deliberate batching on each producer.
+- **The load generator is the limit.** At 20k and 30k targets, the Python simulator, sharing the laptop with Kafka and the engine, could only send 11.7k–17.9k/s. Because latency starts when the simulator actually builds an order, its falling behind is not counted (coordinated omission in the generator), so those rows are optimistic.
+- **p99 varies 3–8× between identical runs** (10k/s: 32 vs 266 ms). That is the laptop VM. Quote p50 and the best-run p99, and say so.
+- **1,000/s is slower than 5,000/s.** Not investigated. A plausible cause is CPU power saving at low load (cores sleep deeper and wake slower). It is a hypothesis, not a finding.
+
+A per-stage breakdown from a 2,000/s trial run (ms): order → engine ≈ 6 (p50) / 30 (p99); engine + outbound queue ≈ 0.2 / 3.5; publisher → Kafka ack ≈ 7 / 25.
 
 ## Commands
 

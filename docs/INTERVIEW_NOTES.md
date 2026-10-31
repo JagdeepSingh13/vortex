@@ -72,3 +72,16 @@ Format:
   - *Why is the simulator slower than Kafka's own perf tool?* It is Python-bound: building and JSON-encoding each order costs more than sending it.
   - *How do you know every generated order is valid?* A test generates 10,000 orders and validates each against the JSON Schema; caching the validator cut that test from 137 s to 4 s.
 - Study further: librdkafka partitioners, idempotent producers (KIP-98), asynchronous produce and delivery callbacks, open-loop load generation, market making basics.
+
+## M5 — Engine on Kafka (2026-10-31)
+- What I built: the C++ matching engine as a Kafka service. A consumer thread decodes order JSON (simdjson) and converts ticks to engine units, the engine thread matches, and a publisher thread encodes trade JSON and produces it (librdkafka), connected by two lock-free SPSC queues. Plus an end-to-end benchmark and a trade checker. I then removed the old TCP gateway, bots and terminal (~2,400 lines).
+- Why it is designed this way: nothing slow on the matching thread, so all I/O, JSON and allocation sit on the two edge threads; backpressure instead of drops; ordered shutdown so no accepted order's trade is lost ([ADR 0014](decisions/0014-engine-kafka-service.md), [ADR 0015](decisions/0015-remove-tcp-gateway-and-bots.md)).
+- Trade-off I can defend: each engine start is a new session (resting orders do not survive a restart); replaying `orders` to rebuild the book is possible but not built yet.
+- Numbers (Ryzen 5 5500U, everything in Docker on WSL2, acks=all, linger 5 ms, 2 runs × 30 s per rate): end-to-end p50 ≈ 11 ms (order created → trade acknowledged by Kafka), flat from 5k to ~18k orders/s; best-run p99 27–42 ms, but p99 varies 3–8× between identical runs on this laptop; ~1.36 M trades checked, zero problems. Matching itself is ~0.35 µs, so Kafka is ~99.99% of the latency. Source: `benchmarks/results/2026-10-31-e2e-33a4945.md`.
+- Likely questions:
+  - *How did you change matching code safely?* I added one field (aggressor side) and proved nothing else changed: the full 889,167-line golden replay output was byte-identical after removing the new field.
+  - *Where does the latency go?* Two Kafka hops and two acks=all writes, plus deliberate producer batching; the engine thread adds ~0.2 ms.
+  - *What did measuring teach you?* My first number (6.3 s) measured my own Python checker, not the system; running it alongside also inflated p99 ~5×. Now I measure inside the engine and verify afterwards.
+  - *What contract bug did you find?* The documented trade key (run, match_id) was not unique, because match ids are per symbol; silver dedup would have deleted real trades. The key is (run, symbol, match_id).
+  - *What limits throughput?* On this laptop, the Python load generator, not the engine.
+- Study further: librdkafka internals and delivery callbacks, simdjson on-demand parsing, backpressure, the observer effect and coordinated omission, event sourcing for recovery.
