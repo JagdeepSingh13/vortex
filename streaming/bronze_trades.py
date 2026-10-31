@@ -139,8 +139,11 @@ class ProgressLog(StreamingQueryListener):
 
     def onQueryProgress(self, event):
         progress = event.progress
-        duration = progress.durationMs.get("triggerExecution", 0)
-        print(f"bronze: batch {progress.batchId} rows {progress.numInputRows} in {duration} ms",
+        durations = dict(progress.durationMs)
+        total = durations.pop("triggerExecution", 0)
+        # where the time went: read offsets, plan, write + commit (addBatch), checkpoint
+        parts = " ".join(f"{name}={ms}" for name, ms in sorted(durations.items()) if ms)
+        print(f"bronze: batch {progress.batchId} rows {progress.numInputRows} in {total} ms ({parts})",
               flush=True)
 
     def onQueryIdle(self, event):

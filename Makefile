@@ -59,7 +59,7 @@ define sanitizer_test
 	docker run --rm $(SANITIZER_ENV) -v "$(CURDIR):/src" -w /src $(ENGINE_IMAGE) ctest --test-dir $(1) --output-on-failure
 endef
 
-.PHONY: sim sim-bench test-sim engine-run trades-check e2e-bench stream-bronze bronze-check
+.PHONY: sim sim-bench test-sim engine-run trades-check e2e-bench stream-bronze bronze-check bronze-restart-test
 .PHONY: up up-ui down reset topics kafka-topics kafka-tail kafka-send kafka-groups kafka-offsets kafka-check kafka-perf
 .PHONY: help engine-image engine bench python-image test test-all test-engine test-asan test-tsan test-schemas clean
 
@@ -184,3 +184,6 @@ SPARK_RUN = $(COMPOSE) --profile stream run --rm --no-deps -T bronze /opt/spark/
 
 bronze-check: up ## reconcile Kafka trades with Iceberg bronze: no loss, no duplicates, no gaps
 	$(SPARK_RUN) /opt/vortex/streaming/bronze_check.py
+
+bronze-restart-test: engine python-image up ## kill -9 the bronze job twice mid-stream, then reconcile (no loss, no duplicates)
+	ENGINE_IMAGE=$(ENGINE_IMAGE) PYTHON_IMAGE=$(PYTHON_IMAGE) bash streaming/restart_test.sh
