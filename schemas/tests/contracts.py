@@ -9,6 +9,7 @@ Two layers:
 import json
 from dataclasses import dataclass
 from decimal import Decimal
+from functools import lru_cache
 from pathlib import Path
 
 import yaml
@@ -54,8 +55,15 @@ def load_symbols():
         return yaml.safe_load(f)
 
 
+@lru_cache(maxsize=None)
 def known_symbols():
-    return {entry["symbol"] for entry in load_symbols()["symbols"]}
+    # cached: validate() is called thousands of times (simulator test), the file does not change
+    return frozenset(entry["symbol"] for entry in load_symbols()["symbols"])
+
+
+@lru_cache(maxsize=None)
+def _validator(kind):
+    return StrictValidator(load_schema(kind))
 
 
 def _leaf_errors(error):
@@ -68,7 +76,7 @@ def _leaf_errors(error):
 
 def validate(kind, message):
     """Return every problem with the message; an empty list means valid."""
-    validator = StrictValidator(load_schema(kind))
+    validator = _validator(kind)
     problems = []
 
     for error in validator.iter_errors(message):

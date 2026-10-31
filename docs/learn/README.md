@@ -14,6 +14,7 @@ Read in this order:
 | 6 | [Benchmarking and latency](06-benchmarking-and-latency.md) | Percentiles vs averages, TSC timing, warm-up, reading our real results, OS noise, coordinated omission |
 | 7 | [Testing the engine](07-testing-the-engine.md) | Golden replay as the safety net for optimisation, sanitizers, the span lifetime trap |
 | 8 | [Kafka basics](08-kafka-basics.md) | Logs, partitions and keys, consumer groups and lag, KRaft, listeners, our measured throughput and latency |
+| 9 | [The order simulator](09-order-simulator.md) | Modelling makers and noise traders, idempotent producers, async produce, open-loop pacing, the CRC32 vs murmur2 partitioner bug |
 
 Also see:
 - [MILESTONES.md](../MILESTONES.md) — what each milestone (M0–M11) is for

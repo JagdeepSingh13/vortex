@@ -1,12 +1,12 @@
 {
-  "reason": "ids must stay exact in double-based parsers",
+  "reason": "participant ids are at most 2^24 - 1 (engine packs them into 24 bits)",
   "expected_error": "maximum",
   "message": {
     "schema_version": 1,
-    "order_id": 9007199254740992,
+    "order_id": 1001,
     "symbol": "AAPL",
     "action": "ADD",
-    "participant_id": 7,
+    "participant_id": 16777216,
     "client_time_ns": 1793430000123456789,
     "side": "BUY",
     "order_type": "LIMIT",

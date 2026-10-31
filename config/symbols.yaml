@@ -6,6 +6,10 @@
 #   engine internal price = price_ticks * tick_size * engine_price_scale
 #
 # Decimal values are strings so no tool ever parses them as binary floats.
+#
+# Six symbols, two per partition of the 3-partition topics (Kafka's murmur2 hash of the
+# symbol): AAPL, MSFT -> 0; GOOGL, NFLX -> 1; AMZN, NVDA -> 2 (ADR 0013).
+# reference_price is only a starting point for the simulator's random walk.
 
 version: 1
 
@@ -18,9 +22,39 @@ symbols:
     tick_size: "0.01"
     lot_size: 1
     price_decimals: 2
+    reference_price: "190.00"
 
   - symbol: MSFT
     currency: USD
     tick_size: "0.01"
     lot_size: 1
     price_decimals: 2
+    reference_price: "415.00"
+
+  - symbol: GOOGL
+    currency: USD
+    tick_size: "0.01"
+    lot_size: 1
+    price_decimals: 2
+    reference_price: "175.00"
+
+  - symbol: NFLX
+    currency: USD
+    tick_size: "0.01"
+    lot_size: 1
+    price_decimals: 2
+    reference_price: "650.00"
+
+  - symbol: AMZN
+    currency: USD
+    tick_size: "0.01"
+    lot_size: 1
+    price_decimals: 2
+    reference_price: "185.00"
+
+  - symbol: NVDA
+    currency: USD
+    tick_size: "0.01"
+    lot_size: 1
+    price_decimals: 2
+    reference_price: "120.00"

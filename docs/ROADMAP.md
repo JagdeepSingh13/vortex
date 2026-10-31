@@ -57,7 +57,8 @@ Findings so far (no code changed):
 ## M4 — Order simulator
 - Python simulator (`simulator/`) producing valid `order.v1` events keyed by symbol; configurable rate and symbols.
 - `make sim`.
-- **Acceptance:** produced messages validate against `order.v1`; key equals symbol.
+- Six symbols spread 2 per partition, order ids unique per participant (`order.v1` amended with approval), idempotent producer with the murmur2 partitioner, open-loop pacing, `make sim-bench` (ADR 0013).
+- **Acceptance:** on a clean clone, `make up && make topics && make sim` delivers valid orders to all 3 partitions; `make test-sim` passes; one simulator benchmark result committed.
 
 ## M5 — Engine Kafka I/O
 - Engine consumes `orders`, publishes `trades` via librdkafka.

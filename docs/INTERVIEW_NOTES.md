@@ -60,3 +60,15 @@ Format:
   - *Why is batching so much faster?* Each broker request has fixed overhead; batching and compressing many small messages per request amortises it, at the cost of a few ms of latency.
   - *Where is the bottleneck end to end?* Kafka: ~1 ms and ~10^5 msg/s versus the engine's ~0.35 µs and ~2×10^6 requests/s on the same laptop.
 - Study further: Kafka log design, consumer group rebalancing, Raft, producer batching and idempotence, partitioning strategies.
+
+## M4 — Order simulator (2026-10-31)
+- What I built: a Python order simulator that models market makers and noise traders over six symbols, sends every order type plus cancels and modifies as `order.v1` JSON to Kafka, paced open-loop at a chosen rate, with an idempotent producer.
+- Why it is designed this way: confluent-kafka (librdkafka, the same client as the engine), per-participant order ids matching the engine's 24/40-bit packing, six symbols chosen to spread 2 per partition, pure order-flow model separated from Kafka so it is testable and seeded ([ADR 0013](decisions/0013-order-simulator.md)).
+- Trade-off I can defend: open loop, so some cancels target already-filled orders and get rejected, which is realistic; and I amended `order.v1` in place instead of bumping the version because nothing had used it yet, with explicit approval logged.
+- Numbers (Ryzen 5 5500U, Docker on WSL2, Python 3.12, librdkafka 2.16.0, acks=all, idempotent, lz4): 32k–46k orders/s max send rate over six 500k-order runs, 0 errors; partitions 33.4/33.4/33.3%. Sources: `benchmarks/results/2026-10-31-sim-*.md`.
+- Likely questions:
+  - *What bug did you find?* librdkafka hashes keys with CRC32 by default, the Java client with murmur2, so the same symbol landed on different partitions depending on the client. That breaks per-symbol ordering across producers; I set `partitioner=murmur2_random` everywhere and made it a project rule.
+  - *Why an idempotent producer?* Retries after a timeout could otherwise duplicate an order or let a cancel overtake its add.
+  - *Why is the simulator slower than Kafka's own perf tool?* It is Python-bound: building and JSON-encoding each order costs more than sending it.
+  - *How do you know every generated order is valid?* A test generates 10,000 orders and validates each against the JSON Schema; caching the validator cut that test from 137 s to 4 s.
+- Study further: librdkafka partitioners, idempotent producers (KIP-98), asynchronous produce and delivery callbacks, open-loop load generation, market making basics.
