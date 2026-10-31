@@ -118,10 +118,11 @@ up-ui: up ## start infrastructure plus Kafka UI on http://localhost:8080 (UI nee
 	$(COMPOSE) --profile ui up -d --wait
 
 down: .env ## stop local infrastructure (data is kept)
-	$(COMPOSE) --profile ui down
+	$(COMPOSE) --profile ui --profile stream down
 
-reset: .env ## stop local infrastructure and delete its data
-	$(COMPOSE) --profile ui down -v
+reset: .env ## stop local infrastructure and delete its data (Kafka, tables and the stream checkpoint together)
+	@# every profile, or volumes of profile-only services (the bronze checkpoint) would survive
+	$(COMPOSE) --profile ui --profile stream down -v
 
 topics: ## create the Kafka topics (safe to run again)
 	@for topic in $(TOPICS); do 		$(KAFKA_BIN)/kafka-topics.sh $(BOOTSTRAP) --create --if-not-exists --topic $$topic 			--partitions $(TOPIC_PARTITIONS) --replication-factor 1 			--config retention.ms=$(TOPIC_RETENTION_MS); 	done

@@ -17,9 +17,21 @@ CONFIGS=${BRONZE_BENCH_CONFIGS:-"10:1000 10:3000 2:3000"}   # trigger_seconds:or
 DURATION=${BRONZE_BENCH_DURATION:-60}
 REPEAT=${BRONZE_BENCH_REPEAT:-2}
 OUT=${1:?usage: bench.sh <output.md>}
-SRC="$(pwd)"
+# the repository as Docker sees it: on Git Bash, `pwd` can give a path Docker does not
+# translate (e.g. /tmp/... for the Windows temp folder); `pwd -W` gives C:/...
+SRC="$(pwd -W 2>/dev/null || pwd)"
 
-wait_for_log() { until docker logs "$1" 2>&1 | grep -q "$2"; do sleep 2; done; }
+wait_for_log() {  # $1 container, $2 text, [$3 timeout seconds]: fail instead of waiting forever
+    local deadline=$((SECONDS + ${3:-180}))
+    until docker logs "$1" 2>&1 | grep -q "$2"; do
+        if [ "$(docker inspect -f '{{.State.Running}}' "$1" 2>/dev/null)" != "true" ] || [ $SECONDS -ge $deadline ]; then
+            echo "FAIL: '$2' never appeared in $1; last lines:"
+            docker logs "$1" 2>&1 | tail -15
+            exit 1
+        fi
+        sleep 2
+    done
+}
 batch_count() { docker logs vortex-bronze 2>&1 | grep -c '^bronze: batch' || true; }
 
 run_load() {  # $1 rate, $2 seconds -> prints engine run id
