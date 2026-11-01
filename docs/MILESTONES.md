@@ -48,7 +48,7 @@ A Spark streaming job copies every trade from Kafka into an Iceberg table, exact
 ### M8 — Live prices and live candles (done before M7) ✅
 A new Java (Spring Boot) service that turns the stream of trades into live market data in Redis: the latest price and the current 1-minute candle per symbol, updated on every trade. A terminal viewer shows the candles moving live. This is the fast "hot path"; the engine only matches orders and never computes prices or candles. Moved before M7 so the system becomes visible sooner. Market data only: accepting orders over HTTP moved to M11.
 
-### M7 — Silver tables
+### M7 — Silver tables ✅
 Clean up bronze: remove duplicates, fix types, organise by symbol and day ("silver" = clean and trustworthy). Handles events that arrive late. Together with gold (M9) this is the slower "cold path": authoritative history that can always be rebuilt from bronze.
 
 ## Analysing
