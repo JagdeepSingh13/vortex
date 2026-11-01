@@ -57,6 +57,9 @@ Clean up bronze: remove duplicates, fix types, organise by symbol and day ("silv
 - **dbt** turns silver data into business tables: 1-minute candles (open, high, low, close, volume), VWAP, daily stats. The first place prices become decimals.
 - **Airflow** runs this on a schedule, checks data quality and cleans up old Iceberg files.
 
+### M9.5 — Real-time analytics (ClickHouse)
+A fast analytics database (ClickHouse) reads every trade from Kafka within seconds and answers any SQL question over the live market, with a live Grafana dashboard: top movers, buy vs sell pressure, market activity, large trades, who is trading. Redis shows *now* for one symbol, ClickHouse lets you *explore* the live market, and gold is the audited truth that checks both. Comes after M9 so it can be checked against gold.
+
 ## Cloud and finishing
 
 ### M10 — AWS with Terraform

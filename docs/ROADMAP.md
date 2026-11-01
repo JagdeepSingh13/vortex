@@ -12,9 +12,10 @@ One milestone at a time, one branch per milestone (`mN-short-name`). A milestone
 | M4 | Order simulator | `m4-simulator` |
 | M5 | Engine Kafka I/O (orders in, trades out) | `m5-engine-kafka` |
 | M6 | Bronze ingestion into Iceberg | `m6-bronze` |
-| M8 | Order API, live prices and live candles (Spring Boot + Redis), **done before M7** | `m8-api` |
+| M8 | Live prices and live candles (Spring Boot + Redis), **done before M7** | `m8-api` |
 | M7 | Silver tables | `m7-silver` |
 | M9 | dbt gold models and Airflow | `m9-gold` |
+| M9.5 | Real-time analytics (ClickHouse + Grafana) | `m9.5-clickhouse` |
 | M10 | AWS via Terraform | `m10-aws` |
 | M11 | Dashboard, CI and presentation polish | `m11-polish` |
 
@@ -72,7 +73,7 @@ Findings so far (no code changed):
 - `make stream-bronze`, `make bronze-check`, `make bronze-restart-test`, `make bronze-bench`.
 - **Acceptance:** on a clean clone, bronze reconciles exactly with Kafka (`make bronze-check`); the job killed with SIGKILL twice mid-stream still reconciles (`make bronze-restart-test`); one bronze benchmark result committed.
 
-## M8 — Order API, live prices and live candles
+## M8 — Live prices and live candles
 Done **before M7** (decided 2026-10-31): it does not depend on silver, and it makes the system visible sooner. Numbers are kept so earlier references stay valid.
 - New Spring Boot service in `api/` (market data only; order entry moved to M11): consume `trades` and keep, in Redis, the last price and the current 1-minute candle (OHLCV) per symbol, updated on every trade by an atomic Lua script, pipelined per Kafka batch. GET live prices and recent candles (ADR 0017).
 - The **hot path** for live market data; the lakehouse (bronze → silver → gold) stays the **cold path**, authoritative and rebuildable. The engine only matches: no prices or candles are computed in it.
@@ -88,6 +89,13 @@ Done **before M7** (decided 2026-10-31): it does not depend on silver, and it ma
 - Airflow DAGs: scheduled dbt runs, data quality checks, Iceberg maintenance (compaction, snapshot expiry).
 - `make dbt`.
 - **Acceptance:** dbt tests (not_null, unique, accepted ranges) pass; late-event candle test passes.
+
+## M9.5 — Real-time analytics (ClickHouse)
+Added 2026-11-01, after the lakehouse so its results can be checked against gold from the start. Design choices go in an ADR at the start of the milestone.
+- ClickHouse reads `trades` from Kafka continuously; every trade is queryable within seconds, with all fields (including participants and aggressor side).
+- Live Grafana dashboard for questions across the market: top movers, buy vs sell pressure, market activity, large trades, volume by participant, rolling volatility, pipeline freshness. Ad-hoc SQL over live data.
+- Not a source of truth: gold stays authoritative. ClickHouse's numbers are reconciled against gold.
+- **Acceptance:** trades reach ClickHouse within seconds while the simulator runs (measured); a ClickHouse vs gold reconciliation for the same time range passes; the dashboard runs from a clean clone.
 
 ## M10 — AWS via Terraform
 - `infra/terraform/`: S3 bucket(s) and catalog for the lakehouse; the rest stays local unless we decide otherwise (ADR).
