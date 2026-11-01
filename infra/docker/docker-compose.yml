@@ -195,6 +195,7 @@ services:
               "/opt/vortex/streaming/bronze_trades.py"]
     volumes:
       - ../../streaming:/opt/vortex/streaming:ro
+      - ../../config:/opt/vortex/config:ro
       - spark-checkpoints:/opt/spark/checkpoints
 
 volumes:

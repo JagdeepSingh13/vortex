@@ -42,8 +42,10 @@ TRADE_V1 = T.StructType([
     T.StructField("event_time_ns", T.LongType()),
 ])
 
-CREATE_TABLE = f"""
-CREATE TABLE IF NOT EXISTS {TABLE} (
+def create_table_sql(table):
+    """The bronze DDL for any table name (the silver tests build a bronze-shaped test table)."""
+    return f"""
+CREATE TABLE IF NOT EXISTS {table} (
     engine_run_id        STRING  COMMENT 'trade.v1; unique key with symbol and match_id',
     symbol               STRING,
     match_id             BIGINT,
@@ -69,6 +71,9 @@ USING iceberg
 PARTITIONED BY (days(event_ts))
 TBLPROPERTIES ('format-version' = '2', 'write.parquet.compression-codec' = 'zstd')
 """
+
+
+CREATE_TABLE = create_table_sql(TABLE)
 
 
 def bronze_rows(kafka_stream):

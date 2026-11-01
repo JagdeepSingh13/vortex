@@ -70,7 +70,7 @@ define sanitizer_test
 	docker run --rm $(SANITIZER_ENV) -v "$(CURDIR):/src" -w /src $(ENGINE_IMAGE) ctest --test-dir $(1) --output-on-failure
 endef
 
-.PHONY: sim sim-bench test-sim engine-run trades-check e2e-bench stream-bronze bronze-check bronze-restart-test bronze-bench clean-docker api-build test-api api-run api-bench candles
+.PHONY: sim sim-bench test-sim engine-run trades-check e2e-bench stream-bronze bronze-check bronze-restart-test bronze-bench silver silver-check test-silver silver-bench clean-docker api-build test-api api-run api-bench candles
 .PHONY: up up-ui down reset topics kafka-topics kafka-tail kafka-send kafka-groups kafka-offsets kafka-check kafka-perf
 .PHONY: help engine-image engine bench python-image test test-all test-engine test-asan test-tsan test-schemas clean
 
@@ -209,6 +209,18 @@ bronze-restart-test: engine python-image up ## kill -9 the bronze job twice mid-
 bronze-bench: engine python-image up ## bronze ingest lag and files per trigger interval and rate, writes benchmarks/results/<date>-bronze-<commit>.md
 	ENGINE_IMAGE=$(ENGINE_IMAGE) PYTHON_IMAGE=$(PYTHON_IMAGE) bash streaming/bench.sh \
 		benchmarks/results/$(shell date -u +%F)-bronze-$(shell git rev-parse --short HEAD).md
+
+silver: up ## bronze -> Iceberg vortex.silver.trades: new bronze rows only, deduplicated, bad rows to trades_rejected
+	$(SPARK_RUN) /opt/vortex/streaming/silver_trades.py
+
+silver-check: up ## reconcile bronze with silver: nothing lost, invented or duplicated, rejects accounted for
+	$(SPARK_RUN) /opt/vortex/streaming/silver_check.py
+
+test-silver: up ## silver tests on separate test tables: duplicates, late events, reruns, rejects
+	$(SPARK_RUN) /opt/vortex/streaming/test_silver.py
+
+silver-bench: up ## silver run time vs new rows and silver size, replaying bronze; writes benchmarks/results/<date>-silver-<commit>.md
+	$(COMPOSE) --profile stream run --rm --no-deps -T -v "$(CURDIR)/benchmarks/results:/opt/vortex/results" 		-e COMMIT=$(shell git rev-parse --short HEAD)$(shell git diff --quiet HEAD -- streaming || echo -dirty) -e "BENCH_ENV=$(BENCH_ENV)" 		bronze /opt/spark/bin/spark-submit --master local[2] --driver-memory 768m /opt/vortex/streaming/silver_bench.py 		/opt/vortex/results/$(shell date -u +%F)-silver-$(shell git rev-parse --short HEAD).md
 
 # ---------------- housekeeping ----------------
 
