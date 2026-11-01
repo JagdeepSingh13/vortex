@@ -219,8 +219,9 @@ silver-check: up ## reconcile bronze with silver: nothing lost, invented or dupl
 test-silver: up ## silver tests on separate test tables: duplicates, late events, reruns, rejects
 	$(SPARK_RUN) /opt/vortex/streaming/test_silver.py
 
-silver-bench: up ## silver run time vs new rows and silver size, replaying bronze; writes benchmarks/results/<date>-silver-<commit>.md
-	$(COMPOSE) --profile stream run --rm --no-deps -T -v "$(CURDIR)/benchmarks/results:/opt/vortex/results" 		-e COMMIT=$(shell git rev-parse --short HEAD)$(shell git diff --quiet HEAD -- streaming || echo -dirty) -e "BENCH_ENV=$(BENCH_ENV)" 		bronze /opt/spark/bin/spark-submit --master local[2] --driver-memory 768m /opt/vortex/streaming/silver_bench.py 		/opt/vortex/results/$(shell date -u +%F)-silver-$(shell git rev-parse --short HEAD).md
+ROWS_PER_RUN ?= 100000
+silver-bench: up ## silver run time vs new rows and silver size, replaying bronze (ROWS_PER_RUN=100000 per incremental run); writes benchmarks/results/<date>-silver-<commit>.md
+	$(COMPOSE) --profile stream run --rm --no-deps -T -v "$(CURDIR)/benchmarks/results:/opt/vortex/results" 		-e COMMIT=$(shell git rev-parse --short HEAD)$(shell git diff --quiet HEAD -- streaming || echo -dirty) -e "BENCH_ENV=$(BENCH_ENV)" -e ROWS_PER_RUN=$(ROWS_PER_RUN) 		bronze /opt/spark/bin/spark-submit --master local[2] --driver-memory 768m /opt/vortex/streaming/silver_bench.py 		/opt/vortex/results/$(shell date -u +%F)-silver-$(shell git rev-parse --short HEAD).md
 
 # ---------------- housekeeping ----------------
 

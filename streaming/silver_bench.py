@@ -29,11 +29,14 @@ def drop(spark, namespace):
 
 
 def bronze_appends(spark):
-    """Bronze's append snapshots, oldest first, with the rows each added."""
+    """Bronze's append snapshots that added rows, oldest first, with the rows each added.
+
+    An empty micro-batch commits a snapshot with no added-records at all, so missing counts as 0.
+    """
     return spark.sql(f"""
-        SELECT snapshot_id, CAST(summary['added-records'] AS BIGINT) AS rows
+        SELECT snapshot_id, CAST(coalesce(summary['added-records'], '0') AS BIGINT) AS rows
         FROM {BRONZE}.snapshots WHERE operation = 'append' ORDER BY committed_at
-    """).collect()
+    """).where("rows > 0").collect()
 
 
 def cpu_name():
