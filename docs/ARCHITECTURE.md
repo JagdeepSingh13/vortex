@@ -120,7 +120,9 @@ All fields are required.
 Storage: SeaweedFS (S3 API) bucket `warehouse`; catalog: Iceberg REST (`vortex` in Spark); format: Iceberg v2, Parquet + zstd (ADR 0016).
 
 - `vortex.bronze.trades` (M6, built): every `trade.v1` field as a typed column (64-bit integers), plus `raw_value` (the message as received), `kafka_partition`, `kafka_offset`, `kafka_timestamp`, `parse_ok`, `ingest_time_ns` (start of the writing micro-batch) and `event_ts` (event time at µs, for partitioning). Partitioned by `days(event_ts)`. Append-only, written exactly once per Kafka offset by a Spark Structured Streaming job (10 s trigger, checkpointed). `(kafka_partition, kafka_offset)` is unique.
-- `silver.trades` (M7, proposed): deduplicated on (`engine_run_id`, `symbol`, `match_id`), partitioned by `symbol` and `days(event_time)`. Integers only.
+- `vortex.silver.trades` (M7, built, ADR 0018): each trade once, deduplicated on (`engine_run_id`, `symbol`, `match_id`); the trade.v1 fields as integers, `event_ts`, lineage to bronze (`bronze_kafka_partition`, `bronze_kafka_offset`, `bronze_ingest_time_ns`) and `silver_time_ns` (start of the run that wrote the row). Partitioned by `symbol` and `days(event_ts)`, files sorted by `event_time_ns`. Built by `make silver` (Airflow from M9): an incremental read of the bronze snapshots appended since the last run, dedup inside the batch, insert-only `MERGE` (only appends files; rerunning is safe).
+- `vortex.silver.trades_rejected` (M7): bronze rows that cannot be trades (unparseable, wrong schema version, unknown symbol, values below 1, bad side), with a reason, their Kafka position and the raw message.
+- `vortex.silver.trades_progress` (M7): one row per silver run: bronze snapshot processed up to, counts, seconds.
 - `gold.*` (M9, proposed, dbt): `candles_1m`, `vwap`, `daily_symbol_stats`. Decimal prices derived from `config/symbols.yaml`.
 
 ## Schema change log

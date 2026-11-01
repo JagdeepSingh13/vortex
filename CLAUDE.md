@@ -74,7 +74,7 @@ Make targets are the single entry point. Create each target when a milestone fir
 
 - `make help`: list available targets
 - `make up` / `make down`: start or stop local infrastructure (`make reset` also deletes data; `make up-ui` adds Kafka UI on :8080)
-- `make topics`: create Kafka topics
+- `make topics`: create Kafka topics or update existing ones (1-day retention, 64 MB segments)
 - `make kafka-check`: Kafka round trip on a temporary topic
 - `make kafka-topics` / `kafka-tail` / `kafka-send` / `kafka-groups` / `kafka-offsets`: Kafka CLI shortcuts (`TOPIC=`, `FROM_START=1`)
 - `make kafka-perf`: Kafka producer/consumer benchmark, dated file in `benchmarks/results/`
@@ -91,6 +91,11 @@ Make targets are the single entry point. Create each target when a milestone fir
 - `make bronze-check`: reconcile Kafka with bronze (no loss, no duplicates, no gaps)
 - `make bronze-restart-test`: kill -9 the bronze job twice mid-stream, then reconcile
 - `make bronze-bench`: bronze ingest lag and files per trigger interval, dated file in `benchmarks/results/`
+- `make silver`: one silver run (new bronze rows only -> `vortex.silver.trades`, deduplicated; bad rows -> `trades_rejected`)
+- `make silver-check`: reconcile bronze with silver (nothing lost, invented or duplicated; rejects accounted for; no match-id gaps)
+- `make test-silver`: silver tests on separate test tables (duplicates, late events, reruns, rejects)
+- `make silver-bench`: silver run time vs new rows and silver size, replaying bronze; dated file in `benchmarks/results/`
+- `make clean-docker`: free disk (build cache, dangling images, unused anonymous volumes; never the project's data)
 - `make api-build` / `make test-api`: build the Java market data service / run its unit and Testcontainers tests
 - `make api-run`: run the market data service on :8090 (Kafka trades -> Redis prices and 1-min candles)
 - `make candles`: live candles in the terminal (`SYMBOL=`, `REFRESH=` seconds; needs `make api-run`)

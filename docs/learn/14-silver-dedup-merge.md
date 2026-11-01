@@ -124,7 +124,23 @@ Silent drops hide problems; a rejects table makes them **countable and auditable
 
 ## Results
 
-*(filled from the benchmark at the end of M7)*
+`make silver-bench ROWS_PER_RUN=1`, Ryzen 5 5500U, everything in Docker on WSL2, Spark local[2], replaying a light dataset (a 2-minute load at 1,000 orders/s: 56,341 trades in 3 bronze snapshots):
+
+| Run | Rows read | Inserted | Seconds |
+|---|---:|---:|---:|
+| incremental 1 (into empty silver, includes Spark warm-up) | 6,937 | 6,937 | 11.9 |
+| incremental 2 | 14,317 | 14,317 | 6.8 |
+| incremental 3 | 35,087 | 35,087 | 5.8 |
+| full load, empty silver | 56,341 | 56,341 | 5.4 |
+| full rerun, every key already there | 56,341 | 0 | 4.6 |
+
+What it shows:
+- **A run's cost is mostly fixed overhead** at this size: three Iceberg commits, metadata reads and query planning take ~5 s whether the run has 7k or 56k rows.
+- **Starting Spark costs more than the work.** `make silver` from the command line took 28–50 s per run, mostly launching a new JVM. That decides how often Airflow can run silver on this laptop: every few minutes, not every few seconds. It is also why the cold path is minutes behind and the hot path (Redis) exists.
+- **The rerun proves idempotence**: every key already in silver, 0 inserted.
+- **Not measured yet**: how the MERGE's cost grows as silver grows. That needs millions of rows.
+
+Source: `benchmarks/results/2026-11-01-silver-d13ab8c.md`.
 
 ## Commands
 

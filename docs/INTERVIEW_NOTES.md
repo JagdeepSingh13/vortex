@@ -113,3 +113,21 @@ Format:
   - *What if the service reads trades twice after a restart?* The Lua script remembers the last applied match id per symbol and engine run and skips anything older. Kafka is at least once, but the result counts each trade once.
   - *Why were your first benchmark tails seconds long?* The JVM was measured 10 s after a restart, before JIT warm-up. Separately, the Docker VM froze once, and the Kafka broker timed out talking to itself. I fixed the harness (an unmeasured warm-up run) and documented the stall instead of rerunning until the numbers looked good.
 - Study further: Redis Lua scripting and EVALSHA, pipelining, Redis Cluster hash tags, Lettuce connection handling, Kafka batch listeners and commit modes, JIT warm-up and benchmarking JVMs (JMH), lambda vs kappa architecture.
+
+## M7 — Silver: one clean trades table (2026-11-01)
+- What I built: a Spark job that turns bronze (every Kafka message, as received) into `silver.trades`, with each trade exactly once, values checked, partitioned by symbol and day, and every row traceable to its bronze row. Bad rows go to a rejects table with a reason. `silver-check` reconciles bronze, silver and rejects, and the tests cover duplicates, a late trade, reruns and bad data.
+- Why it is designed this way: an incremental batch job reads only the bronze snapshots appended since its last run, removes duplicates on the trade key `(engine_run_id, symbol, match_id)`, and writes with an insert-only `MERGE`. That makes reruns safe and never rewrites existing files. A batch job instead of a stream, because a second always-on Spark JVM is too heavy for the laptop and Airflow will schedule it ([ADR 0018](decisions/0018-silver-incremental-merge.md)).
+- Trade-off I can defend: silver is minutes behind, not seconds. The three commits per run (silver, rejects, progress) are not one transaction, so instead of a transaction I made every step idempotent: a crash means the next run reads the same rows again and inserts nothing twice.
+- Numbers (Ryzen 5 5500U, everything in Docker on WSL2, Spark local[2], 56,341 trades from a 2-minute load at 1,000 orders/s):
+  - silver runs of 7k–56k rows took 4.6–6.8 s each, plus 11.9 s for the first run with Spark warm-up, so at this size the cost is fixed overhead;
+  - `make silver` end to end took 28–50 s, mostly starting Spark;
+  - a full rerun inserted 0 rows;
+  - `silver-check`: 56,341 bronze trades = 56,341 silver rows, 0 missing, 0 extra, 0 duplicates.
+  - Not yet measured: how the MERGE's cost grows with silver's size.
+  - Source: `benchmarks/results/2026-11-01-silver-d13ab8c.md`.
+- Likely questions:
+  - *Bronze is exactly once already; why dedup?* Bronze is exactly once per Kafka offset. The same trade can still sit at two offsets (a retry without idempotence, a replay), so silver deduplicates on the trade's identity.
+  - *How does a late trade end up in the right place?* Silver is partitioned by event-time day, so the MERGE writes it into its own day, even one processed long ago. The test injects one with yesterday's time and checks its partition.
+  - *How do you read only new data?* Iceberg snapshots: each bronze commit is a numbered version, and an incremental read returns only the rows appended between the last processed snapshot and the current one.
+  - *How did you find a bug in your own process?* A background script I thought I had stopped kept running and executed silver twice behind my back. The progress table and silver's snapshot history showed exactly which runs happened and when, and the data was still correct because every run is idempotent.
+- Study further: Iceberg snapshots, incremental reads and `MERGE INTO` (copy-on-write vs merge-on-read), idempotent pipelines, event time vs processing time, data lineage, Kafka retention and segments.
