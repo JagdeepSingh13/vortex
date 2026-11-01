@@ -95,7 +95,7 @@ A container asking for `localhost:9092` would be talking to itself, which is why
 |---|---|
 | Image | `apache/kafka:4.3.1`, pinned by digest |
 | Nodes | 1 (broker + controller), heap 512 MB, ~280 MiB idle |
-| Topics | `orders`, `trades`: 3 partitions, replication factor 1, 7-day retention |
+| Topics | `orders`, `trades`: 3 partitions, replication factor 1, 1-day retention in 64 MB segments (was 7 days until M7) |
 | Auto topic creation | off: a typo in a topic name fails instead of creating a new topic |
 | Data | Docker named volume `kafka-data`, kept by `make down`, deleted by `make reset` |
 
