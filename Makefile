@@ -33,7 +33,10 @@ KAFKA_BIN_IT := $(COMPOSE) exec kafka /opt/kafka/bin
 BOOTSTRAP := --bootstrap-server localhost:9092
 TOPICS := orders trades
 TOPIC_PARTITIONS := 3
-TOPIC_RETENTION_MS := 604800000
+# 1 day: bronze keeps the permanent copy of trades, and nothing replays old orders. Kafka deletes
+# whole segments only, so segments are 64 MB (default 1 GB) or old data would never go away
+TOPIC_RETENTION_MS := 86400000
+TOPIC_SEGMENT_BYTES := 67108864
 TOPIC ?= orders
 
 # order simulator (ADR 0013): joins the compose network to reach kafka:29092
@@ -67,7 +70,7 @@ define sanitizer_test
 	docker run --rm $(SANITIZER_ENV) -v "$(CURDIR):/src" -w /src $(ENGINE_IMAGE) ctest --test-dir $(1) --output-on-failure
 endef
 
-.PHONY: sim sim-bench test-sim engine-run trades-check e2e-bench stream-bronze bronze-check bronze-restart-test bronze-bench api-build test-api api-run api-bench candles
+.PHONY: sim sim-bench test-sim engine-run trades-check e2e-bench stream-bronze bronze-check bronze-restart-test bronze-bench clean-docker api-build test-api api-run api-bench candles
 .PHONY: up up-ui down reset topics kafka-topics kafka-tail kafka-send kafka-groups kafka-offsets kafka-check kafka-perf
 .PHONY: help engine-image engine bench python-image test test-all test-engine test-asan test-tsan test-schemas clean
 
@@ -132,8 +135,14 @@ reset: .env ## stop local infrastructure and delete its data (Kafka, tables and 
 	@# every profile, or volumes of profile-only services (the bronze checkpoint) would survive
 	$(COMPOSE) --profile ui --profile stream --profile api down -v
 
-topics: ## create the Kafka topics (safe to run again)
-	@for topic in $(TOPICS); do 		$(KAFKA_BIN)/kafka-topics.sh $(BOOTSTRAP) --create --if-not-exists --topic $$topic 			--partitions $(TOPIC_PARTITIONS) --replication-factor 1 			--config retention.ms=$(TOPIC_RETENTION_MS); 	done
+topics: ## create the Kafka topics, or bring existing ones to the current settings (safe to run again)
+	@for topic in $(TOPICS); do \
+		$(KAFKA_BIN)/kafka-topics.sh $(BOOTSTRAP) --create --if-not-exists --topic $$topic \
+			--partitions $(TOPIC_PARTITIONS) --replication-factor 1 \
+			--config retention.ms=$(TOPIC_RETENTION_MS) --config segment.bytes=$(TOPIC_SEGMENT_BYTES); \
+		$(KAFKA_BIN)/kafka-configs.sh $(BOOTSTRAP) --alter --entity-type topics --entity-name $$topic \
+			--add-config retention.ms=$(TOPIC_RETENTION_MS),segment.bytes=$(TOPIC_SEGMENT_BYTES) >/dev/null; \
+	done
 	@$(MAKE) --no-print-directory kafka-topics
 
 # ---------------- Kafka CLI shortcuts ----------------
@@ -200,6 +209,15 @@ bronze-restart-test: engine python-image up ## kill -9 the bronze job twice mid-
 bronze-bench: engine python-image up ## bronze ingest lag and files per trigger interval and rate, writes benchmarks/results/<date>-bronze-<commit>.md
 	ENGINE_IMAGE=$(ENGINE_IMAGE) PYTHON_IMAGE=$(PYTHON_IMAGE) bash streaming/bench.sh \
 		benchmarks/results/$(shell date -u +%F)-bronze-$(shell git rev-parse --short HEAD).md
+
+# ---------------- housekeeping ----------------
+
+clean-docker: ## free disk: Docker build cache, dangling images, unused anonymous volumes (never this project's named volumes or data)
+	@docker system df
+	docker builder prune -f
+	docker image prune -f
+	docker volume prune -f
+	@docker system df
 
 # ---------------- live market data API (Java) ----------------
 

@@ -4,7 +4,8 @@ For every Kafka partition, all offsets from the earliest still in the topic to t
 be in bronze exactly once:
 
     rows == distinct offsets          no duplicates
-    min offset == Kafka earliest      nothing missing at the start
+    min offset <= Kafka earliest      nothing missing at the start (bronze keeps history that
+                                      Kafka's 1-day retention has already deleted)
     max offset == Kafka latest - 1    caught up, nothing missing at the end
     rows == max - min + 1             no gaps in between
 
@@ -61,7 +62,7 @@ def main():
         else:
             if row["rows"] != row["distinct_offsets"]:
                 problems.append(f"{row['rows'] - row['distinct_offsets']} duplicate offsets")
-            if row["b_min"] != row["k_min"]:
+            if row["b_min"] > row["k_min"]:
                 problems.append(f"starts at {row['b_min']}, Kafka at {row['k_min']}")
             if row["b_max"] != row["k_max"]:
                 problems.append(f"ends at {row['b_max']}, Kafka at {row['k_max']} (behind or missing)")

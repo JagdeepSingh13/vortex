@@ -23,7 +23,7 @@ Visibility: **Kafka CLI tools** (inside the broker container, no extra memory) v
 
 - `apache/kafka:4.3.1`, pinned by digest (4.3.2 and 4.4.0 were under two weeks old). One node is both broker and controller (KRaft; Kafka 4.x has no ZooKeeper). Heap fixed at 512 MB.
 - Three listeners: `INTERNAL kafka:29092` for containers, `EXTERNAL localhost:9092` for the host, `CONTROLLER :9093` for KRaft.
-- `orders` and `trades`: 3 partitions, replication factor 1, 7-day retention, key = symbol. Auto topic creation off.
+- `orders` and `trades`: 3 partitions, replication factor 1, 7-day retention, key = symbol. (Changed 2026-11-01 in M7: 1-day retention and 64 MB segments; bronze keeps the permanent copy.) Auto topic creation off.
 - CLI first, wrapped in `make` targets (`kafka-topics`, `kafka-tail`, `kafka-send`, `kafka-groups`, `kafka-offsets`). Kafka UI (`kafbat/kafka-ui:v1.5.0`) is opt-in via `make up-ui` (compose profile `ui`).
 
 ## Consequences
