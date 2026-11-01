@@ -10,7 +10,7 @@ Kafka "trades" ─▶ Spark Structured Streaming ─▶ Iceberg table vortex.bro
 
 ## Why a lakehouse at all
 
-Kafka keeps trades for 7 days and can only be read in order. Analytics needs years of history, SQL queries, and reads by several tools. A **lakehouse** stores data as plain files (Parquet) in cheap object storage (S3), with a **table format** (Iceberg) on top that gives database features: a schema, atomic commits, time travel and safe concurrent writers.
+Kafka keeps trades for 1 day (7 days until M7) and can only be read in order. Analytics needs years of history, SQL queries, and reads by several tools. A **lakehouse** stores data as plain files (Parquet) in cheap object storage (S3), with a **table format** (Iceberg) on top that gives database features: a schema, atomic commits, time travel and safe concurrent writers.
 
 The **medallion** layers:
 
